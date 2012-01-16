@@ -70,7 +70,8 @@ public class Box {
 		String vertexCode = "";
 		String line;
 		try {
-
+			File foo = new File("foo");
+			System.out.println(foo.getAbsolutePath());
 			BufferedReader reader = new BufferedReader(new FileReader(filename));
 			while ((line = reader.readLine()) != null) {
 				vertexCode += line + "\n";
