@@ -6,7 +6,7 @@ import org.lwjgl.input.Keyboard;
 public class SimpleVisualTest {
 	@Test
 	public void testSimple() throws Exception {
-		FearOutput output = FearDisplay.getDISPLAY();
+		FearDisplay output = new FearDisplay(100, 100, false);
 		FearScene scene = new FearScene();
 		boolean running = true;
 		while (running) {
@@ -15,8 +15,11 @@ public class SimpleVisualTest {
 					running = false;
 				}
 			}
+			if (output.isCloseRequested()) {
+				running = false;
+			}
 			output.render(scene);
-			Thread.sleep(10);
+			Thread.sleep(100);
 		}
 	}
 }
