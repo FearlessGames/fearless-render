@@ -20,7 +20,7 @@ public class Main {
 		init();
 
 		Box box = new Box();
-		long t1 = System.currentTimeMillis();
+		long t1 = System.nanoTime();
 		long t2;
 		int c = 0;
 		while (!done) {
@@ -29,9 +29,9 @@ public class Main {
 			box.update();
 			render(box);
 			Display.update();
-			t2 = System.currentTimeMillis();
+			t2 = System.nanoTime();
 			if ((c++ & 127) == 0) {
-				System.out.printf("FPS: %.3f\n", 1000.0d / (t2 - t1));
+				System.out.printf("FPS: %.3f\n", 1000000000.0d / (t2 - t1));
 			}
 			t1 = t2;
 		}
