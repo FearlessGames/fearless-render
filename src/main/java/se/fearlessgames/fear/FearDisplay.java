@@ -1,7 +1,6 @@
 package se.fearlessgames.fear;
 
 import org.lwjgl.LWJGLException;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
@@ -46,14 +45,14 @@ public class FearDisplay implements FearOutput {
 		}
 	}
 
-	@Override
-	public void render(FearScene scene) {
-		assertValid();
-		Display.update();
-	}
-
 	public boolean isCloseRequested() {
 		assertValid();
 		return Display.isCloseRequested();
+	}
+
+	@Override
+	public void flush() {
+		assertValid();
+		Display.update();
 	}
 }

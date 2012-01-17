@@ -8,18 +8,28 @@ public class SimpleVisualTest {
 	public void testSimple() throws Exception {
 		FearDisplay output = new FearDisplay(100, 100, false);
 		FearScene scene = new FearScene();
-		boolean running = true;
-		while (running) {
-			while (Keyboard.next()) {
-				if (Keyboard.getEventKey() == Keyboard.KEY_ESCAPE) {
-					running = false;
-				}
+		while (true) {
+			if (hasHitEscape() || output.isCloseRequested()) {
+				break;
 			}
-			if (output.isCloseRequested()) {
-				running = false;
-			}
-			output.render(scene);
+
+			scene.render(output);
+			renderUI(output);
+			output.flush();
+
 			Thread.sleep(100);
 		}
+	}
+
+	private boolean hasHitEscape() {
+		while (Keyboard.next()) {
+			if (Keyboard.getEventKey() == Keyboard.KEY_ESCAPE) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private void renderUI(FearOutput output) {
 	}
 }
