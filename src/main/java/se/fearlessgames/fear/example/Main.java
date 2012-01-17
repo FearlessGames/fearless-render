@@ -1,9 +1,8 @@
 package se.fearlessgames.fear.example;
 
-import org.lwjgl.opengl.GL11;
-
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 import se.fearlessgames.fear.Box;
 
@@ -21,12 +20,20 @@ public class Main {
 		init();
 
 		Box box = new Box();
+		long t1 = System.currentTimeMillis();
+		long t2;
+		int c = 0;
 		while (!done) {
 			if (Display.isCloseRequested())
 				done = true;
 			box.update();
 			render(box);
 			Display.update();
+			t2 = System.currentTimeMillis();
+			if ((c++ & 127) == 0) {
+				System.out.printf("FPS: %.3f\n", 1000.0d / (t2 - t1));
+			}
+			t1 = t2;
 		}
 
 		Display.destroy();
