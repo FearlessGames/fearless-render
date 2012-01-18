@@ -1,14 +1,16 @@
-package se.fearlessgames.fear;
+package se.fearlessgames.fear.display;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import se.fearlessgames.fear.FearError;
+import se.fearlessgames.fear.FearOutput;
 
 public class FearDisplay implements FearOutput {
 	private static volatile boolean ACTIVE = false;
 	private boolean destroyed;
 
-	public FearDisplay(int width, int height, boolean fullScreen) {
+	FearDisplay(int width, int height, boolean fullScreen) {
 		if (ACTIVE) {
 			throw new FearError("Multiple displays may not be active at the same time");
 		}
