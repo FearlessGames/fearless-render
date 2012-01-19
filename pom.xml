@@ -141,5 +141,10 @@
 			<artifactId>commons-math</artifactId>
 			<version>2.0</version>
 		</dependency>
+		<dependency>
+			<groupId>local</groupId>
+			<artifactId>slick-util</artifactId>
+			<version>0.0.1</version>
+		</dependency>
 	</dependencies>
 </project>

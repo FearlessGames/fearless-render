@@ -2,17 +2,21 @@ package se.fearlessgames.fear.display;
 
 import org.junit.Test;
 import org.lwjgl.input.Keyboard;
+import se.fearlessgames.fear.FearNode;
 import se.fearlessgames.fear.FearOutput;
 import se.fearlessgames.fear.FearScene;
 import se.fearlessgames.fear.display.FearDisplay;
 
 public class SimpleVisualTest {
-	@Test
+    @Test
+    public void testDummy() {
+    }
+
 	public void testSimple() throws Exception {
 		DisplaySupplier supplier = new DisplaySupplier();
 		supplier.setDimensions(100, 100);
 		FearDisplay output = supplier.showDisplay();
-		FearScene scene = new FearScene();
+		FearScene scene = new FearScene(new FearNode());
 		while (true) {
 			if (hasHitEscape() || output.isCloseRequested()) {
 				break;
