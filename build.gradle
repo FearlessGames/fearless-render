@@ -3,6 +3,13 @@ apply plugin: 'idea'
 
 sourceCompatibility = 1.6
 version = '0.1-SNAPSHOT'
+description = """\
+Fearless-render is a simple java 3d engine built on top of the LWJGL framework
+------------------------------------------------------------------------------
+Project version: ${version}
+Gradle version: ${gradle.gradleVersion}
+------------------------------------------------------------------------------
+"""
 
 libDir = new File("lib")
 
@@ -22,3 +29,46 @@ dependencies {
 
 }
 
+['windows', 'linux', 'osx'].each { platform ->
+	task "${platform}Natives" {
+		outputDir = "$buildDir/natives/$platform"
+		inputs.files(configurations.compile)
+		outputs.dir(outputDir)
+		doLast {
+			copy {
+				def artifacts = configurations.compile.resolvedConfiguration.resolvedArtifacts
+						.findAll { it.classifier == "natives-$platform" }
+				artifacts.each {
+					from zipTree(it.file)
+				}
+				into outputDir
+			}
+		}
+	}
+}
+
+task nativeLibs(dependsOn: ['windowsNatives', 'linuxNatives', 'osxNatives'])<< {
+}
+
+
+task(runExample, dependsOn: ['build', 'nativeLibs']) << {
+	String nativeDir;
+	def osName = System.getProperty('os.name').toLowerCase()
+	if (osName.contains('windows'))
+		nativeDir = 'windows'
+	else if(osName.contains('linux'))
+		nativeDir = 'linux'
+	else if(osName.contains('mac os'))
+		nativeDir = 'osx'
+	else
+		throw new Exception('Unknown OS')
+
+	def libpath = "-Djava.library.path=$buildDir/natives/$nativeDir"
+	def argsList = [libpath]
+	println(argsList)
+	javaexec {
+		main =  'se.fearlessgames.fear.example.Main'
+		classpath = sourceSets.main.runtimeClasspath
+		jvmArgs =  argsList
+	}
+}
