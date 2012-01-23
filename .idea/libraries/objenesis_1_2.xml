@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="objenesis-1.2">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/artifacts-7/artifacts/56865c09425cc6ecda8606d7e6035ceb/org.objenesis/objenesis/1.2/jar/objenesis-1.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/artifacts-7/artifacts/56865c09425cc6ecda8606d7e6035ceb/org.objenesis/objenesis/1.2/source/objenesis-1.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

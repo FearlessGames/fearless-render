@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Build" type="GroovyScriptRunConfiguration" factoryName="Groovy Script">
+    <module name="fearless-render" />
+    <setting name="path" value="$PROJECT_DIR$/build.gradle" />
+    <setting name="vmparams" value="" />
+    <setting name="params" value="build" />
+    <setting name="workDir" value="$PROJECT_DIR$" />
+    <setting name="debug" value="false" />
+    <RunnerSettings RunnerId="Run" />
+    <ConfigurationWrapper RunnerId="Run" />
+    <method>
+      <option name="Make" enabled="false" />
+    </method>
+  </configuration>
+</component>
