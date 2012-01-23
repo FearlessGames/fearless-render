@@ -8,7 +8,6 @@ libDir = new File("lib")
 
 repositories {
 	flatDir name: 'projectLibs', dirs: libDir
-	mavenLocal()
 	mavenCentral()
 }
 
