@@ -11,8 +11,8 @@ public class FearNode {
 	private final List<FearMesh> meshes;
 	private boolean visible = true;
 
-    private Vector3D position = Vector3D.ZERO;
-    private Rotation rotation = Rotation.IDENTITY;
+	private Vector3D position = Vector3D.ZERO;
+	private Rotation rotation = Rotation.IDENTITY;
 
 	public FearNode() {
 		this(new ArrayList<FearMesh>());
@@ -39,11 +39,15 @@ public class FearNode {
 		return visible;
 	}
 
-    public Vector3D getPosition() {
-        return position;
-    }
+	public Vector3D getPosition() {
+		return position;
+	}
 
-    public Rotation getRotation() {
-        return rotation;
-    }
+	public Rotation getRotation() {
+		return rotation;
+	}
+
+	public void addMesh(FearMesh mesh) {
+		meshes.add(mesh);
+	}
 }

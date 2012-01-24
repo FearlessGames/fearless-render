@@ -5,6 +5,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import se.fearlessgames.fear.FearError;
 import se.fearlessgames.fear.FearOutput;
+import se.fearlessgames.fear.GlCommand;
 
 public class FearDisplay implements FearOutput {
 	private static volatile boolean ACTIVE = false;
@@ -29,6 +30,7 @@ public class FearDisplay implements FearOutput {
 		}
 	}
 
+	@Override
 	public void finalize() {
 		destroy();
 	}
@@ -56,5 +58,9 @@ public class FearDisplay implements FearOutput {
 	public void flush() {
 		assertValid();
 		Display.update();
+	}
+
+	@Override
+	public void add(GlCommand command) {
 	}
 }
