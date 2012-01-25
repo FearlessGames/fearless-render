@@ -1,5 +1,6 @@
 package se.fearlessgames.fear;
 
+import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
@@ -38,10 +39,25 @@ public class Box {
 		if (useShader) {
 			GL20.glUseProgram(shader);
 		}
+
 		GL11.glLoadIdentity();
-		GL11.glTranslatef(0.0f, 0.0f, -10.0f);
-		GL11.glRotated(angle, 0.3, 1, 1);
-		GL11.glColor3f(1.0f, 1.0f, 1.0f);//white
+
+		GL11.glLoadIdentity();
+		ARBShaderObjects.glUseProgramObjectARB(shader);
+
+		int pos=ARBShaderObjects.glGetUniformLocationARB(shader, "pos");
+		if (pos != -1) {
+			ARBShaderObjects.glUniform3fARB(pos, 0f, 0f, -10f);
+		} else {
+			throw new RuntimeException("Failed to get pos location");
+		}
+
+		int rot=ARBShaderObjects.glGetUniformLocationARB(shader, "rot");
+		if (rot != -1) {
+			ARBShaderObjects.glUniform3fARB(rot, (float) angle, (float) angle * 0.2f, (float) angle * 0.5f);
+		} else {
+			throw new RuntimeException("Failed to get rot location");
+		}
 		GL11.glBegin(GL11.GL_QUADS);
 		GL11.glVertex3f(-1.0f, 1.0f, 0.0f);
 		GL11.glVertex3f(1.0f, 1.0f, 0.0f);
@@ -54,7 +70,7 @@ public class Box {
 	}
 
 	public void update() {
-		angle += 0.1;
+		angle += 0.001;
 	}
 
 
