@@ -15,16 +15,13 @@ import java.nio.IntBuffer;
 
 public class VboBox {
 
-
-	private int vertexBufferId;
-	private int indexBufferId;
-
 	private int shaderProgram;
 	private double angle;
+	private VertexBufferObject vbo;
 
 	public VboBox() {
 		createShaders();
-		createVbo();
+		vbo = createVbo();
 	}
 
 	private void createShaders() {
@@ -37,9 +34,7 @@ public class VboBox {
 
 	}
 
-	private void createVbo() {
-
-		vertexBufferId = GL15.glGenBuffers();
+	private VertexBufferObject createVbo() {
 		float[] data = {
 				// Front face (facing viewer), correct winding order.
 				-1.0f, -1.0f, -1.0f,
@@ -52,30 +47,14 @@ public class VboBox {
 				1.0f, 1.0f, 1.0f,
 				-1.0f, 1.0f, 1.0f
 		};
-		FloatBuffer vertexBuffer = BufferUtils.createFloatBuffer(data.length * 3);
-		vertexBuffer.put(data);
-		vertexBuffer.flip();
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vertexBufferId);
-		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertexBuffer, GL15.GL_STATIC_DRAW);
 
-
-		indexBufferId = GL15.glGenBuffers();
 		int[] indices = {
 				0, 1, 2, 3,
 				7, 6, 5, 4,
 				1, 5, 6, 2,
 				0, 3, 7, 4
 		};
-		IntBuffer indexBuffer = BufferUtils.createIntBuffer(indices.length);
-		indexBuffer.put(indices);
-		indexBuffer.flip();
-		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, indexBufferId);
-		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indexBuffer, GL15.GL_STATIC_DRAW);
-
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, GL11.GL_NONE);
-		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, GL11.GL_NONE);
-
-
+		return new VertexBufferObject(data, indices);
 	}
 
 
@@ -98,16 +77,7 @@ public class VboBox {
 		}
 
 
-		GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vertexBufferId);
-		GL11.glVertexPointer(3, GL11.GL_FLOAT, 0, 0);
-
-		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, indexBufferId);
-
-		GL11.glDrawElements(GL11.GL_QUADS, 16, GL11.GL_UNSIGNED_INT, 0);
-
-		GL11.glDisableClientState(GL11.GL_VERTEX_ARRAY);
-		GL11.glDisableClientState(GL11.GL_COLOR_ARRAY);
+		vbo.draw();
 
 		GL20.glUseProgram(0);
 	}
