@@ -1,12 +1,8 @@
 package se.fearlessgames.fear;
 
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
-
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
+import se.fearlessgames.fear.vbo.VertexBufferObject;
+import se.fearlessgames.fear.vbo.VertexDrawMode;
 
 
 /**
@@ -54,7 +50,7 @@ public class VboBox {
 				1, 5, 6, 2,
 				0, 3, 7, 4
 		};
-		return new VertexBufferObject(data, indices);
+		return new VertexBufferObject(data, indices, VertexDrawMode.QUADS);
 	}
 
 

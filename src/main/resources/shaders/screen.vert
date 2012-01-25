@@ -24,5 +24,5 @@ void main(){
 	 roll[1][1]=cos(rot.z);
 
     gl_Position= gl_ModelViewProjectionMatrix*position*heading*pitch*roll*gl_Vertex;
-    vertColor = vec4(0.6 * gl_Position.y, 0.3 * gl_Position.x, 0.5, 1.0);
+    vertColor = vec4(0.6 , 0.3 , (gl_Position.z - 10) / 10.0, 1.0);
 }
