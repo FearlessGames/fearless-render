@@ -1,6 +1,7 @@
 package se.fearlessgames.fear;
 
 import org.lwjgl.opengl.GL20;
+import se.fearlessgames.fear.vbo.VboBuilder;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 import se.fearlessgames.fear.vbo.VertexDrawMode;
 
@@ -50,7 +51,7 @@ public class VboBox {
 				1, 5, 6, 2,
 				0, 3, 7, 4
 		};
-		return new VertexBufferObject(data, indices, VertexDrawMode.QUADS);
+		return VboBuilder.fromArray(data).indices(indices).quads().build();
 	}
 
 

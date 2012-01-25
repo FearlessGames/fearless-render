@@ -1,6 +1,5 @@
 package se.fearlessgames.fear.vbo;
 
-import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 
@@ -15,23 +14,6 @@ public class VertexBufferObject {
 	private final IntBuffer indices;
 	private final VertexDrawMode drawMode;
 
-	public VertexBufferObject(float[] vertices, int[] indices, VertexDrawMode vertexDrawMode) {
-		this(createFloatBuffer(vertices), createIntBuffer(indices), vertexDrawMode);
-	}
-
-	private static IntBuffer createIntBuffer(int[] indices) {
-		IntBuffer indexBuffer = BufferUtils.createIntBuffer(indices.length);
-		indexBuffer.put(indices);
-		indexBuffer.flip();
-		return indexBuffer;
-	}
-
-	private static FloatBuffer createFloatBuffer(float[] vertices) {
-		FloatBuffer vertexBuffer = BufferUtils.createFloatBuffer(vertices.length * 3);
-		vertexBuffer.put(vertices);
-		vertexBuffer.flip();
-		return vertexBuffer;
-	}
 
 	public VertexBufferObject(FloatBuffer vertices, IntBuffer indices, VertexDrawMode drawMode) {
 		this.vertices = vertices;
