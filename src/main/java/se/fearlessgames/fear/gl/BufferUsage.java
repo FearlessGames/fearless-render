@@ -1,4 +1,4 @@
-package se.fearlessgames.fear;
+package se.fearlessgames.fear.gl;
 
 import org.lwjgl.opengl.GL15;
 

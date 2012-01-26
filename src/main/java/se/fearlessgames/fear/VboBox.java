@@ -4,6 +4,7 @@ import org.apache.commons.math.geometry.Rotation;
 import org.apache.commons.math.geometry.RotationOrder;
 import org.apache.commons.math.geometry.Vector3D;
 import org.lwjgl.opengl.GL20;
+import se.fearlessgames.fear.gl.FearLwjgl;
 import se.fearlessgames.fear.math.TransformBuilder;
 import se.fearlessgames.fear.vbo.VboBuilder;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
@@ -55,7 +56,7 @@ public class VboBox {
 				0, 3, 7, 4
 		};
 
-		return VboBuilder.fromArray(data).indices(indices).quads().build();
+		return VboBuilder.fromArray(new FearLwjgl(), data).indices(indices).quads().build();
 	}
 
 
