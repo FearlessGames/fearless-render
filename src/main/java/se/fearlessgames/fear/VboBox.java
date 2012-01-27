@@ -5,6 +5,7 @@ import org.apache.commons.math.geometry.RotationOrder;
 import org.apache.commons.math.geometry.Vector3D;
 import org.lwjgl.opengl.GL20;
 import se.fearlessgames.fear.gl.FearLwjgl;
+import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.math.TransformBuilder;
 import se.fearlessgames.fear.vbo.VboBuilder;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
@@ -60,9 +61,11 @@ public class VboBox {
 	}
 
 
-	public void draw() {
-
+	public void draw(PerspectiveBuilder perspectiveBuilder) {
 		GL20.glUseProgram(shaderProgram);
+
+		int projection = GL20.glGetUniformLocation(shaderProgram, "projection");
+		GL20.glUniformMatrix4(projection, false, perspectiveBuilder.getMatrix());
 		TransformBuilder builder = new TransformBuilder();
 		builder.translate(new Vector3D(0, 0, -10));
 		builder.rotate(new Rotation(RotationOrder.XYZ, angle, angle * 0.5, angle * 0.3));

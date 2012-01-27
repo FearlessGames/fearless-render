@@ -5,6 +5,7 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 import se.fearlessgames.fear.VboBox;
+import se.fearlessgames.fear.math.PerspectiveBuilder;
 
 /*
 * Sets up the Display, the GL context, and runs the main game
@@ -15,6 +16,7 @@ loop.
 public class Main {
 
 	private boolean done = false; //game runs until done is set to true
+	private PerspectiveBuilder perspectiveBuilder;
 
 	public Main() {
 		init();
@@ -45,7 +47,7 @@ public class Main {
 	private void render(VboBox vboBox) {
 		GL11.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-		vboBox.draw();
+		vboBox.draw(perspectiveBuilder);
 	}
 
 	private void init() {
@@ -63,11 +65,13 @@ public class Main {
 		}
 
 		GL11.glViewport(0, 0, w, h);
-		GL11.glMatrixMode(GL11.GL_PROJECTION);
-		GL11.glLoadIdentity();
-		GLU.gluPerspective(45.0f, ((float) w / (float) h), 0.1f, 100.0f);
-		GL11.glMatrixMode(GL11.GL_MODELVIEW);
-		GL11.glLoadIdentity();
+		perspectiveBuilder = new PerspectiveBuilder(45.0f, ((float) w / (float) h), 0.1f, 100.0f);
+
+//		GL11.glMatrixMode(GL11.GL_PROJECTION);
+//		GL11.glLoadIdentity();
+//		GLU.gluPerspective(45.0f, ((float) w / (float) h), 0.1f, 100.0f);
+//		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+//		GL11.glLoadIdentity();
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 		GL11.glClearDepth(1.0f);
