@@ -55,22 +55,53 @@ public class VboBox {
 	public void draw(PerspectiveBuilder perspectiveBuilder) {
 		fearGl.glUseProgram(shaderProgram.getShaderProgram());
 
-		int projection = fearGl.glGetUniformLocation(shaderProgram.getShaderProgram(), "projection");
-		fearGl.glUniformMatrix4(projection, false, perspectiveBuilder.getMatrix());
-		TransformBuilder builder = new TransformBuilder();
-		builder.translate(new Vector3D(0, 0, -10));
-		builder.rotate(new Rotation(RotationOrder.XYZ, angle, angle * 0.5, angle * 0.3));
+		TransformBuilder transformBuilder = new TransformBuilder();
+		transformBuilder.translate(new Vector3D(-3, -2, -10));
+		transformBuilder.rotate(new Rotation(RotationOrder.XYZ, angle, angle * 0.5, angle * 0.3));
 
-		int translation = fearGl.glGetUniformLocation(shaderProgram.getShaderProgram(), "translation");
-		if (translation != -1) {
-			fearGl.glUniformMatrix4(translation, false, builder.asFloatBuffer());
-		} else {
-			throw new RuntimeException("Failed to get translation location");
-		}
+		setupUniforms(perspectiveBuilder, transformBuilder);
 
 		vbo.draw();
 
+		transformBuilder = new TransformBuilder();
+		transformBuilder.translate(new Vector3D(3, -2, -10));
+		transformBuilder.rotate(new Rotation(RotationOrder.XYZ, angle, angle * 0.5, angle * 0.3));
+
+		setupUniforms(perspectiveBuilder, transformBuilder);
+
+		vbo.draw();
+
+		transformBuilder = new TransformBuilder();
+		transformBuilder.translate(new Vector3D(3, 2, -10));
+		transformBuilder.rotate(new Rotation(RotationOrder.XYZ, angle, angle * 0.5, angle * 0.3));
+
+		setupUniforms(perspectiveBuilder, transformBuilder);
+
+		vbo.draw();
+
+
+		transformBuilder = new TransformBuilder();
+		transformBuilder.translate(new Vector3D(-3, 2, -10));
+		transformBuilder.rotate(new Rotation(RotationOrder.XYZ, angle, angle * 0.5, angle * 0.3));
+
+		setupUniforms(perspectiveBuilder, transformBuilder);
+
+		vbo.draw();
+
+
 		fearGl.glUseProgram(0);
+	}
+
+	private void setupUniforms(PerspectiveBuilder perspectiveBuilder, TransformBuilder transformBuilder) {
+		int projection = fearGl.glGetUniformLocation(shaderProgram.getShaderProgram(), "projection");
+		fearGl.glUniformMatrix4(projection, false, perspectiveBuilder.getMatrix());
+
+		int translation = fearGl.glGetUniformLocation(shaderProgram.getShaderProgram(), "translation");
+		if (translation != -1) {
+			fearGl.glUniformMatrix4(translation, false, transformBuilder.asFloatBuffer());
+		} else {
+			throw new RuntimeException("Failed to get translation location");
+		}
 	}
 
 
