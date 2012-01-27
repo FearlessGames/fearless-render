@@ -41,10 +41,25 @@ public interface FearGl {
 
 	void glDisableClientState(ClientState state);
 
-
 	void glViewport(int x, int y, int width, int height);
 
 	void glEnable(Capability capability);
 
 	void glDepthFunc(DepthFunction function);
+
+	int glCreateShader(ShaderType type);
+
+	void glShaderSource(int shader, String code);
+
+	void glCompileShader(int shader);
+
+	void glAttachShader(int shaderProgram, int shader);
+
+	void glLinkProgram(int shaderProgram);
+
+	void glValidateProgram(int shaderProgram);
+
+	String glGetShaderInfoLog(int shader, int maxLength);
+
+	int glCreateProgram();
 }

@@ -4,6 +4,7 @@ import org.apache.commons.math.geometry.Rotation;
 import org.apache.commons.math.geometry.RotationOrder;
 import org.apache.commons.math.geometry.Vector3D;
 import se.fearlessgames.fear.gl.FearGl;
+import se.fearlessgames.fear.gl.ShaderType;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.math.TransformBuilder;
 import se.fearlessgames.fear.vbo.VboBuilder;
@@ -28,12 +29,13 @@ public class VboBox {
 	}
 
 	private void createShaders() {
-		Shaders shaders = new Shaders();
+		Shaders shaders = new Shaders(fearGl);
 
 		shaderProgram = shaders.createProgram();
-		int vertexShader = shaders.loadAndCompileVertexShader("src/main/resources/shaders/screen.vert");
-		int fragmentShader = shaders.loadAndCompileFragmentShader("src/main/resources/shaders/screen.frag");
-		shaders.attachToProgram(shaderProgram, vertexShader, fragmentShader);
+		int vertexShader = shaders.loadAndCompile("src/main/resources/shaders/screen.vert", ShaderType.VERTEX_SHADER);
+		int fragmentShader = shaders.loadAndCompile("src/main/resources/shaders/screen.frag", ShaderType.FRAGMENT_SHADER);
+		shaders.attachToProgram(shaderProgram, vertexShader);
+		shaders.attachToProgram(shaderProgram, fragmentShader);
 
 	}
 

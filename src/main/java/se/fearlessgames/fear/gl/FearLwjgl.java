@@ -118,4 +118,44 @@ public class FearLwjgl implements FearGl {
 	public void glDepthFunc(DepthFunction function) {
 		GL11.glDepthFunc(function.getGlFunction());
 	}
+
+	@Override
+	public int glCreateShader(ShaderType type) {
+		return GL20.glCreateShader(type.getType());
+	}
+
+	@Override
+	public void glShaderSource(int shader, String code) {
+		GL20.glShaderSource(shader, code);
+	}
+
+	@Override
+	public void glCompileShader(int shader) {
+		GL20.glCompileShader(shader);
+	}
+
+	@Override
+	public void glAttachShader(int shaderProgram, int shader) {
+		GL20.glAttachShader(shaderProgram, shader);
+	}
+
+	@Override
+	public void glLinkProgram(int shaderProgram) {
+		GL20.glLinkProgram(shaderProgram);
+	}
+
+	@Override
+	public void glValidateProgram(int shaderProgram) {
+		GL20.glValidateProgram(shaderProgram);
+	}
+
+	@Override
+	public String glGetShaderInfoLog(int shader, int maxLength) {
+		return GL20.glGetShaderInfoLog(shader, maxLength);
+	}
+
+	@Override
+	public int glCreateProgram() {
+		return GL20.glCreateProgram();
+	}
 }
