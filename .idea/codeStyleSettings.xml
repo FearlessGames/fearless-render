@@ -17,6 +17,9 @@
         </option>
         <option name="LINE_SEPARATOR" value="&#13;&#10;" />
         <option name="RIGHT_MARGIN" value="160" />
+        <XML>
+          <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
+        </XML>
         <codeStyleSettings language="JAVA">
           <option name="IF_BRACE_FORCE" value="3" />
           <option name="DOWHILE_BRACE_FORCE" value="3" />
