@@ -3,8 +3,7 @@ package se.fearlessgames.fear;
 import org.apache.commons.math.geometry.Rotation;
 import org.apache.commons.math.geometry.RotationOrder;
 import org.apache.commons.math.geometry.Vector3D;
-import org.lwjgl.opengl.GL20;
-import se.fearlessgames.fear.gl.FearLwjgl;
+import se.fearlessgames.fear.gl.FearGl;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.math.TransformBuilder;
 import se.fearlessgames.fear.vbo.VboBuilder;
@@ -20,8 +19,10 @@ public class VboBox {
 	private int shaderProgram;
 	private double angle;
 	private VertexBufferObject vbo;
+	private final FearGl fearGl;
 
-	public VboBox() {
+	public VboBox(FearGl fearGl) {
+		this.fearGl = fearGl;
 		createShaders();
 		vbo = createVbo();
 	}
@@ -57,22 +58,22 @@ public class VboBox {
 				0, 3, 7, 4
 		};
 
-		return VboBuilder.fromArray(new FearLwjgl(), data).indices(indices).quads().build();
+		return VboBuilder.fromArray(fearGl, data).indices(indices).quads().build();
 	}
 
 
 	public void draw(PerspectiveBuilder perspectiveBuilder) {
-		GL20.glUseProgram(shaderProgram);
+		fearGl.glUseProgram(shaderProgram);
 
-		int projection = GL20.glGetUniformLocation(shaderProgram, "projection");
-		GL20.glUniformMatrix4(projection, false, perspectiveBuilder.getMatrix());
+		int projection = fearGl.glGetUniformLocation(shaderProgram, "projection");
+		fearGl.glUniformMatrix4(projection, false, perspectiveBuilder.getMatrix());
 		TransformBuilder builder = new TransformBuilder();
 		builder.translate(new Vector3D(0, 0, -10));
 		builder.rotate(new Rotation(RotationOrder.XYZ, angle, angle * 0.5, angle * 0.3));
 
-		int translation = GL20.glGetUniformLocation(shaderProgram, "translation");
+		int translation = fearGl.glGetUniformLocation(shaderProgram, "translation");
 		if (translation != -1) {
-			GL20.glUniformMatrix4(translation, false, builder.asFloatBuffer());
+			fearGl.glUniformMatrix4(translation, false, builder.asFloatBuffer());
 		} else {
 			throw new RuntimeException("Failed to get translation location");
 		}
@@ -80,7 +81,7 @@ public class VboBox {
 
 		vbo.draw();
 
-		GL20.glUseProgram(0);
+		fearGl.glUseProgram(0);
 	}
 
 	public void update() {

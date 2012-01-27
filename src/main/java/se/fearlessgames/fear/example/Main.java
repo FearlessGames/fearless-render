@@ -24,7 +24,7 @@ public class Main {
 		fearGl = new FearLwjgl();
 		init();
 
-		VboBox obj = new VboBox();
+		VboBox obj = new VboBox(fearGl);
 
 		long t1 = System.nanoTime();
 		long t2;
