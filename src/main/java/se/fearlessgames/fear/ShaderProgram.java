@@ -5,23 +5,27 @@ import se.fearlessgames.fear.gl.ShaderType;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.EnumMap;
 
-public class Shaders {
+public class ShaderProgram {
 	private final FearGl fearGl;
+	private final int shaderProgram;
+	private final EnumMap<ShaderType, Integer> shaderMap;
 
-	public Shaders(FearGl fearGl) {
+	public ShaderProgram(FearGl fearGl) {
 		this.fearGl = fearGl;
-	}
-
-	public int createProgram() {
-		int shaderProgram = fearGl.glCreateProgram();
+		shaderProgram = fearGl.glCreateProgram();
 		if (shaderProgram == 0) {
 			throw new RuntimeException("Failed to create shader program");
 		}
+		shaderMap = new EnumMap<ShaderType, Integer>(ShaderType.class);
+	}
+
+	public int getShaderProgram() {
 		return shaderProgram;
 	}
 
-	public int loadAndCompile(String filename, ShaderType type) {
+	public void loadAndCompile(String filename, ShaderType type) {
 		int shader = fearGl.glCreateShader(type);
 
 		if (shader == 0) {
@@ -34,18 +38,17 @@ public class Shaders {
 
 		printLogInfo(shader);
 
-		return shader;
-
+		shaderMap.put(type, shader);
 	}
 
-	public void attachToProgram(int shaderProgram, int shader) {
-		if (shader != 0) {
+	public void attachToProgram(ShaderType type) {
+		Integer shader = shaderMap.get(type);
+		if (shader != null && shader != 0) {
 			fearGl.glAttachShader(shaderProgram, shader);
+			fearGl.glLinkProgram(shaderProgram);
+			fearGl.glValidateProgram(shaderProgram);
+			printLogInfo(shaderProgram);
 		}
-
-		fearGl.glLinkProgram(shaderProgram);
-		fearGl.glValidateProgram(shaderProgram);
-		printLogInfo(shaderProgram);
 	}
 
 

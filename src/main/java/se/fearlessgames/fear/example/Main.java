@@ -2,6 +2,7 @@ package se.fearlessgames.fear.example;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import se.fearlessgames.fear.ShaderProgram;
 import se.fearlessgames.fear.VboBox;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
@@ -24,7 +25,8 @@ public class Main {
 		fearGl = new FearLwjgl();
 		init();
 
-		VboBox obj = new VboBox(fearGl);
+
+		VboBox obj = new VboBox(fearGl, createShaderProgram());
 
 		long t1 = System.nanoTime();
 		long t2;
@@ -45,6 +47,15 @@ public class Main {
 
 		Display.destroy();
 
+	}
+
+	private ShaderProgram createShaderProgram() {
+		ShaderProgram shaderProgram = new ShaderProgram(fearGl);
+		shaderProgram.loadAndCompile("src/main/resources/shaders/screen.vert", ShaderType.VERTEX_SHADER);
+		shaderProgram.loadAndCompile("src/main/resources/shaders/screen.frag", ShaderType.FRAGMENT_SHADER);
+		shaderProgram.attachToProgram(ShaderType.VERTEX_SHADER);
+		shaderProgram.attachToProgram(ShaderType.FRAGMENT_SHADER);
+		return shaderProgram;
 	}
 
 
