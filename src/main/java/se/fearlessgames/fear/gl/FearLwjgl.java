@@ -34,13 +34,13 @@ public class FearLwjgl implements FearGl {
 	}
 
 	@Override
-	public void glLoadIdentity() {
-		GL11.glLoadIdentity();
+	public void glClearColor(float r, float g, float b, float a) {
+		GL11.glClearColor(r, g, b, a);
 	}
 
 	@Override
-	public void glClearColor(float r, float g, float b, float a) {
-		GL11.glClearColor(r, g, b, a);
+	public void glClearDepth(float depth) {
+		GL11.glClearDepth(depth);
 	}
 
 	@Override
@@ -102,5 +102,20 @@ public class FearLwjgl implements FearGl {
 	@Override
 	public void glDisableClientState(ClientState state) {
 		GL11.glDisableClientState(state.getGlState());
+	}
+
+	@Override
+	public void glViewport(int x, int y, int width, int height) {
+		GL11.glViewport(x, y, width, height);
+	}
+
+	@Override
+	public void glEnable(Capability capability) {
+		GL11.glEnable(capability.getGlCap());
+	}
+
+	@Override
+	public void glDepthFunc(DepthFunction function) {
+		GL11.glDepthFunc(function.getGlFunction());
 	}
 }

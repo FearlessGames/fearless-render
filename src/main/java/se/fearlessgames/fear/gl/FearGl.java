@@ -11,12 +11,11 @@ public interface FearGl {
 
 	void glUniformMatrix4(int uniformLocation, boolean transpose, FloatBuffer matrix);
 
-
 	void glClear(EnumSet<ClearBit> clearBits);
 
-	void glLoadIdentity();
-
 	void glClearColor(float r, float g, float b, float a);
+
+	void glClearDepth(float depth);
 
 	int glGenBuffers();
 
@@ -43,4 +42,9 @@ public interface FearGl {
 	void glDisableClientState(ClientState state);
 
 
+	void glViewport(int x, int y, int width, int height);
+
+	void glEnable(Capability capability);
+
+	void glDepthFunc(DepthFunction function);
 }
