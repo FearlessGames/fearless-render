@@ -65,8 +65,8 @@ public class Main {
 	}
 
 	private void init() {
-		int w = 1024;
-		int h = 768;
+		int w = 1280;
+		int h = 1024;
 
 		try {
 			Display.setDisplayMode(new DisplayMode(w, h));

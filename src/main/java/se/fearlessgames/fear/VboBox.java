@@ -55,41 +55,23 @@ public class VboBox {
 	public void draw(PerspectiveBuilder perspectiveBuilder) {
 		fearGl.glUseProgram(shaderProgram.getShaderProgram());
 
-		TransformBuilder transformBuilder = new TransformBuilder();
-		transformBuilder.translate(new Vector3D(-3, -2, -10));
-		transformBuilder.rotate(new Rotation(RotationOrder.XYZ, angle, angle * 0.5, angle * 0.3));
-
-		setupUniforms(perspectiveBuilder, transformBuilder);
-
-		vbo.draw();
-
-		transformBuilder = new TransformBuilder();
-		transformBuilder.translate(new Vector3D(3, -2, -10));
-		transformBuilder.rotate(new Rotation(RotationOrder.XYZ, angle, angle * 0.5, angle * 0.3));
-
-		setupUniforms(perspectiveBuilder, transformBuilder);
-
-		vbo.draw();
-
-		transformBuilder = new TransformBuilder();
-		transformBuilder.translate(new Vector3D(3, 2, -10));
-		transformBuilder.rotate(new Rotation(RotationOrder.XYZ, angle, angle * 0.5, angle * 0.3));
-
-		setupUniforms(perspectiveBuilder, transformBuilder);
-
-		vbo.draw();
-
-
-		transformBuilder = new TransformBuilder();
-		transformBuilder.translate(new Vector3D(-3, 2, -10));
-		transformBuilder.rotate(new Rotation(RotationOrder.XYZ, angle, angle * 0.5, angle * 0.3));
-
-		setupUniforms(perspectiveBuilder, transformBuilder);
-
-		vbo.draw();
-
+		for (int x = -3; x < 4; x++) {
+			for (int y = -3; y < 4; y++) {
+				drawBox(perspectiveBuilder, new Vector3D(x, y, -11));
+			}
+		}
 
 		fearGl.glUseProgram(0);
+	}
+
+	private void drawBox(PerspectiveBuilder perspectiveBuilder, Vector3D offset) {
+		TransformBuilder transformBuilder = new TransformBuilder();
+		transformBuilder.translate(offset);
+		transformBuilder.rotate(new Rotation(RotationOrder.XYZ, angle, angle * 0.5, angle * 0.3));
+
+		setupUniforms(perspectiveBuilder, transformBuilder);
+
+		vbo.draw();
 	}
 
 	private void setupUniforms(PerspectiveBuilder perspectiveBuilder, TransformBuilder transformBuilder) {
