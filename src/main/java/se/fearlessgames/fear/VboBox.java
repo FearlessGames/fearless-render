@@ -41,6 +41,17 @@ public class VboBox {
 				-1.0f, 1.0f, 1.0f
 		};
 
+		float[] colors = {
+				1.0f, 0.0f, 0.0f, 1.0f,
+				1.0f, 0.0f, 0.0f, 1.0f,
+				1.0f, 0.0f, 0.0f, 1.0f,
+				1.0f, 0.0f, 0.0f, 1.0f,
+				0.0f, 1.0f, 0.0f, 1.0f,
+				0.0f, 1.0f, 0.0f, 1.0f,
+				0.0f, 0.0f, 1.0f, 1.0f,
+				0.0f, 0.0f, 1.0f, 1.0f,
+		};
+
 		int[] indices = {
 				0, 1, 2, 3,
 				7, 6, 5, 4,
@@ -48,7 +59,7 @@ public class VboBox {
 				0, 3, 7, 4
 		};
 
-		return VboBuilder.fromArray(fearGl, data).indices(indices).quads().build();
+		return VboBuilder.fromArray(fearGl, data).indices(indices).colors(colors).quads().build();
 	}
 
 
