@@ -31,7 +31,7 @@ public class Main2 {
 
 		scene = new FearScene(new FearNode(Lists.newArrayList(new FearMesh(createVbo()))));
 		scene.getRoot().setPosition(new Vector3D(0, 0, -10));
-		renderer = new Renderer(fearGl, createShaderProgram());
+		renderer = new Renderer(fearGl, createShaderProgram(), perspectiveBuilder);
 		long t1 = System.nanoTime();
 		long t2;
 		int c = 0;

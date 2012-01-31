@@ -4,6 +4,9 @@ import org.junit.Test;
 import org.lwjgl.input.Keyboard;
 import se.fearlessgames.fear.*;
 import se.fearlessgames.fear.gl.FearLwjgl;
+import se.fearlessgames.fear.math.PerspectiveBuilder;
+
+import static se.mockachino.Mockachino.mock;
 
 public class SimpleVisualTest {
 	@Test
@@ -15,7 +18,7 @@ public class SimpleVisualTest {
 		supplier.setDimensions(100, 100);
 		FearDisplay output = supplier.showDisplay();
 		FearLwjgl fearGl = new FearLwjgl();
-		Renderer renderer = new Renderer(fearGl, new ShaderProgram(fearGl));
+		Renderer renderer = new Renderer(fearGl, new ShaderProgram(fearGl), mock(PerspectiveBuilder.class));
 		FearScene scene = new FearScene(new FearNode());
 		while (true) {
 			if (hasHitEscape() || output.isCloseRequested()) {

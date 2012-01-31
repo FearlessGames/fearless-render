@@ -60,4 +60,5 @@ public class FearScene {
 
 	private void renderSkybox(Renderer output) {
 	}
+
 }

@@ -1,9 +1,11 @@
 package se.fearlessgames.fear;
 
 import se.fearlessgames.fear.gl.*;
+import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.math.TransformBuilder;
 import se.fearlessgames.fear.vbo.InterleavedBuffer;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
+
 
 public class Renderer {
 
@@ -11,13 +13,18 @@ public class Renderer {
 	private final FearGl fearGl;
 	// TODO: probably move this
 	private final ShaderProgram shader;
+	private final PerspectiveBuilder perspectiveBuilder;
 
-	public Renderer(FearGl fearGl, ShaderProgram shader) {
+	public Renderer(FearGl fearGl, ShaderProgram shader, PerspectiveBuilder perspectiveBuilder) {
 		this.fearGl = fearGl;
 		this.shader = shader;
+		this.perspectiveBuilder = perspectiveBuilder;
 	}
 
 	void render(FearMesh mesh, TransformBuilder transformBuilder) {
+		fearGl.glUseProgram(shader.getShaderProgram());
+		int projection = fearGl.glGetUniformLocation(shader.getShaderProgram(), "projection");
+		fearGl.glUniformMatrix4(projection, false, perspectiveBuilder.getMatrix());
 		int translation = fearGl.glGetUniformLocation(shader.getShaderProgram(), "translation");
 		fearGl.glUniformMatrix4(translation, false, transformBuilder.asFloatBuffer());
 		VertexBufferObject vbo = mesh.getVbo();
@@ -52,6 +59,7 @@ public class Renderer {
 		fearGl.glDrawElements(vbo.getDrawMode(), vbo.getIndexBufferSize(), IndexDataType.GL_UNSIGNED_INT, 0);
 
 		disableStates(interleavedBuffer);
+		fearGl.glUseProgram(0);
 	}
 
 
