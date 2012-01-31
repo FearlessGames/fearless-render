@@ -1,0 +1,88 @@
+package se.fearlessgames.fear;
+
+import se.fearlessgames.fear.gl.*;
+import se.fearlessgames.fear.math.TransformBuilder;
+import se.fearlessgames.fear.vbo.InterleavedBuffer;
+import se.fearlessgames.fear.vbo.VertexBufferObject;
+
+public class Renderer {
+
+	// TODO: replace this reference with an output to keep rendering and OpenGL calls in different threads
+	private final FearGl fearGl;
+	// TODO: probably move this
+	private final ShaderProgram shader;
+
+	public Renderer(FearGl fearGl, ShaderProgram shader) {
+		this.fearGl = fearGl;
+		this.shader = shader;
+	}
+
+	void render(FearMesh mesh, TransformBuilder transformBuilder) {
+		int translation = fearGl.glGetUniformLocation(shader.getShaderProgram(), "translation");
+		fearGl.glUniformMatrix4(translation, false, transformBuilder.asFloatBuffer());
+		VertexBufferObject vbo = mesh.getVbo();
+		InterleavedBuffer interleavedBuffer = vbo.getInterleavedBuffer();
+
+		enableStates(interleavedBuffer);
+
+		fearGl.glBindBuffer(BufferTarget.GL_ARRAY_BUFFER, vbo.getVertexBufferId());
+
+		int stride = interleavedBuffer.getStride();
+		int offset = 0;
+
+		fearGl.glVertexPointer(3, DataType.GL_FLOAT, stride, offset);
+		offset = 3 * 4;
+
+		if (interleavedBuffer.isNormals()) {
+			fearGl.glNormalPointer(DataType.GL_FLOAT, stride, offset);
+			offset += (3 * 4);
+		}
+
+		if (interleavedBuffer.isColors()) {
+			fearGl.glColorPointer(4, DataType.GL_FLOAT, stride, offset);
+			offset += (4 * 4);
+		}
+
+		if (interleavedBuffer.isTextureCords()) {
+			fearGl.glTexCoordPointer(2, DataType.GL_FLOAT, stride, offset);
+		}
+
+		fearGl.glBindBuffer(BufferTarget.GL_ELEMENT_ARRAY_BUFFER, vbo.getIndexBufferId());
+
+		fearGl.glDrawElements(vbo.getDrawMode(), vbo.getIndexBufferSize(), IndexDataType.GL_UNSIGNED_INT, 0);
+
+		disableStates(interleavedBuffer);
+	}
+
+
+	private void enableStates(InterleavedBuffer interleavedBuffer) {
+		fearGl.glEnableClientState(ClientState.GL_VERTEX_ARRAY);
+
+		if (interleavedBuffer.isNormals()) {
+			fearGl.glEnableClientState(ClientState.GL_NORMAL_ARRAY);
+		}
+
+		if (interleavedBuffer.isColors()) {
+			fearGl.glEnableClientState(ClientState.GL_COLOR_ARRAY);
+		}
+
+		if (interleavedBuffer.isTextureCords()) {
+			fearGl.glEnableClientState(ClientState.GL_TEXTURE_COORD_ARRAY);
+		}
+	}
+
+	private void disableStates(InterleavedBuffer interleavedBuffer) {
+		if (interleavedBuffer.isNormals()) {
+			fearGl.glDisableClientState(ClientState.GL_NORMAL_ARRAY);
+		}
+
+		if (interleavedBuffer.isColors()) {
+			fearGl.glDisableClientState(ClientState.GL_COLOR_ARRAY);
+		}
+
+		if (interleavedBuffer.isTextureCords()) {
+			fearGl.glDisableClientState(ClientState.GL_TEXTURE_COORD_ARRAY);
+		}
+		fearGl.glDisableClientState(ClientState.GL_VERTEX_ARRAY);
+	}
+}

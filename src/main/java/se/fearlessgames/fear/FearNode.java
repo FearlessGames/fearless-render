@@ -50,4 +50,8 @@ public class FearNode {
 	public void addMesh(FearMesh mesh) {
 		meshes.add(mesh);
 	}
+
+	public void setPosition(Vector3D translation) {
+		this.position = translation;
+	}
 }

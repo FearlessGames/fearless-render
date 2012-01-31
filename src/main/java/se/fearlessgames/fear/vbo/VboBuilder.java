@@ -130,7 +130,7 @@ public class VboBuilder {
 			buffer.flip();
 		}
 
-		VertexBufferObject.InterleavedBuffer interleavedBuffer = new VertexBufferObject.InterleavedBuffer(buffer,
+		InterleavedBuffer interleavedBuffer = new InterleavedBuffer(buffer,
 				normalsSize != 0,
 				colorsSize != 0,
 				texturesSize != 0);

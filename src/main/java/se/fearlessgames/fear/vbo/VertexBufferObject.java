@@ -1,14 +1,7 @@
 package se.fearlessgames.fear.vbo;
 
-import se.fearlessgames.fear.gl.BufferTarget;
-import se.fearlessgames.fear.gl.BufferUsage;
-import se.fearlessgames.fear.gl.ClientState;
-import se.fearlessgames.fear.gl.DataType;
-import se.fearlessgames.fear.gl.FearGl;
-import se.fearlessgames.fear.gl.IndexDataType;
-import se.fearlessgames.fear.gl.VertexDrawMode;
+import se.fearlessgames.fear.gl.*;
 
-import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 public class VertexBufferObject {
@@ -110,58 +103,23 @@ public class VertexBufferObject {
 		fearGl.glDisableClientState(ClientState.GL_VERTEX_ARRAY);
 	}
 
-	protected static class InterleavedBuffer {
-		private final FloatBuffer buffer; //V[xyz]N[xyz]C[rgba]T1[st]
-		private final boolean normals;
-		private final boolean colors;
-		private final boolean textureCords;
+	public int getVertexBufferId() {
+		return vertexBufferId;
+	}
 
-		private final int stride;
+	public InterleavedBuffer getInterleavedBuffer() {
+		return interleavedBuffer;
+	}
 
-		public InterleavedBuffer(FloatBuffer buffer, boolean normals, boolean colors, boolean textureCords) {
-			this.buffer = buffer;
-			this.normals = normals;
-			this.colors = colors;
-			this.textureCords = textureCords;
+	public int getIndexBufferId() {
+		return indexBufferId;
+	}
 
-			int stride = 3; //xyz
+	public VertexDrawMode getDrawMode() {
+		return drawMode;
+	}
 
-			if (normals) {
-				stride += 3; //xyz
-			}
-
-			if (colors) {
-				stride += 4; //rgba
-			}
-
-			if (textureCords) {
-				stride += 2; //st
-			}
-
-			stride *= 4; //4bytes for a float
-
-			this.stride = stride;
-
-		}
-
-		public FloatBuffer getBuffer() {
-			return buffer;
-		}
-
-		public boolean isNormals() {
-			return normals;
-		}
-
-		public boolean isTextureCords() {
-			return textureCords;
-		}
-
-		public boolean isColors() {
-			return colors;
-		}
-
-		public int getStride() {
-			return stride;
-		}
+	public int getIndexBufferSize() {
+		return indices.limit();
 	}
 }

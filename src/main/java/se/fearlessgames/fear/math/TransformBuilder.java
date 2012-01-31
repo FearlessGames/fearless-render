@@ -42,4 +42,19 @@ public class TransformBuilder {
 		buffer.put(9, (float) matrix[1][2]);
 		buffer.put(10, (float) matrix[2][2]);
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder(32);
+		for (int row = 0; row < 4; row++) {
+			for (int col = 0; col < 4; col++) {
+				builder.append(buffer.get(4 * col + row));
+				if (col < 3) {
+					builder.append(", ");
+				}
+			}
+			builder.append("\n");
+		}
+		return builder.toString();
+	}
 }

@@ -13,94 +13,94 @@ Gradle version: ${gradle.gradleVersion}
 libDir = new File("lib")
 
 repositories {
-	flatDir name: 'projectLibs', dirs: libDir
-	mavenCentral()
+    flatDir name: 'projectLibs', dirs: libDir
+    mavenCentral()
 }
 
 dependencies {
-	compile group: 'org.apache', name: 'commons-math', version: '2.2'
-	compile group: 'se.fearlessgames', name: 'fearless-commons', version: '0.1'
-	compile group: 'com.google.guava', name: 'guava', version: '11.0.1'
-	compile group: 'org.lwjgl.lwjgl', name: 'lwjgl', version: '2.8.2'
-	compile group: 'org.lwjgl.lwjgl', name: 'lwjgl_util', version: '2.8.2'
-	testCompile group: 'junit', name: 'junit', version: '4.10'
-	testCompile group: 'se.mockachino', name: 'mockachino', version: '0.6.0'
+    compile group: 'org.apache', name: 'commons-math', version: '2.2'
+    compile group: 'se.fearlessgames', name: 'fearless-commons', version: '0.1'
+    compile group: 'com.google.guava', name: 'guava', version: '11.0.1'
+    compile group: 'org.lwjgl.lwjgl', name: 'lwjgl', version: '2.8.2'
+    compile group: 'org.lwjgl.lwjgl', name: 'lwjgl_util', version: '2.8.2'
+    testCompile group: 'junit', name: 'junit', version: '4.10'
+    testCompile group: 'se.mockachino', name: 'mockachino', version: '0.6.0'
 
 }
 
 ['windows', 'linux', 'osx'].each { platform ->
-	task "${platform}Natives" {
-		outputDir = "$buildDir/natives/$platform"
-		inputs.files(configurations.compile)
-		outputs.dir(outputDir)
-		doLast {
-			copy {
-				def artifacts = configurations.compile.resolvedConfiguration.resolvedArtifacts
-						.findAll { it.classifier == "natives-$platform" }
-				artifacts.each {
-					from zipTree(it.file)
-				}
-				into outputDir
-			}
-		}
-	}
+    task "${platform}Natives" {
+        outputDir = "$buildDir/natives/$platform"
+        inputs.files(configurations.compile)
+        outputs.dir(outputDir)
+        doLast {
+            copy {
+                def artifacts = configurations.compile.resolvedConfiguration.resolvedArtifacts
+                        .findAll { it.classifier == "natives-$platform" }
+                artifacts.each {
+                    from zipTree(it.file)
+                }
+                into outputDir
+            }
+        }
+    }
 }
 
-task nativeLibs(dependsOn: ['windowsNatives', 'linuxNatives', 'osxNatives'])<< {
+task nativeLibs(dependsOn: ['windowsNatives', 'linuxNatives', 'osxNatives']) << {
 }
 
 
 task(runExample, dependsOn: ['build', 'nativeLibs']) << {
-	String nativeDir;
-	def osName = System.getProperty('os.name').toLowerCase()
-	if (osName.contains('windows'))
-		nativeDir = 'windows'
-	else if(osName.contains('linux'))
-		nativeDir = 'linux'
-	else if(osName.contains('mac os'))
-		nativeDir = 'osx'
-	else
-		throw new Exception('Unknown OS')
+    String nativeDir;
+    def osName = System.getProperty('os.name').toLowerCase()
+    if (osName.contains('windows'))
+        nativeDir = 'windows'
+    else if (osName.contains('linux'))
+        nativeDir = 'linux'
+    else if (osName.contains('mac os'))
+        nativeDir = 'osx'
+    else
+        throw new Exception('Unknown OS')
 
-	def libpath = "-Djava.library.path=$buildDir/natives/$nativeDir"
-	def argsList = [libpath]
-	println(argsList)
-	javaexec {
-		main =  'se.fearlessgames.fear.example.Main'
-		classpath = sourceSets.main.runtimeClasspath
-		jvmArgs =  argsList
-	}
+    def libpath = "-Djava.library.path=$buildDir/natives/$nativeDir"
+    def argsList = [libpath]
+    println(argsList)
+    javaexec {
+        main = 'se.fearlessgames.fear.example.Main2'
+        classpath = sourceSets.main.runtimeClasspath
+        jvmArgs = argsList
+    }
 }
 
 // Find any 3rd party libraries which have released new versions
 // to the central Maven repo since we last upgraded.
 task checkLibVersions << {
-	def checked = [:]
-	allprojects {
-		configurations.each { configuration ->
-			configuration.allDependencies.each { dependency ->
-				def version = dependency.version
-				if(!version.contains('SNAPSHOT') && !checked[dependency]) {
-					def group = dependency.group
-					def path = group.replace('.', '/')
-					def name = dependency.name
-					def url = "http://repo1.maven.org/maven2/$path/$name/maven-metadata.xml"
-					try {
-						def metadata = new XmlSlurper().parseText(url.toURL().text)
-						def newestVersion = metadata.versioning.latest
-						//println "Latest version of $name is $newestVersion"
+    def checked = [:]
+    allprojects {
+        configurations.each { configuration ->
+            configuration.allDependencies.each { dependency ->
+                def version = dependency.version
+                if (!version.contains('SNAPSHOT') && !checked[dependency]) {
+                    def group = dependency.group
+                    def path = group.replace('.', '/')
+                    def name = dependency.name
+                    def url = "http://repo1.maven.org/maven2/$path/$name/maven-metadata.xml"
+                    try {
+                        def metadata = new XmlSlurper().parseText(url.toURL().text)
+                        def newestVersion = metadata.versioning.latest
+                        //println "Latest version of $name is $newestVersion"
 
-						if(!version.toString().equals(newestVersion.toString())) {
-							println "$group:$name $version -> $newestVersion"
-						}
-					} catch(FileNotFoundException e) {
-						logger.debug "Unable to download $url: $e.message"
-					} catch(org.xml.sax.SAXParseException e) {
-						logger.debug "Unable to parse $url: $e.message"
-					}
-					checked[dependency] = true
-				}
-			}
-		}
-	}
+                        if (!version.toString().equals(newestVersion.toString())) {
+                            println "$group:$name $version -> $newestVersion"
+                        }
+                    } catch (FileNotFoundException e) {
+                        logger.debug "Unable to download $url: $e.message"
+                    } catch (org.xml.sax.SAXParseException e) {
+                        logger.debug "Unable to parse $url: $e.message"
+                    }
+                    checked[dependency] = true
+                }
+            }
+        }
+    }
 }
