@@ -417,7 +417,7 @@ public class Matrix3 {
 	 * @param start normalized non-zero starting vector
 	 * @param end   normalized non-zero ending vector
 	 * @return the new rotation matrix
-	 * @see "Tomas Möller, John Hughes \"Efficiently Building a Matrix to Rotate \ One Vector to
+	 * @see "Tomas MÃ¼ller, John Hughes \"Efficiently Building a Matrix to Rotate \ One Vector to
 	 *      Another\" Journal of Graphics Tools, 4(4):1-4, 1999"
 	 */
 	public Matrix3 fromStartEndLocal(final Vector3 start, final Vector3 end) {
