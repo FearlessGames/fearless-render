@@ -199,16 +199,14 @@ public class Matrix4 {
 				data[index][3]);
 	}
 
-	public DoubleBuffer toDoubleBuffer(final DoubleBuffer store) {
-		return toDoubleBuffer(store, true);
+	public DoubleBuffer toDoubleBuffer() {
+		return toDoubleBuffer(true);
 	}
 
-	public DoubleBuffer toDoubleBuffer(final DoubleBuffer store, final boolean rowMajor) {
-		DoubleBuffer result = store;
-		if (result == null) {
-			result = ByteBuffer.allocateDirect(8 * 16).order(ByteOrder.nativeOrder()).asDoubleBuffer();
-			result.clear();
-		}
+	public DoubleBuffer toDoubleBuffer(final boolean rowMajor) {
+		DoubleBuffer result = ByteBuffer.allocateDirect(8 * 16).order(ByteOrder.nativeOrder()).asDoubleBuffer();
+		result.clear();
+
 
 		if (rowMajor) {
 			for (int i = 0; i < 4; i++) {
@@ -225,16 +223,14 @@ public class Matrix4 {
 		return result;
 	}
 
-	public FloatBuffer toFloatBuffer(final FloatBuffer store) {
-		return toFloatBuffer(store, true);
+	public FloatBuffer toFloatBuffer() {
+		return toFloatBuffer(true);
 	}
 
-	public FloatBuffer toFloatBuffer(final FloatBuffer store, final boolean rowMajor) {
-		FloatBuffer result = store;
-		if (result == null) {
-			result = ByteBuffer.allocateDirect(4 * 16).order(ByteOrder.nativeOrder()).asFloatBuffer();
-			result.clear();
-		}
+	public FloatBuffer toFloatBuffer(final boolean rowMajor) {
+		FloatBuffer result = ByteBuffer.allocateDirect(4 * 16).order(ByteOrder.nativeOrder()).asFloatBuffer();
+		result.clear();
+
 
 		if (rowMajor) {
 			for (int i = 0; i < 4; i++) {

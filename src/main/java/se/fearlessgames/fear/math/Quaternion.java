@@ -13,10 +13,24 @@ public class Quaternion {
 	}
 
 	public Quaternion(final double x, final double y, final double z, final double w) {
+		this(x, y, z, w, false);
+	}
+
+	public Quaternion(double x, double y, double z, double w, boolean needsNormalization) {
+		if (needsNormalization) {
+			// normalization preprocessing
+			double inv = 1.0 / MathUtils.sqrt(w * w + x * x + y * y + z * z);
+			w *= inv;
+			x *= inv;
+			y *= inv;
+			z *= inv;
+		}
 		this.x = x;
 		this.y = y;
 		this.z = z;
 		this.w = w;
+
+
 	}
 
 	public static Quaternion fromAngleAxis(final double angle, final Vector3 axis) {
@@ -89,6 +103,42 @@ public class Quaternion {
 		return result;
 	}
 
+	public double[][] getMatrix() {
+
+		// products
+		double q0q0 = w * w;
+		double q0q1 = w * x;
+		double q0q2 = w * y;
+		double q0q3 = w * z;
+		double q1q1 = x * x;
+		double q1q2 = x * y;
+		double q1q3 = x * z;
+		double q2q2 = y * y;
+		double q2q3 = y * z;
+		double q3q3 = z * z;
+
+		// create the matrix
+		double[][] m = new double[3][];
+		m[0] = new double[3];
+		m[1] = new double[3];
+		m[2] = new double[3];
+
+		m[0][0] = 2.0 * (q0q0 + q1q1) - 1.0;
+		m[1][0] = 2.0 * (q1q2 - q0q3);
+		m[2][0] = 2.0 * (q1q3 + q0q2);
+
+		m[0][1] = 2.0 * (q1q2 + q0q3);
+		m[1][1] = 2.0 * (q0q0 + q2q2) - 1.0;
+		m[2][1] = 2.0 * (q2q3 - q0q1);
+
+		m[0][2] = 2.0 * (q1q3 - q0q2);
+		m[1][2] = 2.0 * (q2q3 + q0q1);
+		m[2][2] = 2.0 * (q0q0 + q3q3) - 1.0;
+
+		return m;
+
+	}
+
 	public Quaternion fromEulerAngles(final double[] angles) {
 		if (angles.length != 3) {
 			throw new IllegalArgumentException("Angles array must have three elements");
@@ -97,7 +147,7 @@ public class Quaternion {
 		return fromEulerAngles(angles[0], angles[1], angles[2]);
 	}
 
-	public Quaternion fromEulerAngles(final double heading, final double attitude, final double bank) {
+	public static Quaternion fromEulerAngles(final double heading, final double attitude, final double bank) {
 		double angle = heading * 0.5;
 		final double sinHeading = MathUtils.sin(angle);
 		final double cosHeading = MathUtils.cos(angle);
@@ -448,23 +498,32 @@ public class Quaternion {
 	}
 
 
-	public Vector3 apply(final Vector3 vec) {
+	public Vector3 applyTo(Vector3 p1) {
+		double zSq = z * z;
+		double xSq = x * x;
+		double ySQ = y * y;
+		double wSq = w * w;
+		double resultX = 2 * (w * (y * p1.getZ() - z * p1.getY()) + x * (y * p1.getY() + z * p1.getZ())) - zSq * p1.getX() - ySQ * p1.getX() + wSq * p1.getX() + xSq * p1.getX();
+		double resultY = 2 * (y * (x * p1.getX() + z * p1.getZ()) + w * (z * p1.getX() - x * p1.getZ())) - xSq * p1.getY() + ySQ * p1.getY() - zSq * p1.getY() + wSq * p1.getY();
+		double resultZ = 2 * (z * (x * p1.getX() + y * p1.getY()) + w * (x * p1.getY() - y * p1.getX())) - xSq * p1.getZ() + wSq * p1.getZ() + zSq * p1.getZ() - ySQ * p1.getZ();
+		return new Vector3(resultX, resultY, resultZ);
+	}
 
-		if (vec.equals(Vector3.ZERO)) {
-			return Vector3.ZERO;
-		} else {
-			final double x = getW() * getW() * vec.getX() + 2 * getY() * getW() * vec.getZ() - 2 * getZ() * getW()
-					* vec.getY() + getX() * getX() * vec.getX() + 2 * getY() * getX() * vec.getY() + 2 * getZ()
-					* getX() * vec.getZ() - getZ() * getZ() * vec.getX() - getY() * getY() * vec.getX();
-			final double y = 2 * getX() * getY() * vec.getX() + getY() * getY() * vec.getY() + 2 * getZ() * getY()
-					* vec.getZ() + 2 * getW() * getZ() * vec.getX() - getZ() * getZ() * vec.getY() + getW() * getW()
-					* vec.getY() - 2 * getX() * getW() * vec.getZ() - getX() * getX() * vec.getY();
-			final double z = 2 * getX() * getZ() * vec.getX() + 2 * getY() * getZ() * vec.getY() + getZ() * getZ()
-					* vec.getZ() - 2 * getW() * getY() * vec.getX() - getY() * getY() * vec.getZ() + 2 * getW()
-					* getX() * vec.getY() - getX() * getX() * vec.getZ() + getW() * getW() * vec.getZ();
-			return new Vector3(x, y, z);
-		}
+	public Quaternion applyTo(Quaternion r) {
+		double resultX = x * r.getW() + y * r.getZ() - z * r.getY() + w * r.getX();
+		double resultY = -x * r.getZ() + y * r.getW() + z * r.getX() + w * r.getY();
+		double resultZ = x * r.getY() - y * r.getX() + z * r.getW() + w * r.getZ();
+		double resultW = -x * r.getX() - y * r.getY() - z * r.getZ() + w * r.getW();
+		return new Quaternion(resultX, resultY, resultZ, resultW);
+	}
 
+	public Quaternion applyInverseTo(Quaternion r) {
+		Quaternion inverse = getInverse();
+		return inverse.applyTo(r);
+	}
+
+	private Quaternion getInverse() {
+		return normalize().conjugate();
 	}
 
 	public Vector3[] toAxes() {
