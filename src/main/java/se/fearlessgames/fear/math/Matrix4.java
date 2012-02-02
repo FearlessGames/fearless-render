@@ -6,7 +6,7 @@ import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 
 public class Matrix4 {
-	public final static Matrix4 IDENTITY = new Matrix4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+	public static final Matrix4 IDENTITY = new Matrix4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 
 	protected final double[][] data = new double[4][4];
 

@@ -1,7 +1,7 @@
 package se.fearlessgames.fear.math;
 
 public class Quaternion {
-	public final static Quaternion IDENTITY = new Quaternion(0, 0, 0, 1);
+	public static final Quaternion IDENTITY = new Quaternion(0, 0, 0, 1);
 
 	private final double x;
 	private final double y;

@@ -1,17 +1,17 @@
 package se.fearlessgames.fear.math;
 
 public class Vector4 {
-	public final static Vector4 ZERO = new Vector4(0, 0, 0, 0);
-	public final static Vector4 ONE = new Vector4(1, 1, 1, 1);
-	public final static Vector4 NEG_ONE = new Vector4(-1, -1, -1, -1);
-	public final static Vector4 UNIT_X = new Vector4(1, 0, 0, 0);
-	public final static Vector4 NEG_UNIT_X = new Vector4(-1, 0, 0, 0);
-	public final static Vector4 UNIT_Y = new Vector4(0, 1, 0, 0);
-	public final static Vector4 NEG_UNIT_Y = new Vector4(0, -1, 0, 0);
-	public final static Vector4 UNIT_Z = new Vector4(0, 0, 1, 0);
-	public final static Vector4 NEG_UNIT_Z = new Vector4(0, 0, -1, 0);
-	public final static Vector4 UNIT_W = new Vector4(0, 0, 0, 1);
-	public final static Vector4 NEG_UNIT_W = new Vector4(0, 0, 0, -1);
+	public static final Vector4 ZERO = new Vector4(0, 0, 0, 0);
+	public static final Vector4 ONE = new Vector4(1, 1, 1, 1);
+	public static final Vector4 NEG_ONE = new Vector4(-1, -1, -1, -1);
+	public static final Vector4 UNIT_X = new Vector4(1, 0, 0, 0);
+	public static final Vector4 NEG_UNIT_X = new Vector4(-1, 0, 0, 0);
+	public static final Vector4 UNIT_Y = new Vector4(0, 1, 0, 0);
+	public static final Vector4 NEG_UNIT_Y = new Vector4(0, -1, 0, 0);
+	public static final Vector4 UNIT_Z = new Vector4(0, 0, 1, 0);
+	public static final Vector4 NEG_UNIT_Z = new Vector4(0, 0, -1, 0);
+	public static final Vector4 UNIT_W = new Vector4(0, 0, 0, 1);
+	public static final Vector4 NEG_UNIT_W = new Vector4(0, 0, 0, -1);
 
 	private final double x;
 	private final double y;
