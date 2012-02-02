@@ -169,10 +169,12 @@ task intellijSync << {
 </component>"""
         final def xmlRoot = new XmlParser().parse(gradleLibXml)
         final def classesNode = xmlRoot.library[0].appendNode('CLASSES')
+        final def sourceNode = xmlRoot.library[0].appendNode('SOURCES')
 
         jars.each { jar ->
-
             classesNode.appendNode('root', [url: "jar://$jar!/"])
+            def src = jar.replaceAll("/jar/", "/source/").replaceAll(".jar", "-sources.jar")
+            sourceNode.appendNode('root', [url: "jar://$src!/"])
         }
 
         def writer = new StringWriter()
@@ -181,8 +183,8 @@ task intellijSync << {
         println "File '${gradleLibXml.path}' updated"
     }
 
-    createLibrary LIBRARIES_ID.replaceAll(" ", "_") + ".xml", LIBRARIES_ID, compileJars
-    createLibrary TEST_LIBRARIES_ID.replaceAll(" ", "_") + ".xml", TEST_LIBRARIES_ID, testJars
+    createLibrary LIBRARIES_ID.replaceAll(" ", "_").replaceAll("-", "_") + ".xml", LIBRARIES_ID, compileJars
+    createLibrary TEST_LIBRARIES_ID.replaceAll(" ", "_").replaceAll("-", "_") + ".xml", TEST_LIBRARIES_ID, testJars
 }
 
 task intellijModuleSync(dependsOn: intellijSync) << {

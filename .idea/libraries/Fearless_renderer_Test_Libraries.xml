@@ -10,6 +10,14 @@
       <root url="jar://$USER_HOME$/.gradle/caches/artifacts-7/artifacts/56865c09425cc6ecda8606d7e6035ceb/asm/asm/3.2/jar/asm-3.2.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/artifacts-7/artifacts/56865c09425cc6ecda8606d7e6035ceb/junit/junit/4.10/source/junit-4.10-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/artifacts-7/artifacts/56865c09425cc6ecda8606d7e6035ceb/se.mockachino/mockachino/0.6.0/source/mockachino-0.6.0-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/artifacts-7/artifacts/56865c09425cc6ecda8606d7e6035ceb/org.hamcrest/hamcrest-core/1.1/source/hamcrest-core-1.1-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/artifacts-7/artifacts/56865c09425cc6ecda8606d7e6035ceb/cglib/cglib-nodep/2.2/source/cglib-nodep-2.2-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/artifacts-7/artifacts/56865c09425cc6ecda8606d7e6035ceb/org.objenesis/objenesis/1.2/source/objenesis-1.2-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/artifacts-7/artifacts/56865c09425cc6ecda8606d7e6035ceb/com.googlecode.gentyref/gentyref/1.1.0/source/gentyref-1.1.0-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/artifacts-7/artifacts/56865c09425cc6ecda8606d7e6035ceb/asm/asm/3.2/source/asm-3.2-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>
