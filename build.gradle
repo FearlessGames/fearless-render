@@ -84,6 +84,16 @@ task wrapper(type: Wrapper) {
     gradleVersion = '1.0-milestone-7'
 }
 
+task(checkstyleReport, dependsOn: checkstyleMain) << {
+    ant.xslt(in: "$buildDir/checkstyle/main.xml",
+            style: "config/checkstyle/report-page.xsl",
+            out: "$buildDir/checkstyle/checkstyle.html"
+    ) {
+// to pass parameters to the xsl
+//param(name:"project.name",expression:"$parent.name/$project.name")
+    }
+}
+
 // Find any 3rd party libraries which have released new versions
 // to the central Maven repo since we last upgraded.
 task checkLibVersions << {
