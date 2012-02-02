@@ -32,6 +32,8 @@ test {
     maxParallelForks = 10
 }
 
+[checkstyleMain, checkstyleTest]*.ignoreFailures = true
+
 ['windows', 'linux', 'osx'].each { platform ->
     task "${platform}Natives" {
         outputDir = "$buildDir/natives/$platform"
