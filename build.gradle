@@ -43,8 +43,7 @@ test {
         outputs.dir(outputDir)
         doLast {
             copy {
-                def artifacts = configurations.compile.resolvedConfiguration.resolvedArtifacts
-                        .findAll { it.classifier == "natives-$platform" }
+                def artifacts = configurations.compile.resolvedConfiguration.resolvedArtifacts.findAll { it.classifier == "natives-$platform" }
                 artifacts.each {
                     from zipTree(it.file)
                 }
@@ -90,7 +89,7 @@ task(checkstyleReport, dependsOn: checkstyleMain) << {
             out: "$buildDir/checkstyle/checkstyle.html"
     ) {
 // to pass parameters to the xsl
-//param(name:"project.name",expression:"$parent.name/$project.name")
+        //param(name:"project.name",expression:"$parent.name/$project.name")
     }
 }
 
@@ -125,4 +124,90 @@ task checkLibVersions << {
             }
         }
     }
+}
+
+
+final def LIBRARIES_ID = 'Fearless-renderer Libraries'
+final def TEST_LIBRARIES_ID = 'Fearless-renderer Test Libraries'
+final def IML_FILE = "fearless-render.iml"
+
+
+task intellijSync << {
+    description = 'Add gradle dependecies to IntelliJ project library'
+
+    final def librariesDir = new File(".idea${File.separator}libraries")
+    librariesDir.mkdirs()
+
+
+    final def userHome = System.getProperty('user.home').replaceAll("\\\\", "/")
+    final def projectDir = file('.').path.replaceAll("\\\\", "/").toString()
+
+    println "Using projectDir = '$projectDir'"
+    println "Using user.home = '$userHome'"
+
+    def replacePath = { path ->
+        path = path.replaceAll("\\\\", "/")
+        path = path.replaceAll(projectDir, "\\\$PROJECT_DIR\\\$")
+        path = path.replaceAll(userHome, "\\\$USER_HOME\\\$")
+        return path;
+    }
+
+    def makeJarList = { path ->
+        path.split(File.pathSeparator).collect {
+            replacePath(it);
+        }
+    }
+
+    final def compileJars = makeJarList(configurations.compile.asPath)
+    final def testJars = makeJarList(configurations.testCompile.asPath) - compileJars
+
+    def createLibrary = { fileName, libraryName, jars ->
+        final def gradleLibXml = new File(librariesDir, fileName)
+        gradleLibXml.write """
+<component name="libraryTable">
+  <library name="$libraryName"/>
+</component>"""
+        final def xmlRoot = new XmlParser().parse(gradleLibXml)
+        final def classesNode = xmlRoot.library[0].appendNode('CLASSES')
+
+        jars.each { jar ->
+
+            classesNode.appendNode('root', [url: "jar://$jar!/"])
+        }
+
+        def writer = new StringWriter()
+        new XmlNodePrinter(new PrintWriter(writer)).print(xmlRoot)
+        gradleLibXml.write writer.toString()
+        println "File '${gradleLibXml.path}' updated"
+    }
+
+    createLibrary LIBRARIES_ID.replaceAll(" ", "_") + ".xml", LIBRARIES_ID, compileJars
+    createLibrary TEST_LIBRARIES_ID.replaceAll(" ", "_") + ".xml", TEST_LIBRARIES_ID, testJars
+}
+
+task intellijModuleSync(dependsOn: intellijSync) << {
+    final def moduleFile = new File(IML_FILE)
+    def root = new XmlParser().parse(moduleFile)
+    def newModuleRootManager = root.component.find {it.'@name' == 'NewModuleRootManager'}
+
+    def addEntry = { scope, entryName ->
+        def orderEntry = newModuleRootManager.orderEntry.find {
+            it.'@type' == 'library' && it.'@name' == entryName
+        }
+        if (orderEntry) {
+            newModuleRootManager.remove(orderEntry)
+        }
+
+        newModuleRootManager.appendNode('orderEntry', [type: 'library', scope: scope, name: entryName, level: 'project'])
+    }
+
+    addEntry("", LIBRARIES_ID)
+    addEntry("TEST", TEST_LIBRARIES_ID)
+
+
+
+    def writer = new StringWriter()
+    new XmlNodePrinter(new PrintWriter(writer)).print(root)
+    moduleFile.write writer.toString()
+    println "File '${moduleFile.path}' updated"
 }
