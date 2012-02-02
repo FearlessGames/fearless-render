@@ -72,6 +72,10 @@ task(runExample, dependsOn: ['build', 'nativeLibs']) << {
     }
 }
 
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.0-milestone-7'
+}
+
 // Find any 3rd party libraries which have released new versions
 // to the central Maven repo since we last upgraded.
 task checkLibVersions << {
