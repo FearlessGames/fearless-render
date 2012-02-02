@@ -153,23 +153,6 @@ public class QuaternionTest {
 		return new Quaternion(x, y, z, w);
 	}
 
-	@Test
-	public void lookAt() {
-		Quaternion ardorRot = Quaternion.lookAt(new Vector3(30.0, 20.0, 10.0), Vector3.UNIT_Y);
-		Quaternion spacedRotation = lookAt(new Vector3(30.0, 20.0, 10.0), Vector3.UNIT_Y);
-
-		assertSameRotations(ardorRot, spacedRotation);
-	}
-
-	public static Quaternion lookAt(Vector3 direction, Vector3 up) {
-
-		Vector3 zAxis = direction.normalize();
-		Vector3 xAxis = up.normalize().cross(zAxis);
-		Vector3 yAxis = zAxis.cross(zAxis);
-
-		return Quaternion.fromAxes(xAxis, yAxis, zAxis).normalize();
-	}
-
 
 	private double radFromDeg(int deg) {
 		return deg * Math.PI / 180;
