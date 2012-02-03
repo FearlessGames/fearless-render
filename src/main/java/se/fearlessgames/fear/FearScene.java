@@ -1,9 +1,5 @@
 package se.fearlessgames.fear;
 
-import org.apache.commons.math.geometry.Rotation;
-import org.apache.commons.math.geometry.Vector3D;
-import se.fearlessgames.fear.math.TransformBuilder;
-
 import java.util.List;
 
 public class FearScene {
@@ -27,35 +23,29 @@ public class FearScene {
 	}
 
 	private void renderOpaqueObjects(Renderer renderer) {
-		render(renderer, root);
+		Transformation rootTransformation = new Transformation(root.getPosition(), root.getRotation(), root.getScale());
+		render(renderer, root, rootTransformation);
 	}
 
-	private void render(Renderer renderer, FearNode node) {
+	private void render(Renderer renderer, FearNode node, Transformation transformation) {
 		if (!node.isVisible()) {
 			return;
 		}
-		Vector3D position = node.getPosition();
-		Rotation rotation = node.getRotation();
 
-		TransformBuilder transformBuilder = new TransformBuilder();
-		transformBuilder.translate(position);
-		transformBuilder.rotate(rotation);
 		List<FearMesh> meshes = node.getMeshes();
 		for (FearMesh mesh : meshes) {
-			renderMesh(mesh, renderer, transformBuilder);
+			renderMesh(mesh, renderer, transformation);
 		}
+
 		for (FearNode child : node.getChildNodes()) {
-			render(renderer, child);
+			Transformation childTransformation = transformation.transformTo(child.getPosition(), child.getRotation(), child.getScale());
+			render(renderer, child, childTransformation);
 		}
 	}
 
-	private void renderMesh(FearMesh mesh, Renderer renderer, TransformBuilder transformBuilder) {
-		Vector3D position = mesh.getPosition();
-		Rotation rotation = mesh.getRotation();
-		//TransformBuilder transformBuilder = new TransformBuilder();
-		//transformBuilder.translate(position);
-		//transformBuilder.rotate(rotation);
-		renderer.render(mesh, transformBuilder);
+	private void renderMesh(FearMesh mesh, Renderer renderer, Transformation nodeTransformation) {
+		Transformation meshTransformation = nodeTransformation.transformTo(mesh.getPosition(), mesh.getRotation(), mesh.getScale());
+		renderer.render(mesh, meshTransformation);
 	}
 
 	private void renderSkybox(Renderer output) {

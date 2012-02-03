@@ -1,16 +1,17 @@
 package se.fearlessgames.fear.example;
 
 import com.google.common.collect.Lists;
-import org.apache.commons.math.geometry.Vector3D;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import se.fearlessgames.fear.*;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
+import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.vbo.VboBuilder;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
 import java.util.EnumSet;
+import java.util.List;
 
 /*
 * Sets up the Display, the GL context, and runs the main game
@@ -29,8 +30,8 @@ public class Main2 {
 		init();
 
 
-		scene = new FearScene(new FearNode(Lists.newArrayList(new FearMesh(createVbo()))));
-		scene.getRoot().setPosition(new Vector3D(0, 0, -10));
+		scene = createScene();
+		scene.getRoot().setPosition(new Vector3(0, 0, -80));
 		renderer = new Renderer(fearGl, createShaderProgram(), perspectiveBuilder);
 		long t1 = System.nanoTime();
 		long t2;
@@ -51,6 +52,54 @@ public class Main2 {
 
 		Display.destroy();
 
+	}
+
+	private FearScene createScene() {
+		VertexBufferObject vbo = createVbo();
+		FearNode root = new FearNode(createMeshes(vbo));
+
+		FearNode bottomLeftNode = new FearNode(createBottomLeftMeshes(vbo));
+		bottomLeftNode.setPosition(new Vector3(-20, -20, 0));
+		bottomLeftNode.setScale(new Vector3(0.2, 0.2, 0.2));
+
+
+		root.addChild(bottomLeftNode);
+
+		FearScene fearScene = new FearScene(root);
+		return fearScene;
+	}
+
+	private List<FearMesh> createBottomLeftMeshes(VertexBufferObject vbo) {
+		FearMesh[] meshes = new FearMesh[4];
+
+		meshes[0] = new FearMesh(vbo);
+		meshes[1] = new FearMesh(vbo);
+		meshes[2] = new FearMesh(vbo);
+		meshes[3] = new FearMesh(vbo);
+
+		meshes[0].setPosition(new Vector3(5, 5, 0));
+		meshes[1].setPosition(new Vector3(5, -5, 0));
+		meshes[2].setPosition(new Vector3(-5, 5, 0));
+		meshes[3].setPosition(new Vector3(-5, -5, 0));
+
+		return Lists.newArrayList(meshes);
+	}
+
+	private List<FearMesh> createMeshes(VertexBufferObject vbo) {
+
+
+		FearMesh[] meshes = new FearMesh[3];
+
+		meshes[0] = new FearMesh(vbo);
+		meshes[1] = new FearMesh(vbo);
+		meshes[2] = new FearMesh(vbo);
+
+
+		meshes[0].setPosition(new Vector3(20, 20, 0));
+		meshes[1].setPosition(new Vector3(20, -20, 0));
+		meshes[2].setPosition(new Vector3(-20, 20, 0));
+
+		return Lists.newArrayList(meshes);
 	}
 
 	private ShaderProgram createShaderProgram() {

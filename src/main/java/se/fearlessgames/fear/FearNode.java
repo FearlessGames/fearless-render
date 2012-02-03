@@ -1,7 +1,7 @@
 package se.fearlessgames.fear;
 
-import org.apache.commons.math.geometry.Rotation;
-import org.apache.commons.math.geometry.Vector3D;
+import se.fearlessgames.fear.math.Quaternion;
+import se.fearlessgames.fear.math.Vector3;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +11,9 @@ public class FearNode {
 	private final List<FearMesh> meshes;
 	private boolean visible = true;
 
-	private Vector3D position = Vector3D.ZERO;
-	private Rotation rotation = Rotation.IDENTITY;
+	private Vector3 position = Vector3.ZERO;
+	private Quaternion rotation = Quaternion.IDENTITY;
+	private Vector3 scale = Vector3.ONE;
 
 	public FearNode() {
 		this(new ArrayList<FearMesh>());
@@ -39,19 +40,32 @@ public class FearNode {
 		return visible;
 	}
 
-	public Vector3D getPosition() {
-		return position;
-	}
-
-	public Rotation getRotation() {
-		return rotation;
-	}
 
 	public void addMesh(FearMesh mesh) {
 		meshes.add(mesh);
 	}
 
-	public void setPosition(Vector3D translation) {
-		this.position = translation;
+	public Vector3 getPosition() {
+		return position;
+	}
+
+	public void setPosition(Vector3 position) {
+		this.position = position;
+	}
+
+	public Quaternion getRotation() {
+		return rotation;
+	}
+
+	public void setRotation(Quaternion rotation) {
+		this.rotation = rotation;
+	}
+
+	public Vector3 getScale() {
+		return scale;
+	}
+
+	public void setScale(Vector3 scale) {
+		this.scale = scale;
 	}
 }
