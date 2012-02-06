@@ -1,11 +1,10 @@
 package se.fearlessgames.fear;
 
-import org.apache.commons.math.geometry.Rotation;
-import org.apache.commons.math.geometry.RotationOrder;
-import org.apache.commons.math.geometry.Vector3D;
 import se.fearlessgames.fear.gl.FearGl;
+import se.fearlessgames.fear.math.GlMatrixBuilder;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
-import se.fearlessgames.fear.math.TransformBuilder;
+import se.fearlessgames.fear.math.Quaternion;
+import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.vbo.VboBuilder;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
@@ -68,30 +67,28 @@ public class VboBox {
 
 		for (int x = -3; x < 4; x++) {
 			for (int y = -3; y < 4; y++) {
-				drawBox(perspectiveBuilder, new Vector3D(x, y, -11));
+				drawBox(perspectiveBuilder, new Vector3(x, y, -11));
 			}
 		}
 
 		fearGl.glUseProgram(0);
 	}
 
-	private void drawBox(PerspectiveBuilder perspectiveBuilder, Vector3D offset) {
-		TransformBuilder transformBuilder = new TransformBuilder();
-		transformBuilder.translate(offset);
-		transformBuilder.rotate(new Rotation(RotationOrder.XYZ, angle, angle * 0.5, angle * 0.3));
+	private void drawBox(PerspectiveBuilder perspectiveBuilder, Vector3 offset) {
+		Transformation transformation = new Transformation(offset, Quaternion.fromEulerAngles(angle, 0.5 * angle, 0.3 * angle), Vector3.ONE);
 
-		setupUniforms(perspectiveBuilder, transformBuilder);
+		setupUniforms(perspectiveBuilder, transformation);
 
 		vbo.draw();
 	}
 
-	private void setupUniforms(PerspectiveBuilder perspectiveBuilder, TransformBuilder transformBuilder) {
+	private void setupUniforms(PerspectiveBuilder perspectiveBuilder, Transformation transformation) {
 		int projection = fearGl.glGetUniformLocation(shaderProgram.getShaderProgram(), "projection");
 		fearGl.glUniformMatrix4(projection, false, perspectiveBuilder.getMatrix());
 
 		int translation = fearGl.glGetUniformLocation(shaderProgram.getShaderProgram(), "translation");
 		if (translation != -1) {
-			fearGl.glUniformMatrix4(translation, false, transformBuilder.asFloatBuffer());
+			fearGl.glUniformMatrix4(translation, false, GlMatrixBuilder.convert(transformation.asMatrix()));
 		} else {
 			throw new RuntimeException("Failed to get translation location");
 		}
