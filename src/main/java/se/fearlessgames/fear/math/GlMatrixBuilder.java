@@ -6,6 +6,9 @@ import java.nio.FloatBuffer;
 
 public class GlMatrixBuilder {
 
+	private GlMatrixBuilder() {
+	}
+
 	public static FloatBuffer convert(Matrix4 matrix) {
 		FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
 
