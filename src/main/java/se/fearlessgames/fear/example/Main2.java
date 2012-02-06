@@ -25,7 +25,9 @@ public class Main2 {
 	private final FearGl fearGl;
 	private final FearScene scene;
 	private final Renderer renderer;
-	private FearNode bottomLeftNode;
+	private FearNode sun;
+	private FearNode planet;
+	private FearNode moon;
 
 	public Main2() {
 		fearGl = new FearLwjgl();
@@ -33,7 +35,7 @@ public class Main2 {
 
 
 		scene = createScene();
-		scene.getRoot().setPosition(new Vector3(0, 0, -20));
+		scene.getRoot().setPosition(new Vector3(0, 0, -80));
 		renderer = new Renderer(fearGl, createShaderProgram(), perspectiveBuilder);
 		long t1 = System.nanoTime();
 		long t2;
@@ -44,9 +46,9 @@ public class Main2 {
 				done = true;
 			}
 			// TODO: update the scene
-			angle += 0.11;
-			bottomLeftNode.setRotation(Quaternion.fromEulerAngles(angle, 0, 0));
-			scene.getRoot().setRotation(Quaternion.fromEulerAngles(-angle / 10, 0, 0));
+			angle += 0.001;
+			planet.setRotation(Quaternion.fromEulerAngles(angle, 0, 0));
+
 			render();
 			Display.update();
 			t2 = System.nanoTime();
@@ -62,15 +64,26 @@ public class Main2 {
 
 	private FearScene createScene() {
 		VertexBufferObject vbo = createVbo();
-		FearNode root = new FearNode(createMeshes(vbo));
-		root.setScale(new Vector3(2.0, 2.0, 2.0));
+		FearNode root = new FearNode();
 
-		bottomLeftNode = new FearNode(createBottomLeftMeshes(vbo));
-		bottomLeftNode.setPosition(new Vector3(-5, -5, 0));
-		bottomLeftNode.setScale(new Vector3(0.2, 0.2, 0.2));
+		FearMesh sunMesh = new FearMesh(vbo);
+		sunMesh.setScale(new Vector3(5, 5, 5));
+		sun = new FearNode(Lists.newArrayList(sunMesh));
 
+		FearMesh planetMesh = new FearMesh(vbo);
+		planet = new FearNode(Lists.newArrayList(planetMesh));
+		planet.setPosition(new Vector3(30, 0, 0));
+		planetMesh.setScale(new Vector3(2, 2, 2));
 
-		root.addChild(bottomLeftNode);
+		moon = new FearNode(Lists.newArrayList(new FearMesh(vbo)));
+		moon.setScale(new Vector3(0.5, 0.5, 0.5));
+		moon.setPosition(new Vector3(5, 0, 0));
+
+		planet.addChild(moon);
+		
+		sun.addChild(planet);
+
+		root.addChild(sun);
 
 		FearScene fearScene = new FearScene(root);
 		return fearScene;
@@ -84,10 +97,10 @@ public class Main2 {
 		meshes[2] = new FearMesh(vbo);
 		meshes[3] = new FearMesh(vbo);
 
-		meshes[0].setPosition(new Vector3(2.5, 2.5, 0));
-		meshes[1].setPosition(new Vector3(2.5, -2.5, 0));
-		meshes[2].setPosition(new Vector3(-2.5, 2.5, 0));
-		meshes[3].setPosition(new Vector3(-2.5, -2.5, 0));
+		meshes[0].setPosition(new Vector3(5, 5, 0));
+		meshes[1].setPosition(new Vector3(5, -5, 0));
+		meshes[2].setPosition(new Vector3(-5, 5, 0));
+		meshes[3].setPosition(new Vector3(-5, -5, 0));
 
 		return Lists.newArrayList(meshes);
 	}
@@ -102,9 +115,9 @@ public class Main2 {
 		meshes[2] = new FearMesh(vbo);
 
 
-		meshes[0].setPosition(new Vector3(5, 5, 0));
-		meshes[1].setPosition(new Vector3(5, -5, 0));
-		meshes[2].setPosition(new Vector3(-5, 5, 0));
+		meshes[0].setPosition(new Vector3(20, 20, 0));
+		meshes[1].setPosition(new Vector3(20, -20, 0));
+		meshes[2].setPosition(new Vector3(-20, 20, 0));
 
 		return Lists.newArrayList(meshes);
 	}
