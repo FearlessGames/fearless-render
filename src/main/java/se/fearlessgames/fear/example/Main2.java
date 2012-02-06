@@ -35,7 +35,7 @@ public class Main2 {
 
 
 		scene = createScene();
-		scene.getRoot().setPosition(new Vector3(0, 0, -80));
+		scene.getRoot().setPosition(new Vector3(0, -15, -80));
 		renderer = new Renderer(fearGl, createShaderProgram(), perspectiveBuilder);
 		long t1 = System.nanoTime();
 		long t2;
