@@ -17,12 +17,16 @@ public class Orb {
 		this.orbitSpeed = orbitSpeed;
 		this.rotationSpeed = rotationSpeed;
 		orb = new FearMesh(vbo);
-		orb.setScale(new Vector3(radius*2, radius*2, radius*2));
+		orb.setScale(new Vector3(radius * 2, radius * 2, radius * 2));
 		root = new FearNode(name, Lists.newArrayList(orb));
 	}
 
 	public FearNode getRoot() {
 		return root;
+	}
+
+	public FearMesh getOrb() {
+		return orb;
 	}
 
 	public void update(long timeInMillis) {

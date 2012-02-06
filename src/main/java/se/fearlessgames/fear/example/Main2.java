@@ -75,15 +75,14 @@ public class Main2 {
 		Orb planet = new Orb("Planet", vbo, 1, 1e-3, 1e-3);
 		orbs.add(planet);
 		FearNode planetRoot = planet.getRoot();
-		planetRoot.setPosition(new Vector3(30, 0, 0));
+		planet.getOrb().setPosition(new Vector3(30, 0, 0));
 
-		Orb moon = new Orb("Moon", vbo, 0.25, 1e-3, 1e-5);
+		Orb moon = new Orb("Moon", vbo, 0.25, 1e-2, 1e-5);
 		orbs.add(moon);
-		FearNode moonRoot = moon.getRoot();
-		moonRoot.setPosition(new Vector3(10, 0, 0));
+		moon.getOrb().setPosition(new Vector3(10, 0, 0));
 
 
-		planetRoot.addChild(moonRoot);
+		planetRoot.addChild(moon.getRoot());
 		sunRoot.addChild(planetRoot);
 
 		root.addChild(sunRoot);
