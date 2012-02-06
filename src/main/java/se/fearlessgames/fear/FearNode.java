@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FearNode {
+	private final String name;
 	private final List<FearNode> childNodes;
 	private final List<FearMesh> meshes;
 	private boolean visible = true;
@@ -16,10 +17,11 @@ public class FearNode {
 	private Vector3 scale = Vector3.ONE;
 
 	public FearNode() {
-		this(new ArrayList<FearMesh>());
+		this("", new ArrayList<FearMesh>());
 	}
 
-	public FearNode(List<FearMesh> meshes) {
+	public FearNode(String name, List<FearMesh> meshes) {
+		this.name = name;
 		this.meshes = meshes;
 		this.childNodes = new ArrayList<FearNode>();
 	}
@@ -67,5 +69,12 @@ public class FearNode {
 
 	public void setScale(Vector3 scale) {
 		this.scale = scale;
+	}
+
+	@Override
+	public String toString() {
+		return "FearNode{" +
+				"name='" + name + '\'' +
+				'}';
 	}
 }

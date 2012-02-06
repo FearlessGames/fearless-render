@@ -3,14 +3,16 @@ package se.fearlessgames.fear.example;
 import com.google.common.collect.Lists;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import se.fearlessgames.common.util.SystemTimeProvider;
+import se.fearlessgames.common.util.TimeProvider;
 import se.fearlessgames.fear.*;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
-import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.vbo.VboBuilder;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -25,9 +27,7 @@ public class Main2 {
 	private final FearGl fearGl;
 	private final FearScene scene;
 	private final Renderer renderer;
-	private FearNode sun;
-	private FearNode planet;
-	private FearNode moon;
+	private final List<Orb> orbs = Lists.newArrayList();
 
 	public Main2() {
 		fearGl = new FearLwjgl();
@@ -39,15 +39,17 @@ public class Main2 {
 		renderer = new Renderer(fearGl, createShaderProgram(), perspectiveBuilder);
 		long t1 = System.nanoTime();
 		long t2;
+		TimeProvider timeProvider = new SystemTimeProvider();
 		int c = 0;
-		double angle = 0;
 		while (!done) {
 			if (Display.isCloseRequested()) {
 				done = true;
 			}
 			// TODO: update the scene
-			angle += 0.001;
-			planet.setRotation(Quaternion.fromEulerAngles(angle, 0, 0));
+			long now = timeProvider.now();
+			for (Orb orb : orbs) {
+				orb.update(now);
+			}
 
 			render();
 			Display.update();
@@ -64,26 +66,24 @@ public class Main2 {
 
 	private FearScene createScene() {
 		VertexBufferObject vbo = createVbo();
-		FearNode root = new FearNode();
+		FearNode root = new FearNode("root", Collections.<FearMesh>emptyList());
 
-		FearMesh sunMesh = new FearMesh(vbo);
-		sunMesh.setScale(new Vector3(5, 5, 5));
-		sun = new FearNode(Lists.newArrayList(sunMesh));
+		Orb sun = new Orb("Sun", vbo, 2.5, 0, 0);
+		FearNode sunRoot = sun.getRoot();
 
-		FearMesh planetMesh = new FearMesh(vbo);
-		planet = new FearNode(Lists.newArrayList(planetMesh));
-		planet.setPosition(new Vector3(30, 0, 0));
-		planetMesh.setScale(new Vector3(2, 2, 2));
+		Orb planet = new Orb("Planet", vbo, 1, 1e-4, 1e-3);
+		FearNode planetRoot = planet.getRoot();
+		planetRoot.setPosition(new Vector3(30, 0, 0));
 
-		moon = new FearNode(Lists.newArrayList(new FearMesh(vbo)));
-		moon.setScale(new Vector3(0.5, 0.5, 0.5));
-		moon.setPosition(new Vector3(5, 0, 0));
+		Orb moon = new Orb("Moon", vbo, 0.25, 1e-3, 1e-6);
+		FearNode moonRoot = moon.getRoot();
+		moonRoot.setPosition(new Vector3(10, 0, 0));
 
-		planet.addChild(moon);
-		
-		sun.addChild(planet);
 
-		root.addChild(sun);
+		planetRoot.addChild(moonRoot);
+		sunRoot.addChild(planetRoot);
+
+		root.addChild(sunRoot);
 
 		FearScene fearScene = new FearScene(root);
 		return fearScene;
