@@ -6,6 +6,7 @@ import org.lwjgl.opengl.DisplayMode;
 import se.fearlessgames.fear.*;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
+import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.vbo.VboBuilder;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
@@ -24,6 +25,7 @@ public class Main2 {
 	private final FearGl fearGl;
 	private final FearScene scene;
 	private final Renderer renderer;
+	private FearNode bottomLeftNode;
 
 	public Main2() {
 		fearGl = new FearLwjgl();
@@ -36,11 +38,15 @@ public class Main2 {
 		long t1 = System.nanoTime();
 		long t2;
 		int c = 0;
+		double angle = 0;
 		while (!done) {
 			if (Display.isCloseRequested()) {
 				done = true;
 			}
 			// TODO: update the scene
+			angle += 0.01;
+			bottomLeftNode.setRotation(Quaternion.fromEulerAngles(angle, 0, 0));
+			scene.getRoot().setRotation(Quaternion.fromEulerAngles(-angle/10, 0, 0));
 			render();
 			Display.update();
 			t2 = System.nanoTime();
@@ -57,8 +63,9 @@ public class Main2 {
 	private FearScene createScene() {
 		VertexBufferObject vbo = createVbo();
 		FearNode root = new FearNode(createMeshes(vbo));
+		root.setScale(new Vector3(2.0, 2.0, 2.0));
 
-		FearNode bottomLeftNode = new FearNode(createBottomLeftMeshes(vbo));
+		bottomLeftNode = new FearNode(createBottomLeftMeshes(vbo));
 		bottomLeftNode.setPosition(new Vector3(-20, -20, 0));
 		bottomLeftNode.setScale(new Vector3(0.2, 0.2, 0.2));
 

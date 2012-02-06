@@ -19,7 +19,7 @@ public class Transformation {
 
 	public Transformation transformTo(Vector3 position, Quaternion rotation, Vector3 scale) {
 		//todo: this should probebly not be add or multiply but rather some hot matrix function...or??
-		return new Transformation(this.position.add(position), this.rotation.add(rotation), this.scale.multiply(scale));
+		return new Transformation(this.position.add(position), this.rotation.applyTo(rotation), this.scale.multiply(scale));
 	}
 
 	public FloatBuffer asFloatBuffer() {
