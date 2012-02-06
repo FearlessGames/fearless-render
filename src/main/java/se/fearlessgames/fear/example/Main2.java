@@ -33,7 +33,7 @@ public class Main2 {
 
 
 		scene = createScene();
-		scene.getRoot().setPosition(new Vector3(0, 0, -80));
+		scene.getRoot().setPosition(new Vector3(0, 0, -20));
 		renderer = new Renderer(fearGl, createShaderProgram(), perspectiveBuilder);
 		long t1 = System.nanoTime();
 		long t2;
@@ -44,9 +44,9 @@ public class Main2 {
 				done = true;
 			}
 			// TODO: update the scene
-			angle += 0.01;
+			angle += 0.11;
 			bottomLeftNode.setRotation(Quaternion.fromEulerAngles(angle, 0, 0));
-			scene.getRoot().setRotation(Quaternion.fromEulerAngles(-angle/10, 0, 0));
+			scene.getRoot().setRotation(Quaternion.fromEulerAngles(-angle / 10, 0, 0));
 			render();
 			Display.update();
 			t2 = System.nanoTime();
@@ -66,7 +66,7 @@ public class Main2 {
 		root.setScale(new Vector3(2.0, 2.0, 2.0));
 
 		bottomLeftNode = new FearNode(createBottomLeftMeshes(vbo));
-		bottomLeftNode.setPosition(new Vector3(-20, -20, 0));
+		bottomLeftNode.setPosition(new Vector3(-5, -5, 0));
 		bottomLeftNode.setScale(new Vector3(0.2, 0.2, 0.2));
 
 
@@ -84,10 +84,10 @@ public class Main2 {
 		meshes[2] = new FearMesh(vbo);
 		meshes[3] = new FearMesh(vbo);
 
-		meshes[0].setPosition(new Vector3(5, 5, 0));
-		meshes[1].setPosition(new Vector3(5, -5, 0));
-		meshes[2].setPosition(new Vector3(-5, 5, 0));
-		meshes[3].setPosition(new Vector3(-5, -5, 0));
+		meshes[0].setPosition(new Vector3(2.5, 2.5, 0));
+		meshes[1].setPosition(new Vector3(2.5, -2.5, 0));
+		meshes[2].setPosition(new Vector3(-2.5, 2.5, 0));
+		meshes[3].setPosition(new Vector3(-2.5, -2.5, 0));
 
 		return Lists.newArrayList(meshes);
 	}
@@ -102,9 +102,9 @@ public class Main2 {
 		meshes[2] = new FearMesh(vbo);
 
 
-		meshes[0].setPosition(new Vector3(20, 20, 0));
-		meshes[1].setPosition(new Vector3(20, -20, 0));
-		meshes[2].setPosition(new Vector3(-20, 20, 0));
+		meshes[0].setPosition(new Vector3(5, 5, 0));
+		meshes[1].setPosition(new Vector3(5, -5, 0));
+		meshes[2].setPosition(new Vector3(-5, 5, 0));
 
 		return Lists.newArrayList(meshes);
 	}
