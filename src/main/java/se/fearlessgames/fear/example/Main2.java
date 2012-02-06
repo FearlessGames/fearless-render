@@ -69,13 +69,16 @@ public class Main2 {
 		FearNode root = new FearNode("root", Collections.<FearMesh>emptyList());
 
 		Orb sun = new Orb("Sun", vbo, 2.5, 0, 0);
+		orbs.add(sun);
 		FearNode sunRoot = sun.getRoot();
 
 		Orb planet = new Orb("Planet", vbo, 1, 1e-4, 1e-3);
+		orbs.add(planet);
 		FearNode planetRoot = planet.getRoot();
 		planetRoot.setPosition(new Vector3(30, 0, 0));
 
 		Orb moon = new Orb("Moon", vbo, 0.25, 1e-3, 1e-6);
+		orbs.add(moon);
 		FearNode moonRoot = moon.getRoot();
 		moonRoot.setPosition(new Vector3(10, 0, 0));
 
