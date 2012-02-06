@@ -1,5 +1,7 @@
 package se.fearlessgames.fear;
 
+import se.fearlessgames.fear.math.Matrix4;
+
 import java.util.List;
 
 public class FearScene {
@@ -24,28 +26,30 @@ public class FearScene {
 
 	private void renderOpaqueObjects(Renderer renderer) {
 		Transformation rootTransformation = new Transformation(root.getPosition(), root.getRotation(), root.getScale());
-		render(renderer, root, rootTransformation);
+		render(renderer, root, rootTransformation.asMatrix());
 	}
 
-	private void render(Renderer renderer, FearNode node, Transformation transformation) {
+	private void render(Renderer renderer, FearNode node, Matrix4 parentTransform) {
 		if (!node.isVisible()) {
 			return;
 		}
 
 		List<FearMesh> meshes = node.getMeshes();
 		for (FearMesh mesh : meshes) {
-			renderMesh(mesh, renderer, transformation);
+			renderMesh(mesh, renderer, parentTransform);
 		}
 
 		for (FearNode child : node.getChildNodes()) {
-			Transformation childTransformation = transformation.transformTo(child.getPosition(), child.getRotation(), child.getScale());
-			render(renderer, child, childTransformation);
+			Transformation childTransformation = new Transformation(child.getPosition(), child.getRotation(), child.getScale());
+			Matrix4 multiply = parentTransform.multiply(childTransformation.asMatrix());
+			render(renderer, child, multiply);
 		}
 	}
 
-	private void renderMesh(FearMesh mesh, Renderer renderer, Transformation nodeTransformation) {
-		Transformation meshTransformation = nodeTransformation.transformTo(mesh.getPosition(), mesh.getRotation(), mesh.getScale());
-		renderer.render(mesh, meshTransformation);
+	private void renderMesh(FearMesh mesh, Renderer renderer, Matrix4 parentTransform) {
+		Transformation meshTransformation = new Transformation(mesh.getPosition(), mesh.getRotation(), mesh.getScale());
+		Matrix4 multiply = parentTransform.multiply(meshTransformation.asMatrix());
+		renderer.render(mesh, multiply);
 	}
 
 	private void renderSkybox(Renderer output) {

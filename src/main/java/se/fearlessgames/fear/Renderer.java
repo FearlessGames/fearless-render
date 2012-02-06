@@ -2,6 +2,7 @@ package se.fearlessgames.fear;
 
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.math.GlMatrixBuilder;
+import se.fearlessgames.fear.math.Matrix4;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.vbo.InterleavedBuffer;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
@@ -21,14 +22,13 @@ public class Renderer {
 		this.perspectiveBuilder = perspectiveBuilder;
 	}
 
-	public void render(FearMesh mesh, Transformation transformation) {
-
+	public void render(FearMesh mesh, Matrix4 matrix) {
 
 		fearGl.glUseProgram(shader.getShaderProgram());
 		int projection = fearGl.glGetUniformLocation(shader.getShaderProgram(), "projection");
 		fearGl.glUniformMatrix4(projection, false, perspectiveBuilder.getMatrix());
 		int translation = fearGl.glGetUniformLocation(shader.getShaderProgram(), "translation");
-		fearGl.glUniformMatrix4(translation, false, GlMatrixBuilder.convert(transformation.asMatrix()));
+		fearGl.glUniformMatrix4(translation, false, GlMatrixBuilder.convert(matrix));
 		VertexBufferObject vbo = mesh.getVbo();
 		InterleavedBuffer interleavedBuffer = vbo.getInterleavedBuffer();
 

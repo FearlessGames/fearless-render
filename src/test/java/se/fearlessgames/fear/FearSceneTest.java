@@ -25,7 +25,8 @@ public class FearSceneTest {
 	@Test
 	public void renderSimpleNode() throws Exception {
 		scene.render(renderer);
-		verifyNever().on(renderer).render(any(FearMesh.class), new Transformation(any(Vector3.class), any(Quaternion.class), any(Vector3.class)));
+		final Transformation transformation = new Transformation(any(Vector3.class), any(Quaternion.class), any(Vector3.class));
+		verifyNever().on(renderer).render(any(FearMesh.class), transformation.asMatrix());
 	}
 
 
