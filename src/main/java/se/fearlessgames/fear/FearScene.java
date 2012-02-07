@@ -25,8 +25,7 @@ public class FearScene {
 	}
 
 	private void renderOpaqueObjects(Renderer renderer) {
-		Transformation rootTransformation = new Transformation(root.getPosition(), root.getRotation(), root.getScale());
-		render(renderer, root, rootTransformation.asMatrix());
+		render(renderer, root, Matrix4.IDENTITY);
 	}
 
 	private void render(Renderer renderer, FearNode node, Matrix4 parentTransform) {
@@ -34,14 +33,15 @@ public class FearScene {
 			return;
 		}
 
+		Transformation childTransformation = new Transformation(node.getPosition(), node.getRotation(), node.getScale());
+		Matrix4 multiply = parentTransform.multiply(childTransformation.asMatrix());
+
 		List<FearMesh> meshes = node.getMeshes();
 		for (FearMesh mesh : meshes) {
-			renderMesh(mesh, renderer, parentTransform);
+			renderMesh(mesh, renderer, multiply);
 		}
 
 		for (FearNode child : node.getChildNodes()) {
-			Transformation childTransformation = new Transformation(child.getPosition(), child.getRotation(), child.getScale());
-			Matrix4 multiply = parentTransform.multiply(childTransformation.asMatrix());
 			render(renderer, child, multiply);
 		}
 	}
