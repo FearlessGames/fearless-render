@@ -140,8 +140,8 @@ public class Main2 {
 	}
 
 	private void init() {
-		int w = 1280;
-		int h = 1024;
+		int w = 1024;
+		int h = 768;
 
 		try {
 			Display.setDisplayMode(new DisplayMode(w, h));
@@ -154,7 +154,7 @@ public class Main2 {
 		}
 
 		fearGl.glViewport(0, 0, w, h);
-		perspectiveBuilder = new PerspectiveBuilder(45.0f, ((float) w / (float) h), 0.1f, 100.0f);
+		perspectiveBuilder = new PerspectiveBuilder(45.0f, ((float) w / (float) h), 0.1f, 200.0f);
 
 		fearGl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		fearGl.glClearDepth(1.0f);
