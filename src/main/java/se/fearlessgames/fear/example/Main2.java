@@ -9,7 +9,8 @@ import se.fearlessgames.fear.*;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.math.Vector3;
-import se.fearlessgames.fear.vbo.VboBuilder;
+import se.fearlessgames.fear.shape.ShapeFactory;
+import se.fearlessgames.fear.shape.SphereFactory;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
 import java.util.Collections;
@@ -164,38 +165,8 @@ public class Main2 {
 	}
 
 	private VertexBufferObject createVbo() {
-		float[] data = {
-				// Front face (facing viewer), correct winding order.
-				-1.0f, -1.0f, -1.0f,
-				1.0f, -1.0f, -1.0f,
-				1.0f, 1.0f, -1.0f,
-				-1.0f, 1.0f, -1.0f,
-
-				-1.0f, -1.0f, 1.0f,
-				1.0f, -1.0f, 1.0f,
-				1.0f, 1.0f, 1.0f,
-				-1.0f, 1.0f, 1.0f
-		};
-
-		float[] colors = {
-				1.0f, 0.0f, 0.0f, 1.0f,
-				1.0f, 0.0f, 0.0f, 1.0f,
-				1.0f, 0.0f, 0.0f, 1.0f,
-				1.0f, 0.0f, 0.0f, 1.0f,
-				0.0f, 1.0f, 0.0f, 1.0f,
-				0.0f, 1.0f, 0.0f, 1.0f,
-				0.0f, 0.0f, 1.0f, 1.0f,
-				0.0f, 0.0f, 1.0f, 1.0f,
-		};
-
-		int[] indices = {
-				0, 1, 2, 3,
-				7, 6, 5, 4,
-				1, 5, 6, 2,
-				0, 3, 7, 4
-		};
-
-		return VboBuilder.fromArray(fearGl, data).indices(indices).colors(colors).quads().build();
+		ShapeFactory factory = new SphereFactory(fearGl, 40, 40, 1);
+		return factory.create();
 	}
 
 }

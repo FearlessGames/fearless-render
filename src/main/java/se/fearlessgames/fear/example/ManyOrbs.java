@@ -9,7 +9,8 @@ import se.fearlessgames.fear.*;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.math.Vector3;
-import se.fearlessgames.fear.vbo.VboBuilder;
+import se.fearlessgames.fear.shape.ShapeFactory;
+import se.fearlessgames.fear.shape.SphereFactory;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
 import java.util.Collections;
@@ -27,14 +28,19 @@ public class ManyOrbs {
 	private final FearGl fearGl;
 	private final FearScene scene;
 	private final Renderer renderer;
-    private final List<Orb> orbs = Lists.newArrayList();
-    private final VertexBufferObject vbo;
+	private final List<Orb> orbs = Lists.newArrayList();
+	private final VertexBufferObject vbo;
 
-    public ManyOrbs() {
+	public ManyOrbs() {
 		fearGl = new FearLwjgl();
 		init();
 
-        vbo = createVbo();
+		int numOrbs = 100;
+
+		ShapeFactory shapeFactory = new SphereFactory(fearGl, 200, 200, 1);
+		vbo = shapeFactory.create();
+
+
 		scene = createScene();
 		scene.getRoot().setPosition(new Vector3(0, -15, -80));
 		renderer = new Renderer(fearGl, createShaderProgram(), perspectiveBuilder);
@@ -42,25 +48,22 @@ public class ManyOrbs {
 		long t2;
 		TimeProvider timeProvider = new SystemTimeProvider();
 		int c = 0;
-        int numOrbs = 100;
-        long lastIncrease = timeProvider.now();
+
+
+		for (int i = 0; i < numOrbs; i++) {
+			Orb orb = new Orb("orb" + i, vbo, 1 * Math.random(), 1e-4 * Math.random(), 1e-4 * Math.random());
+			orb.setRotationRadius(new Vector3(30 * Math.random(), 0, 0));
+			orbs.add(orb);
+			scene.getRoot().addChild(orb.getRoot());
+		}
+
 		while (!done) {
 			if (Display.isCloseRequested()) {
 				done = true;
 			}
 			// TODO: update the scene
 			long now = timeProvider.now();
-            if (now - lastIncrease > 10 * 1000) {
-                lastIncrease = now;
-                numOrbs *= 2;
-                int toAdd = numOrbs - orbs.size();
-                for (int i = 0; i < toAdd; i++) {
-                    Orb orb = new Orb("orb" + i, vbo, 1 * Math.random(), 1e-4 * Math.random(), 1e-4 * Math.random());
-                    orb.setRotationRadius(new Vector3(30*Math.random(), 0, 0));
-                    orbs.add(orb);
-                    scene.getRoot().addChild(orb.getRoot());
-                }
-            }
+
 			for (Orb orb : orbs) {
 				orb.update(now);
 			}
@@ -147,7 +150,7 @@ public class ManyOrbs {
 		}
 
 		fearGl.glViewport(0, 0, w, h);
-		perspectiveBuilder = new PerspectiveBuilder(45.0f, ((float) w / (float) h), 0.1f, 200.0f);
+		perspectiveBuilder = new PerspectiveBuilder(45.0f, ((float) w / (float) h), 0.1f, 400.0f);
 
 		fearGl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		fearGl.glClearDepth(1.0f);
@@ -159,39 +162,5 @@ public class ManyOrbs {
 		new ManyOrbs();
 	}
 
-	private VertexBufferObject createVbo() {
-		float[] data = {
-				// Front face (facing viewer), correct winding order.
-				-1.0f, -1.0f, -1.0f,
-				1.0f, -1.0f, -1.0f,
-				1.0f, 1.0f, -1.0f,
-				-1.0f, 1.0f, -1.0f,
-
-				-1.0f, -1.0f, 1.0f,
-				1.0f, -1.0f, 1.0f,
-				1.0f, 1.0f, 1.0f,
-				-1.0f, 1.0f, 1.0f
-		};
-
-		float[] colors = {
-				1.0f, 0.0f, 0.0f, 1.0f,
-				1.0f, 0.0f, 0.0f, 1.0f,
-				1.0f, 0.0f, 0.0f, 1.0f,
-				1.0f, 0.0f, 0.0f, 1.0f,
-				0.0f, 1.0f, 0.0f, 1.0f,
-				0.0f, 1.0f, 0.0f, 1.0f,
-				0.0f, 0.0f, 1.0f, 1.0f,
-				0.0f, 0.0f, 1.0f, 1.0f,
-		};
-
-		int[] indices = {
-				0, 1, 2, 3,
-				7, 6, 5, 4,
-				1, 5, 6, 2,
-				0, 3, 7, 4
-		};
-
-		return VboBuilder.fromArray(fearGl, data).indices(indices).colors(colors).quads().build();
-	}
 
 }
