@@ -8,29 +8,37 @@ import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
 public class Orb {
-	private final FearNode root;
-	private final FearMesh orb;
+	private final FearNode rotationCenterNode;
+	private final FearNode meshCenterNode;
+	private final FearMesh orbMesh;
 	private final double orbitSpeed;
 	private final double rotationSpeed;
 
 	public Orb(String name, VertexBufferObject vbo, double radius, double orbitSpeed, double rotationSpeed) {
 		this.orbitSpeed = orbitSpeed;
 		this.rotationSpeed = rotationSpeed;
-		orb = new FearMesh(vbo);
-		orb.setScale(new Vector3(radius * 2, radius * 2, radius * 2));
-		root = new FearNode(name, Lists.newArrayList(orb));
+		orbMesh = new FearMesh(vbo);
+		orbMesh.setScale(new Vector3(radius * 2, radius * 2, radius * 2));
+		rotationCenterNode = new FearNode(name, Lists.newArrayList(orbMesh));
+		meshCenterNode = new FearNode();
+		rotationCenterNode.addChild(meshCenterNode);
 	}
 
-	public FearNode getRoot() {
-		return root;
+	public void setRotationRadius(Vector3 radius) {
+		meshCenterNode.setPosition(radius);
+		orbMesh.setPosition(radius);
 	}
 
-	public FearMesh getOrb() {
-		return orb;
+	public void addChild(Orb orb) {
+		meshCenterNode.addChild(orb.rotationCenterNode);
 	}
 
 	public void update(long timeInMillis) {
-		root.setRotation(Quaternion.fromEulerAngles(orbitSpeed * timeInMillis, 0, 0));
-		orb.setRotation(Quaternion.fromEulerAngles(rotationSpeed * timeInMillis, 0, 0));
+		rotationCenterNode.setRotation(Quaternion.fromEulerAngles(orbitSpeed * timeInMillis, 0, 0));
+		orbMesh.setRotation(Quaternion.fromEulerAngles(rotationSpeed * timeInMillis, 0, 0));
+	}
+
+	public FearNode getRoot() {
+		return rotationCenterNode;
 	}
 }
