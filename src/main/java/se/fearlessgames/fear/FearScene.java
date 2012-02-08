@@ -2,8 +2,6 @@ package se.fearlessgames.fear;
 
 import se.fearlessgames.fear.math.Matrix4;
 
-import java.util.List;
-
 public class FearScene {
 	private final FearNode root;
 
@@ -36,10 +34,8 @@ public class FearScene {
 		Transformation childTransformation = new Transformation(node.getPosition(), node.getRotation(), node.getScale());
 		Matrix4 multiply = parentTransform.multiply(childTransformation.asMatrix());
 
-		List<FearMesh> meshes = node.getMeshes();
-		for (FearMesh mesh : meshes) {
-			renderMesh(mesh, renderer, multiply);
-		}
+		renderMesh(node.getMesh(), renderer, multiply);
+
 
 		for (FearNode child : node.getChildNodes()) {
 			render(renderer, child, multiply);
@@ -47,6 +43,9 @@ public class FearScene {
 	}
 
 	private void renderMesh(FearMesh mesh, Renderer renderer, Matrix4 parentTransform) {
+		if (mesh == null) {
+			return;
+		}
 		Transformation meshTransformation = new Transformation(mesh.getPosition(), mesh.getRotation(), mesh.getScale());
 		Matrix4 multiply = parentTransform.multiply(meshTransformation.asMatrix());
 		renderer.render(mesh, multiply);

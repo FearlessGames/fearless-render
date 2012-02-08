@@ -13,7 +13,6 @@ import se.fearlessgames.fear.shape.ShapeFactory;
 import se.fearlessgames.fear.shape.SphereFactory;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
@@ -84,7 +83,7 @@ public class ManyOrbs {
 	}
 
 	private FearScene createScene() {
-		FearNode root = new FearNode("root", Collections.<FearMesh>emptyList());
+		FearNode root = new FearNode("root");
 		FearScene fearScene = new FearScene(root);
 		return fearScene;
 	}

@@ -1,15 +1,15 @@
 package se.fearlessgames.fear;
 
+import com.google.common.collect.Lists;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FearNode {
 	private final String name;
 	private final List<FearNode> childNodes;
-	private final List<FearMesh> meshes;
+	private final FearMesh mesh;
 	private boolean visible = true;
 
 	private Vector3 position = Vector3.ZERO;
@@ -17,14 +17,20 @@ public class FearNode {
 	private Vector3 scale = Vector3.ONE;
 
 	public FearNode() {
-		this("", new ArrayList<FearMesh>());
+		this("");
 	}
 
-	public FearNode(String name, List<FearMesh> meshes) {
-		this.name = name;
-		this.meshes = meshes;
-		this.childNodes = new ArrayList<FearNode>();
+
+	public FearNode(String root) {
+		this(root, null);
 	}
+
+	public FearNode(String name, FearMesh mesh) {
+		this.name = name;
+		this.mesh = mesh;
+		this.childNodes = Lists.newArrayList();
+	}
+
 
 	public void addChild(FearNode node) {
 		childNodes.add(node);
@@ -34,17 +40,12 @@ public class FearNode {
 		return childNodes;
 	}
 
-	public List<FearMesh> getMeshes() {
-		return meshes;
+	public FearMesh getMesh() {
+		return mesh;
 	}
 
 	public boolean isVisible() {
 		return visible;
-	}
-
-
-	public void addMesh(FearMesh mesh) {
-		meshes.add(mesh);
 	}
 
 	public Vector3 getPosition() {

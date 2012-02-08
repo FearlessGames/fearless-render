@@ -1,6 +1,5 @@
 package se.fearlessgames.fear.example;
 
-import com.google.common.collect.Lists;
 import se.fearlessgames.fear.FearMesh;
 import se.fearlessgames.fear.FearNode;
 import se.fearlessgames.fear.math.Quaternion;
@@ -19,7 +18,7 @@ public class Orb {
 		this.rotationSpeed = rotationSpeed;
 		orbMesh = new FearMesh(vbo);
 		orbMesh.setScale(new Vector3(radius * 2, radius * 2, radius * 2));
-		rotationCenterNode = new FearNode(name, Lists.newArrayList(orbMesh));
+		rotationCenterNode = new FearNode(name, orbMesh);
 		meshCenterNode = new FearNode();
 		rotationCenterNode.addChild(meshCenterNode);
 	}

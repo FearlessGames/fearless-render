@@ -13,7 +13,6 @@ import se.fearlessgames.fear.shape.ShapeFactory;
 import se.fearlessgames.fear.shape.SphereFactory;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
-import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -67,7 +66,7 @@ public class Main2 {
 
 	private FearScene createScene() {
 		VertexBufferObject vbo = createVbo();
-		FearNode root = new FearNode("root", Collections.<FearMesh>emptyList());
+		FearNode root = new FearNode("root");
 
 		Orb sun = new Orb("Sun", vbo, 2.5, 0, 0);
 
