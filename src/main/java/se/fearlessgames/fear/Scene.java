@@ -2,10 +2,10 @@ package se.fearlessgames.fear;
 
 import se.fearlessgames.fear.math.Matrix4;
 
-public class FearScene {
+public class Scene {
 	private final FearNode root;
 
-	public FearScene(FearNode root) {
+	public Scene(FearNode root) {
 		this.root = root;
 	}
 

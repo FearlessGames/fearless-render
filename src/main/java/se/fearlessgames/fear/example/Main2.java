@@ -6,8 +6,8 @@ import org.lwjgl.opengl.DisplayMode;
 import se.fearlessgames.common.util.SystemTimeProvider;
 import se.fearlessgames.common.util.TimeProvider;
 import se.fearlessgames.fear.FearNode;
-import se.fearlessgames.fear.FearScene;
 import se.fearlessgames.fear.Renderer;
+import se.fearlessgames.fear.Scene;
 import se.fearlessgames.fear.ShaderProgram;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
@@ -28,7 +28,7 @@ public class Main2 {
 	private boolean done = false; //game runs until done is set to true
 	private PerspectiveBuilder perspectiveBuilder;
 	private final FearGl fearGl;
-	private final FearScene scene;
+	private final Scene scene;
 	private final Renderer renderer;
 	private final List<Orb> orbs = Lists.newArrayList();
 
@@ -67,7 +67,7 @@ public class Main2 {
 
 	}
 
-	private FearScene createScene() {
+	private Scene createScene() {
 		VertexBufferObject vbo = createVbo();
 		FearNode root = new FearNode("root");
 
@@ -87,8 +87,8 @@ public class Main2 {
 
 		root.addChild(sun.getRoot());
 
-		FearScene fearScene = new FearScene(root);
-		return fearScene;
+		Scene scene = new Scene(root);
+		return scene;
 	}
 
 	private ShaderProgram createShaderProgram() {

@@ -6,8 +6,8 @@ import org.lwjgl.opengl.DisplayMode;
 import se.fearlessgames.common.util.SystemTimeProvider;
 import se.fearlessgames.common.util.TimeProvider;
 import se.fearlessgames.fear.FearNode;
-import se.fearlessgames.fear.FearScene;
 import se.fearlessgames.fear.Renderer;
+import se.fearlessgames.fear.Scene;
 import se.fearlessgames.fear.ShaderProgram;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
@@ -29,7 +29,7 @@ public class ManyOrbs {
 	private boolean done = false; //game runs until done is set to true
 	private PerspectiveBuilder perspectiveBuilder;
 	private final FearGl fearGl;
-	private final FearScene scene;
+	private final Scene scene;
 	private final Renderer renderer;
 	private final List<Orb> orbs = Lists.newArrayList();
 	private final VertexBufferObject vbo;
@@ -85,10 +85,10 @@ public class ManyOrbs {
 
 	}
 
-	private FearScene createScene() {
+	private Scene createScene() {
 		FearNode root = new FearNode("root");
-		FearScene fearScene = new FearScene(root);
-		return fearScene;
+		Scene scene = new Scene(root);
+		return scene;
 	}
 
 
