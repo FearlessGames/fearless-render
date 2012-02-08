@@ -1,100 +1,48 @@
 package se.fearlessgames.fear;
 
-import se.fearlessgames.fear.gl.*;
-import se.fearlessgames.fear.math.GlMatrixBuilder;
 import se.fearlessgames.fear.math.Matrix4;
-import se.fearlessgames.fear.math.PerspectiveBuilder;
-import se.fearlessgames.fear.vbo.InterleavedBuffer;
-import se.fearlessgames.fear.vbo.VertexBufferObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Renderer {
 
-	// TODO: replace this reference with an output to keep rendering and OpenGL calls in different threads
-	private final FearGl fearGl;
-	// TODO: probably move this
-	private final ShaderProgram shader;
-	private final PerspectiveBuilder perspectiveBuilder;
+	private final MeshRenderer meshRenderer;
+	private final List<AddedMesh> addedMeshes;
 
-	public Renderer(FearGl fearGl, ShaderProgram shader, PerspectiveBuilder perspectiveBuilder) {
-		this.fearGl = fearGl;
-		this.shader = shader;
-		this.perspectiveBuilder = perspectiveBuilder;
+	public Renderer(MeshRenderer meshRenderer) {
+		this.meshRenderer = meshRenderer;
+		addedMeshes = new ArrayList<AddedMesh>();
 	}
 
-	public void render(Mesh mesh, Matrix4 matrix) {
-
-		fearGl.glUseProgram(shader.getShaderProgram());
-		int projection = fearGl.glGetUniformLocation(shader.getShaderProgram(), "projection");
-		fearGl.glUniformMatrix4(projection, false, perspectiveBuilder.getMatrix());
-		int translation = fearGl.glGetUniformLocation(shader.getShaderProgram(), "translation");
-		fearGl.glUniformMatrix4(translation, false, GlMatrixBuilder.convert(matrix));
-		VertexBufferObject vbo = mesh.getVbo();
-		InterleavedBuffer interleavedBuffer = vbo.getInterleavedBuffer();
-
-		enableStates(interleavedBuffer);
-
-		fearGl.glBindBuffer(BufferTarget.GL_ARRAY_BUFFER, vbo.getVertexBufferId());
-
-		int stride = interleavedBuffer.getStride();
-		int offset = 0;
-
-		fearGl.glVertexPointer(3, DataType.GL_FLOAT, stride, offset);
-		offset = 3 * 4;
-
-		if (interleavedBuffer.isNormals()) {
-			fearGl.glNormalPointer(DataType.GL_FLOAT, stride, offset);
-			offset += (3 * 4);
-		}
-
-		if (interleavedBuffer.isColors()) {
-			fearGl.glColorPointer(4, DataType.GL_FLOAT, stride, offset);
-			offset += (4 * 4);
-		}
-
-		if (interleavedBuffer.isTextureCords()) {
-			fearGl.glTexCoordPointer(2, DataType.GL_FLOAT, stride, offset);
-		}
-
-		fearGl.glBindBuffer(BufferTarget.GL_ELEMENT_ARRAY_BUFFER, vbo.getIndexBufferId());
-
-		fearGl.glDrawElements(vbo.getDrawMode(), vbo.getIndexBufferSize(), IndexDataType.GL_UNSIGNED_INT, 0);
-
-		disableStates(interleavedBuffer);
-		fearGl.glUseProgram(0);
+	public void addMeshToRender(Mesh mesh, Matrix4 matrix) {
+		addedMeshes.add(new AddedMesh(mesh, matrix));
 	}
 
+	public void render() {
+		List<AddedMesh> meshesToRender = new ArrayList<AddedMesh>(addedMeshes);
+		addedMeshes.clear();
 
-	private void enableStates(InterleavedBuffer interleavedBuffer) {
-		fearGl.glEnableClientState(ClientState.GL_VERTEX_ARRAY);
+		optimiseObjects(meshesToRender);
 
-		if (interleavedBuffer.isNormals()) {
-			fearGl.glEnableClientState(ClientState.GL_NORMAL_ARRAY);
-		}
-
-		if (interleavedBuffer.isColors()) {
-			fearGl.glEnableClientState(ClientState.GL_COLOR_ARRAY);
-		}
-
-		if (interleavedBuffer.isTextureCords()) {
-			fearGl.glEnableClientState(ClientState.GL_TEXTURE_COORD_ARRAY);
+		for (AddedMesh addedMesh : meshesToRender) {
+			meshRenderer.render(addedMesh.mesh, addedMesh.transform);
 		}
 	}
 
-	private void disableStates(InterleavedBuffer interleavedBuffer) {
-		if (interleavedBuffer.isNormals()) {
-			fearGl.glDisableClientState(ClientState.GL_NORMAL_ARRAY);
-		}
-
-		if (interleavedBuffer.isColors()) {
-			fearGl.glDisableClientState(ClientState.GL_COLOR_ARRAY);
-		}
-
-		if (interleavedBuffer.isTextureCords()) {
-			fearGl.glDisableClientState(ClientState.GL_TEXTURE_COORD_ARRAY);
-		}
-		fearGl.glDisableClientState(ClientState.GL_VERTEX_ARRAY);
+	private void optimiseObjects(List<AddedMesh> meshesToRender) {
+		//todo: sort meshes, cull them etc
 	}
 
+	private static class AddedMesh {
+		Mesh mesh;
+		Matrix4 transform;
+
+		private AddedMesh(Mesh mesh, Matrix4 transform) {
+			this.mesh = mesh;
+			this.transform = transform;
+		}
+	}
 
 }

@@ -24,7 +24,7 @@ public class SceneTest {
 	@Test
 	public void renderSimpleNode() throws Exception {
 		scene.render(renderer);
-		verifyNever().on(renderer).render(any(Mesh.class), any(Matrix4.class));
+		verifyNever().on(renderer).addMeshToRender(any(Mesh.class), any(Matrix4.class));
 	}
 
 

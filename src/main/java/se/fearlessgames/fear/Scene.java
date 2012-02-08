@@ -15,15 +15,13 @@ public class Scene {
 
 	public void render(Renderer renderer) {
 		renderSkybox(renderer);
-		renderOpaqueObjects(renderer);
-		renderTransparentObjects(renderer);
+		renderObjects(renderer);
 	}
 
-	private void renderTransparentObjects(Renderer renderer) {
-	}
-
-	private void renderOpaqueObjects(Renderer renderer) {
+	private void renderObjects(Renderer renderer) {
 		render(renderer, root, Matrix4.IDENTITY);
+
+		renderer.render();
 	}
 
 	private void render(Renderer renderer, Node node, Matrix4 parentTransform) {
@@ -46,7 +44,7 @@ public class Scene {
 		if (mesh == null) {
 			return;
 		}
-		renderer.render(mesh, parentTransform);
+		renderer.addMeshToRender(mesh, parentTransform);
 	}
 
 	private void renderSkybox(Renderer output) {

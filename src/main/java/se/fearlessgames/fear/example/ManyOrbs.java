@@ -5,10 +5,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import se.fearlessgames.common.util.SystemTimeProvider;
 import se.fearlessgames.common.util.TimeProvider;
-import se.fearlessgames.fear.Node;
-import se.fearlessgames.fear.Renderer;
-import se.fearlessgames.fear.Scene;
-import se.fearlessgames.fear.ShaderProgram;
+import se.fearlessgames.fear.*;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.math.Vector3;
@@ -46,7 +43,7 @@ public class ManyOrbs {
 
 		scene = createScene();
 		scene.getRoot().setPosition(new Vector3(0, -15, -80));
-		renderer = new Renderer(fearGl, createShaderProgram(), perspectiveBuilder);
+		renderer = new Renderer(new MeshRenderer(fearGl, createShaderProgram(), perspectiveBuilder));
 		long t1 = System.nanoTime();
 		long t2;
 		TimeProvider timeProvider = new SystemTimeProvider();
@@ -90,7 +87,6 @@ public class ManyOrbs {
 		Scene scene = new Scene(root);
 		return scene;
 	}
-
 
 
 	private ShaderProgram createShaderProgram() {
