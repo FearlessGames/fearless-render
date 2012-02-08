@@ -5,7 +5,10 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import se.fearlessgames.common.util.SystemTimeProvider;
 import se.fearlessgames.common.util.TimeProvider;
-import se.fearlessgames.fear.*;
+import se.fearlessgames.fear.FearNode;
+import se.fearlessgames.fear.FearScene;
+import se.fearlessgames.fear.Renderer;
+import se.fearlessgames.fear.ShaderProgram;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.math.Vector3;
@@ -86,39 +89,6 @@ public class Main2 {
 
 		FearScene fearScene = new FearScene(root);
 		return fearScene;
-	}
-
-	private List<FearMesh> createBottomLeftMeshes(VertexBufferObject vbo) {
-		FearMesh[] meshes = new FearMesh[4];
-
-		meshes[0] = new FearMesh(vbo);
-		meshes[1] = new FearMesh(vbo);
-		meshes[2] = new FearMesh(vbo);
-		meshes[3] = new FearMesh(vbo);
-
-		meshes[0].setPosition(new Vector3(5, 5, 0));
-		meshes[1].setPosition(new Vector3(5, -5, 0));
-		meshes[2].setPosition(new Vector3(-5, 5, 0));
-		meshes[3].setPosition(new Vector3(-5, -5, 0));
-
-		return Lists.newArrayList(meshes);
-	}
-
-	private List<FearMesh> createMeshes(VertexBufferObject vbo) {
-
-
-		FearMesh[] meshes = new FearMesh[3];
-
-		meshes[0] = new FearMesh(vbo);
-		meshes[1] = new FearMesh(vbo);
-		meshes[2] = new FearMesh(vbo);
-
-
-		meshes[0].setPosition(new Vector3(20, 20, 0));
-		meshes[1].setPosition(new Vector3(20, -20, 0));
-		meshes[2].setPosition(new Vector3(-20, 20, 0));
-
-		return Lists.newArrayList(meshes);
 	}
 
 	private ShaderProgram createShaderProgram() {
