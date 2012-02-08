@@ -23,10 +23,13 @@ public class Transformation {
 	public Matrix4 asMatrix() {
 		double[][] matrix = rotation.getMatrix();
 
+		double scaleX = scale.getX();
+		double scaleY = scale.getY();
+		double scaleZ = scale.getZ();
 		return new Matrix4(
-				matrix[0][0] * scale.getX(), matrix[0][1] * scale.getY(), matrix[0][2] * scale.getZ(), position.getX(),
-				matrix[1][0] * scale.getX(), matrix[1][1] * scale.getY(), matrix[1][2] * scale.getZ(), position.getY(),
-				matrix[2][0] * scale.getX(), matrix[2][1] * scale.getY(), matrix[2][2] * scale.getZ(), position.getZ(),
+				matrix[0][0] * scaleX, matrix[0][1] * scaleY, matrix[0][2] * scaleZ, position.getX(),
+				matrix[1][0] * scaleX, matrix[1][1] * scaleY, matrix[1][2] * scaleZ, position.getY(),
+				matrix[2][0] * scaleX, matrix[2][1] * scaleY, matrix[2][2] * scaleZ, position.getZ(),
 				0, 0, 0, 1);
 	}
 }

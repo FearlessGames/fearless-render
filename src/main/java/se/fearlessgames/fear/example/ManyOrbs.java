@@ -16,6 +16,7 @@ import se.fearlessgames.fear.vbo.VertexBufferObject;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Random;
 
 /*
 * Sets up the Display, the GL context, and runs the main game
@@ -37,7 +38,7 @@ public class ManyOrbs {
 
 		int numOrbs = 100;
 
-		ShapeFactory shapeFactory = new SphereFactory(fearGl, 200, 200, 1);
+		ShapeFactory shapeFactory = new SphereFactory(fearGl, 100, 100, 2);
 		vbo = shapeFactory.create();
 
 
@@ -49,10 +50,11 @@ public class ManyOrbs {
 		TimeProvider timeProvider = new SystemTimeProvider();
 		int c = 0;
 
+		Random rand = new Random();
 
 		for (int i = 0; i < numOrbs; i++) {
-			Orb orb = new Orb("orb" + i, vbo, 1 * Math.random(), 1e-4 * Math.random(), 1e-4 * Math.random());
-			orb.setRotationRadius(new Vector3(30 * Math.random(), 0, 0));
+			Orb orb = new Orb("orb" + i, vbo, 1 * rand.nextDouble(), 1e-4 * rand.nextDouble(), 1e-3 * (rand.nextDouble() - 0.5));
+			orb.setRotationRadius(new Vector3(30 * rand.nextDouble(), 20 * rand.nextDouble(), 0));
 			orbs.add(orb);
 			scene.getRoot().addChild(orb.getRoot());
 		}
@@ -136,8 +138,8 @@ public class ManyOrbs {
 	}
 
 	private void init() {
-		int w = 640;
-		int h = 480;
+		int w = 1024;
+		int h = 768;
 
 		try {
 			Display.setDisplayMode(new DisplayMode(w, h));
