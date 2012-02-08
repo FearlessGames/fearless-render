@@ -6,9 +6,9 @@ import se.fearlessgames.fear.math.Vector3;
 
 import java.util.List;
 
-public class FearNode {
+public class Node {
 	private final String name;
-	private final List<FearNode> childNodes;
+	private final List<Node> childNodes;
 	private final FearMesh mesh;
 	private boolean visible = true;
 
@@ -16,27 +16,27 @@ public class FearNode {
 	private Quaternion rotation = Quaternion.IDENTITY;
 	private Vector3 scale = Vector3.ONE;
 
-	public FearNode() {
+	public Node() {
 		this("");
 	}
 
 
-	public FearNode(String root) {
+	public Node(String root) {
 		this(root, null);
 	}
 
-	public FearNode(String name, FearMesh mesh) {
+	public Node(String name, FearMesh mesh) {
 		this.name = name;
 		this.mesh = mesh;
 		this.childNodes = Lists.newArrayList();
 	}
 
 
-	public void addChild(FearNode node) {
+	public void addChild(Node node) {
 		childNodes.add(node);
 	}
 
-	public List<FearNode> getChildNodes() {
+	public List<Node> getChildNodes() {
 		return childNodes;
 	}
 
@@ -78,7 +78,7 @@ public class FearNode {
 
 	@Override
 	public String toString() {
-		return "FearNode{" +
+		return "Node{" +
 				"name='" + name + '\'' +
 				'}';
 	}

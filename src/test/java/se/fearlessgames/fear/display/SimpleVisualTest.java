@@ -19,7 +19,7 @@ public class SimpleVisualTest {
 		FearDisplay output = supplier.showDisplay();
 		FearLwjgl fearGl = new FearLwjgl();
 		Renderer renderer = new Renderer(fearGl, new ShaderProgram(fearGl), mock(PerspectiveBuilder.class));
-		Scene scene = new Scene(new FearNode());
+		Scene scene = new Scene(new Node());
 		while (true) {
 			if (hasHitEscape() || output.isCloseRequested()) {
 				break;

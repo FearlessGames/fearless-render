@@ -5,7 +5,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import se.fearlessgames.common.util.SystemTimeProvider;
 import se.fearlessgames.common.util.TimeProvider;
-import se.fearlessgames.fear.FearNode;
+import se.fearlessgames.fear.Node;
 import se.fearlessgames.fear.Renderer;
 import se.fearlessgames.fear.Scene;
 import se.fearlessgames.fear.ShaderProgram;
@@ -69,7 +69,7 @@ public class Main2 {
 
 	private Scene createScene() {
 		VertexBufferObject vbo = createVbo();
-		FearNode root = new FearNode("root");
+		Node root = new Node("root");
 
 		Orb sun = new Orb("Sun", vbo, 2.5, 0, 0);
 

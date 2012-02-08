@@ -11,12 +11,12 @@ import static se.mockachino.matchers.Matchers.any;
 public class SceneTest {
 
 	private Scene scene;
-	private FearNode rootNode;
+	private Node rootNode;
 	private Renderer renderer;
 
 	@Before
 	public void setUp() throws Exception {
-		rootNode = new FearNode();
+		rootNode = new Node();
 		scene = new Scene(rootNode);
 		renderer = mock(Renderer.class);
 	}

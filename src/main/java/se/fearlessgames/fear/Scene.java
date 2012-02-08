@@ -3,13 +3,13 @@ package se.fearlessgames.fear;
 import se.fearlessgames.fear.math.Matrix4;
 
 public class Scene {
-	private final FearNode root;
+	private final Node root;
 
-	public Scene(FearNode root) {
+	public Scene(Node root) {
 		this.root = root;
 	}
 
-	public FearNode getRoot() {
+	public Node getRoot() {
 		return root;
 	}
 
@@ -26,7 +26,7 @@ public class Scene {
 		render(renderer, root, Matrix4.IDENTITY);
 	}
 
-	private void render(Renderer renderer, FearNode node, Matrix4 parentTransform) {
+	private void render(Renderer renderer, Node node, Matrix4 parentTransform) {
 		if (!node.isVisible()) {
 			return;
 		}
@@ -37,7 +37,7 @@ public class Scene {
 		renderMesh(node.getMesh(), renderer, multiply);
 
 
-		for (FearNode child : node.getChildNodes()) {
+		for (Node child : node.getChildNodes()) {
 			render(renderer, child, multiply);
 		}
 	}
