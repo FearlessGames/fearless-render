@@ -7,7 +7,6 @@ import se.fearlessgames.fear.vbo.VertexBufferObject;
 public class FearMesh {
 	private Vector3 position = Vector3.ZERO;
 	private Quaternion rotation = Quaternion.IDENTITY;
-	private Vector3 scale = Vector3.ONE;
 
 	private final VertexBufferObject vbo;
 
@@ -37,13 +36,5 @@ public class FearMesh {
 
 	public void setRotation(Quaternion rotation) {
 		this.rotation = rotation;
-	}
-
-	public Vector3 getScale() {
-		return scale;
-	}
-
-	public void setScale(Vector3 scale) {
-		this.scale = scale;
 	}
 }

@@ -1,6 +1,7 @@
 package se.fearlessgames.fear;
 
 import se.fearlessgames.fear.math.Matrix4;
+import se.fearlessgames.fear.math.Vector3;
 
 public class FearScene {
 	private final FearNode root;
@@ -46,7 +47,7 @@ public class FearScene {
 		if (mesh == null) {
 			return;
 		}
-		Transformation meshTransformation = new Transformation(mesh.getPosition(), mesh.getRotation(), mesh.getScale());
+		Transformation meshTransformation = new Transformation(mesh.getPosition(), mesh.getRotation(), Vector3.ONE);
 		Matrix4 multiply = parentTransform.multiply(meshTransformation.asMatrix());
 		renderer.render(mesh, multiply);
 	}

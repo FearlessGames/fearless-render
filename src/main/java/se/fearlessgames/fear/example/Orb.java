@@ -17,15 +17,17 @@ public class Orb {
 		this.orbitSpeed = orbitSpeed;
 		this.rotationSpeed = rotationSpeed;
 		orbMesh = new FearMesh(vbo);
-		orbMesh.setScale(new Vector3(radius * 2, radius * 2, radius * 2));
-		rotationCenterNode = new FearNode(name, orbMesh);
-		meshCenterNode = new FearNode();
+		rotationCenterNode = new FearNode(name + "-rotationCenter");
+		meshCenterNode = new FearNode(name + "-meshCenter");
+		FearNode meshNode = new FearNode(name + "-mesh", orbMesh);
+		meshNode.setScale(new Vector3(radius * 2, radius * 2, radius * 2));
+
 		rotationCenterNode.addChild(meshCenterNode);
+		meshCenterNode.addChild(meshNode);
 	}
 
 	public void setRotationRadius(Vector3 radius) {
 		meshCenterNode.setPosition(radius);
-		orbMesh.setPosition(radius);
 	}
 
 	public void addChild(Orb orb) {
