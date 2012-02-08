@@ -12,6 +12,7 @@ public class Orb {
 	private final FearMesh orbMesh;
 	private final double orbitSpeed;
 	private final double rotationSpeed;
+	private final FearNode meshNode;
 
 	public Orb(String name, VertexBufferObject vbo, double radius, double orbitSpeed, double rotationSpeed) {
 		this.orbitSpeed = orbitSpeed;
@@ -19,7 +20,7 @@ public class Orb {
 		orbMesh = new FearMesh(vbo);
 		rotationCenterNode = new FearNode(name + "-rotationCenter");
 		meshCenterNode = new FearNode(name + "-meshCenter");
-		FearNode meshNode = new FearNode(name + "-mesh", orbMesh);
+		meshNode = new FearNode(name + "-mesh", orbMesh);
 		meshNode.setScale(new Vector3(radius * 2, radius * 2, radius * 2));
 
 		rotationCenterNode.addChild(meshCenterNode);
@@ -36,7 +37,7 @@ public class Orb {
 
 	public void update(long timeInMillis) {
 		rotationCenterNode.setRotation(Quaternion.fromEulerAngles(orbitSpeed * timeInMillis, 0, 0));
-		orbMesh.setRotation(Quaternion.fromEulerAngles(rotationSpeed * timeInMillis, 0, 0));
+		meshNode.setRotation(Quaternion.fromEulerAngles(rotationSpeed * timeInMillis, 0, 0));
 	}
 
 	public FearNode getRoot() {
