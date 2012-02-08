@@ -42,7 +42,7 @@ public class Scene {
 		}
 	}
 
-	private void renderMesh(FearMesh mesh, Renderer renderer, Matrix4 parentTransform) {
+	private void renderMesh(Mesh mesh, Renderer renderer, Matrix4 parentTransform) {
 		if (mesh == null) {
 			return;
 		}

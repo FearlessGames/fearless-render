@@ -1,6 +1,6 @@
 package se.fearlessgames.fear.example;
 
-import se.fearlessgames.fear.FearMesh;
+import se.fearlessgames.fear.Mesh;
 import se.fearlessgames.fear.Node;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
@@ -9,7 +9,7 @@ import se.fearlessgames.fear.vbo.VertexBufferObject;
 public class Orb {
 	private final Node rotationCenterNode;
 	private final Node meshCenterNode;
-	private final FearMesh orbMesh;
+	private final Mesh orbMesh;
 	private final double orbitSpeed;
 	private final double rotationSpeed;
 	private final Node meshNode;
@@ -17,7 +17,7 @@ public class Orb {
 	public Orb(String name, VertexBufferObject vbo, double radius, double orbitSpeed, double rotationSpeed) {
 		this.orbitSpeed = orbitSpeed;
 		this.rotationSpeed = rotationSpeed;
-		orbMesh = new FearMesh(vbo);
+		orbMesh = new Mesh(vbo);
 		rotationCenterNode = new Node(name + "-rotationCenter");
 		meshCenterNode = new Node(name + "-meshCenter");
 		meshNode = new Node(name + "-mesh", orbMesh);

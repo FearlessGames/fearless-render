@@ -22,7 +22,7 @@ public class Renderer {
 		this.perspectiveBuilder = perspectiveBuilder;
 	}
 
-	public void render(FearMesh mesh, Matrix4 matrix) {
+	public void render(Mesh mesh, Matrix4 matrix) {
 
 		fearGl.glUseProgram(shader.getShaderProgram());
 		int projection = fearGl.glGetUniformLocation(shader.getShaderProgram(), "projection");

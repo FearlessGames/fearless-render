@@ -9,7 +9,7 @@ import java.util.List;
 public class Node {
 	private final String name;
 	private final List<Node> childNodes;
-	private final FearMesh mesh;
+	private final Mesh mesh;
 	private boolean visible = true;
 
 	private Vector3 position = Vector3.ZERO;
@@ -25,7 +25,7 @@ public class Node {
 		this(root, null);
 	}
 
-	public Node(String name, FearMesh mesh) {
+	public Node(String name, Mesh mesh) {
 		this.name = name;
 		this.mesh = mesh;
 		this.childNodes = Lists.newArrayList();
@@ -40,7 +40,7 @@ public class Node {
 		return childNodes;
 	}
 
-	public FearMesh getMesh() {
+	public Mesh getMesh() {
 		return mesh;
 	}
 
