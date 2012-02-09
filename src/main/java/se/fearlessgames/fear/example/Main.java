@@ -2,11 +2,20 @@ package se.fearlessgames.fear.example;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
-import se.fearlessgames.fear.ShaderProgram;
-import se.fearlessgames.fear.VboBox;
+import se.fearlessgames.fear.*;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
+import se.fearlessgames.fear.math.Quaternion;
+import se.fearlessgames.fear.math.Vector3;
+import se.fearlessgames.fear.shape.BoxFactory;
+import se.fearlessgames.fear.texture.Texture;
+import se.fearlessgames.fear.texture.TextureLoader;
+import se.fearlessgames.fear.texture.TextureLoaderImpl;
+import se.fearlessgames.fear.texture.TextureType;
+import se.fearlessgames.fear.vbo.VertexBufferObject;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.EnumSet;
 
 /*
@@ -18,13 +27,18 @@ public class Main {
 	private boolean done = false; //game runs until done is set to true
 	private PerspectiveBuilder perspectiveBuilder;
 	private final FearGl fearGl;
+	private final Scene scene;
+	private final Renderer renderer;
+	private final TextureLoader textureManager = new TextureLoaderImpl();
+	private double rot;
 
-	public Main() {
+	public Main() throws IOException {
 		fearGl = new FearLwjgl();
 		init();
 
-
-		VboBox obj = new VboBox(fearGl, createShaderProgram());
+		scene = createScene();
+		scene.getRoot().setPosition(new Vector3(0, 0, -4));
+		renderer = new Renderer(new MeshRenderer(fearGl, createShaderProgram(), perspectiveBuilder));
 
 		long t1 = System.nanoTime();
 		long t2;
@@ -33,8 +47,9 @@ public class Main {
 			if (Display.isCloseRequested()) {
 				done = true;
 			}
-			obj.update();
-			render(obj);
+
+			render();
+
 			Display.update();
 			t2 = System.nanoTime();
 			if ((c++ & 127) == 0) {
@@ -47,24 +62,40 @@ public class Main {
 
 	}
 
+	private void render() {
+		rot += 0.005d;
+		scene.getRoot().setRotation(Quaternion.fromEulerAngles(rot, rot, rot));
+
+		fearGl.glClear(EnumSet.of(ClearBit.GL_COLOR_BUFFER_BIT, ClearBit.GL_DEPTH_BUFFER_BIT));
+		scene.render(renderer);
+	}
+
+	private Scene createScene() throws IOException {
+		VertexBufferObject vertexBufferObject = new BoxFactory(fearGl).create();
+
+		Node root = new Node("root");
+		Mesh boxMesh = new Mesh(vertexBufferObject);
+		Texture texture = textureManager.loadTexture(TextureType.PNG, new FileInputStream("src/main/resources/texture/crate.png"));
+		boxMesh.setTexture(texture);
+		Node boxNode = new Node("Box", boxMesh);
+		root.addChild(boxNode);
+
+		return new Scene(root);
+	}
+
+
 	private ShaderProgram createShaderProgram() {
 		ShaderProgram shaderProgram = new ShaderProgram(fearGl);
-		shaderProgram.loadAndCompile("src/main/resources/shaders/screen.vert", ShaderType.VERTEX_SHADER);
-		shaderProgram.loadAndCompile("src/main/resources/shaders/screen.frag", ShaderType.FRAGMENT_SHADER);
+		shaderProgram.loadAndCompile("src/main/resources/shaders/textured.vert", ShaderType.VERTEX_SHADER);
+		shaderProgram.loadAndCompile("src/main/resources/shaders/textured.frag", ShaderType.FRAGMENT_SHADER);
 		shaderProgram.attachToProgram(ShaderType.VERTEX_SHADER);
 		shaderProgram.attachToProgram(ShaderType.FRAGMENT_SHADER);
 		return shaderProgram;
 	}
 
-
-	private void render(VboBox vboBox) {
-		fearGl.glClear(EnumSet.of(ClearBit.GL_COLOR_BUFFER_BIT, ClearBit.GL_DEPTH_BUFFER_BIT));
-		vboBox.draw(perspectiveBuilder);
-	}
-
 	private void init() {
-		int w = 1280;
-		int h = 1024;
+		int w = 800;
+		int h = 600;
 
 		try {
 			Display.setDisplayMode(new DisplayMode(w, h));
@@ -77,7 +108,7 @@ public class Main {
 		}
 
 		fearGl.glViewport(0, 0, w, h);
-		perspectiveBuilder = new PerspectiveBuilder(45.0f, ((float) w / (float) h), 0.1f, 100.0f);
+		perspectiveBuilder = new PerspectiveBuilder(45.0f, ((float) w / (float) h), 0.1f, 200.0f);
 
 		fearGl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		fearGl.glClearDepth(1.0f);
@@ -85,7 +116,7 @@ public class Main {
 		fearGl.glDepthFunc(DepthFunction.GL_LEQUAL);
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		new Main();
 	}
 }
