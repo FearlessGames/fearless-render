@@ -24,6 +24,12 @@ public class MeshRenderer {
 	public void render(Mesh mesh, Matrix4 matrix) {
 
 		fearGl.glUseProgram(shader.getShaderProgram());
+
+		if (mesh.hasTexture()) {
+			fearGl.glEnable(Capability.GL_TEXTURE_2D);
+			fearGl.glBindTexture(TextureType.TEXTURE_2D, mesh.getTexture().getId());
+		}
+
 		int projection = fearGl.glGetUniformLocation(shader.getShaderProgram(), "projection");
 		fearGl.glUniformMatrix4(projection, false, perspectiveBuilder.getMatrix());
 		int translation = fearGl.glGetUniformLocation(shader.getShaderProgram(), "translation");

@@ -11,4 +11,5 @@ public class SlickTexture implements Texture {
 	public int getId() {
 		return internalTexture.getTextureID();
 	}
+
 }

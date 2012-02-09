@@ -62,4 +62,6 @@ public interface FearGl {
 	String glGetShaderInfoLog(int shader, int maxLength);
 
 	int glCreateProgram();
+
+	void glBindTexture(TextureType type, int textureId);
 }

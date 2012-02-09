@@ -158,4 +158,9 @@ public class FearLwjgl implements FearGl {
 	public int glCreateProgram() {
 		return GL20.glCreateProgram();
 	}
+
+	@Override
+	public void glBindTexture(TextureType type, int textureId) {
+		GL11.glBindTexture(type.getGlType(), textureId);
+	}
 }
