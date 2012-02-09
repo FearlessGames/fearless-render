@@ -57,6 +57,7 @@ public class ManyOrbs {
 			orbs.add(orb);
 			scene.getRoot().addChild(orb.getRoot());
 		}
+		System.out.printf("Scene contains %d vertices\n", scene.getRoot().getVertexCount());
 
 		while (!done) {
 			if (Display.isCloseRequested()) {
