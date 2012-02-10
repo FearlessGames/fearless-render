@@ -163,4 +163,19 @@ public class FearLwjgl implements FearGl {
 	public void glBindTexture(TextureType type, int textureId) {
 		GL11.glBindTexture(type.getGlType(), textureId);
 	}
+
+	@Override
+	public int glGetAttribLocation(int shaderProgram, String name) {
+		return GL20.glGetAttribLocation(shaderProgram, name);
+	}
+
+	@Override
+	public void glVertexAttribPointer(int index, int size, DataType type, boolean normalized, int stride, int buffer_buffer_offset) {
+		GL20.glVertexAttribPointer(index, size, type.getGlType(), normalized, stride, buffer_buffer_offset);
+	}
+
+	@Override
+	public void glEnableVertexAttribArray(int index) {
+		GL20.glEnableVertexAttribArray(index);
+	}
 }

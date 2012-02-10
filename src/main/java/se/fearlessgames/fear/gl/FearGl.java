@@ -64,4 +64,10 @@ public interface FearGl {
 	int glCreateProgram();
 
 	void glBindTexture(TextureType type, int textureId);
+
+	int glGetAttribLocation(int shaderProgram, String name);
+
+	void glVertexAttribPointer(int index, int size, DataType type, boolean normalized, int stride, int buffer_buffer_offset);
+
+	void glEnableVertexAttribArray(int index);
 }

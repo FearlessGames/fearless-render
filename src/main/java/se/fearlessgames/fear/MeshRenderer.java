@@ -30,16 +30,20 @@ public class MeshRenderer {
 			fearGl.glBindTexture(TextureType.TEXTURE_2D, mesh.getTexture().getId());
 		}
 
-		int projection = fearGl.glGetUniformLocation(shader.getShaderProgram(), "projection");
-		fearGl.glUniformMatrix4(projection, false, perspectiveBuilder.getMatrix());
-		int translation = fearGl.glGetUniformLocation(shader.getShaderProgram(), "translation");
-		fearGl.glUniformMatrix4(translation, false, GlMatrixBuilder.convert(matrix));
 		VertexBufferObject vbo = mesh.getVbo();
 		InterleavedBuffer interleavedBuffer = vbo.getInterleavedBuffer();
+
+		int projection = fearGl.glGetUniformLocation(shader.getShaderProgram(), "projection");
+		fearGl.glUniformMatrix4(projection, false, perspectiveBuilder.getMatrix());
+
+		int translation = fearGl.glGetUniformLocation(shader.getShaderProgram(), "translation");
+		fearGl.glUniformMatrix4(translation, false, GlMatrixBuilder.convert(matrix));
+
 
 		enableStates(interleavedBuffer);
 
 		fearGl.glBindBuffer(BufferTarget.GL_ARRAY_BUFFER, vbo.getVertexBufferId());
+
 
 		int stride = interleavedBuffer.getStride();
 		int offset = 0;
@@ -60,6 +64,11 @@ public class MeshRenderer {
 		if (interleavedBuffer.isTextureCords()) {
 			fearGl.glTexCoordPointer(2, DataType.GL_FLOAT, stride, offset);
 		}
+
+
+		int vertex = fearGl.glGetAttribLocation(shader.getShaderProgram(), "vertex");
+		fearGl.glVertexAttribPointer(vertex, 3, DataType.GL_FLOAT, true, stride, 0);
+		fearGl.glEnableVertexAttribArray(vertex);
 
 		fearGl.glBindBuffer(BufferTarget.GL_ELEMENT_ARRAY_BUFFER, vbo.getIndexBufferId());
 
