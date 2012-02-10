@@ -39,6 +39,7 @@ public class MeshRenderer {
 		int translation = fearGl.glGetUniformLocation(shader.getShaderProgram(), "translation");
 		fearGl.glUniformMatrix4(translation, false, GlMatrixBuilder.convert(matrix));
 
+		fearGl.glBindFragDataLocation(shader.getShaderProgram(), 0, "fragColor");
 
 		enableStates(interleavedBuffer);
 

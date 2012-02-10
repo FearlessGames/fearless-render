@@ -70,4 +70,6 @@ public interface FearGl {
 	void glVertexAttribPointer(int index, int size, DataType type, boolean normalized, int stride, int buffer_buffer_offset);
 
 	void glEnableVertexAttribArray(int index);
+
+	void glBindFragDataLocation(int shaderProgram, int colorNumber, String name);
 }

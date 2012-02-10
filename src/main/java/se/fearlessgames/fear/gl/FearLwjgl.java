@@ -3,6 +3,7 @@ package se.fearlessgames.fear.gl;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -177,5 +178,10 @@ public class FearLwjgl implements FearGl {
 	@Override
 	public void glEnableVertexAttribArray(int index) {
 		GL20.glEnableVertexAttribArray(index);
+	}
+
+	@Override
+	public void glBindFragDataLocation(int shaderProgram, int colorNumber, String name) {
+		GL30.glBindFragDataLocation(shaderProgram, colorNumber, name);
 	}
 }
