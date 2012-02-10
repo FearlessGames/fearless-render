@@ -50,6 +50,11 @@ public class MeshRenderer {
 		int offset = 0;
 
 		fearGl.glVertexPointer(3, DataType.GL_FLOAT, stride, offset);
+		int vertex = fearGl.glGetAttribLocation(shader.getShaderProgram(), "vertex");
+		fearGl.glVertexAttribPointer(vertex, 3, DataType.GL_FLOAT, true, stride, offset);
+		fearGl.glEnableVertexAttribArray(vertex);
+
+
 		offset = 3 * 4;
 
 		if (interleavedBuffer.isNormals()) {
@@ -64,12 +69,12 @@ public class MeshRenderer {
 
 		if (interleavedBuffer.isTextureCords()) {
 			fearGl.glTexCoordPointer(2, DataType.GL_FLOAT, stride, offset);
+
+			int pointer = fearGl.glGetAttribLocation(shader.getShaderProgram(), "textureCoord");
+			fearGl.glVertexAttribPointer(pointer, 2, DataType.GL_FLOAT, true, stride, offset);
+			fearGl.glEnableVertexAttribArray(pointer);
 		}
 
-
-		int vertex = fearGl.glGetAttribLocation(shader.getShaderProgram(), "vertex");
-		fearGl.glVertexAttribPointer(vertex, 3, DataType.GL_FLOAT, true, stride, 0);
-		fearGl.glEnableVertexAttribArray(vertex);
 
 		fearGl.glBindBuffer(BufferTarget.GL_ELEMENT_ARRAY_BUFFER, vbo.getIndexBufferId());
 
