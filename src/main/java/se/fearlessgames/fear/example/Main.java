@@ -63,7 +63,7 @@ public class Main {
 	}
 
 	private void render() {
-		rot += 0.005d;
+		rot += 0.0005d;
 		scene.getRoot().setRotation(Quaternion.fromEulerAngles(rot, rot, rot));
 
 		fearGl.glClear(EnumSet.of(ClearBit.GL_COLOR_BUFFER_BIT, ClearBit.GL_DEPTH_BUFFER_BIT));
@@ -78,6 +78,7 @@ public class Main {
 		Texture texture = textureManager.loadTexture(TextureType.PNG, new FileInputStream("src/main/resources/texture/crate.png"));
 		boxMesh.setTexture(texture);
 		Node boxNode = new Node("Box", boxMesh);
+		boxNode.setScale(new Vector3(1, 1.4, 0.2));
 		root.addChild(boxNode);
 
 		return new Scene(root);
