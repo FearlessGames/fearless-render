@@ -1,7 +1,9 @@
 #version 140
 
 uniform sampler2D colorMap;
+in vec4 texCoord0;
+out vec4 fragColor;
 
 void main(){
-    gl_FragColor = texture(colorMap, gl_TexCoord[0].st);
+    fragColor = texture(colorMap, texCoord0.xy);
 }
