@@ -1,16 +1,23 @@
 package se.fearlessgames.fear;
 
+import se.fearlessgames.fear.gl.DataType;
 import se.fearlessgames.fear.gl.FearGl;
 import se.fearlessgames.fear.gl.ShaderType;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.nio.FloatBuffer;
 import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ShaderProgram {
 	private final FearGl fearGl;
 	private final int shaderProgram;
 	private final EnumMap<ShaderType, Integer> shaderMap;
+
+	private final Map<String, Integer> uniformPointerCache;
+	private final Map<String, Integer> attribPointerCache;
 
 	public ShaderProgram(FearGl fearGl) {
 		this.fearGl = fearGl;
@@ -19,6 +26,8 @@ public class ShaderProgram {
 			throw new RuntimeException("Failed to create shader program");
 		}
 		shaderMap = new EnumMap<ShaderType, Integer>(ShaderType.class);
+		uniformPointerCache = new HashMap<String, Integer>();
+		attribPointerCache = new HashMap<String, Integer>();
 	}
 
 	public int getShaderProgram() {
@@ -49,6 +58,28 @@ public class ShaderProgram {
 			fearGl.glValidateProgram(shaderProgram);
 			printLogInfo(shaderProgram);
 		}
+	}
+
+	public void setUniformMatrix4(String name, FloatBuffer matrix) {
+		int pointer;
+		if (!uniformPointerCache.containsKey(name)) {
+			uniformPointerCache.put(name, fearGl.glGetUniformLocation(shaderProgram, name));
+		}
+		pointer = uniformPointerCache.get(name);
+
+		fearGl.glUniformMatrix4(pointer, false, matrix);
+	}
+
+	public void setVertexAttribute(String name, int size, int stride, int offset) {
+
+		int pointer;
+		if (!attribPointerCache.containsKey(name)) {
+			uniformPointerCache.put(name, fearGl.glGetAttribLocation(shaderProgram, name));
+		}
+		pointer = uniformPointerCache.get(name);
+
+		fearGl.glVertexAttribPointer(pointer, size, DataType.GL_FLOAT, true, stride, offset);
+		fearGl.glEnableVertexAttribArray(pointer);
 	}
 
 

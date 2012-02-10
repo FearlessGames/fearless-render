@@ -33,11 +33,8 @@ public class MeshRenderer {
 		VertexBufferObject vbo = mesh.getVbo();
 		InterleavedBuffer interleavedBuffer = vbo.getInterleavedBuffer();
 
-		int projection = fearGl.glGetUniformLocation(shader.getShaderProgram(), "projection");
-		fearGl.glUniformMatrix4(projection, false, perspectiveBuilder.getMatrix());
-
-		int translation = fearGl.glGetUniformLocation(shader.getShaderProgram(), "translation");
-		fearGl.glUniformMatrix4(translation, false, GlMatrixBuilder.convert(matrix));
+		shader.setUniformMatrix4("projection", perspectiveBuilder.getMatrix());
+		shader.setUniformMatrix4("translation", GlMatrixBuilder.convert(matrix));
 
 		fearGl.glBindFragDataLocation(shader.getShaderProgram(), 0, "fragColor");
 
@@ -50,29 +47,26 @@ public class MeshRenderer {
 		int offset = 0;
 
 		fearGl.glVertexPointer(3, DataType.GL_FLOAT, stride, offset);
-		int vertex = fearGl.glGetAttribLocation(shader.getShaderProgram(), "vertex");
-		fearGl.glVertexAttribPointer(vertex, 3, DataType.GL_FLOAT, true, stride, offset);
-		fearGl.glEnableVertexAttribArray(vertex);
+		shader.setVertexAttribute("vertex", 3, stride, offset);
 
 
 		offset = 3 * 4;
 
 		if (interleavedBuffer.isNormals()) {
 			fearGl.glNormalPointer(DataType.GL_FLOAT, stride, offset);
+			shader.setVertexAttribute("normal", 3, stride, offset);
 			offset += (3 * 4);
 		}
 
 		if (interleavedBuffer.isColors()) {
 			fearGl.glColorPointer(4, DataType.GL_FLOAT, stride, offset);
+			shader.setVertexAttribute("color", 4, stride, offset);
 			offset += (4 * 4);
 		}
 
 		if (interleavedBuffer.isTextureCords()) {
 			fearGl.glTexCoordPointer(2, DataType.GL_FLOAT, stride, offset);
-
-			int pointer = fearGl.glGetAttribLocation(shader.getShaderProgram(), "textureCoord");
-			fearGl.glVertexAttribPointer(pointer, 2, DataType.GL_FLOAT, true, stride, offset);
-			fearGl.glEnableVertexAttribArray(pointer);
+			shader.setVertexAttribute("textureCoord", 2, stride, offset);
 		}
 
 
