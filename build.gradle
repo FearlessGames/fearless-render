@@ -74,7 +74,7 @@ task(runExample, dependsOn: ['build', 'nativeLibs']) << {
     def argsList = [libpath]
     println(argsList)
     javaexec {
-        main = 'se.fearlessgames.fear.example.Main2'
+        main = "se.fearlessgames.fear.example.$ex"
         classpath = sourceSets.main.runtimeClasspath
         jvmArgs = argsList
     }
