@@ -64,7 +64,7 @@ public class Main {
 
 	private void render() {
 		rot += 0.0005d;
-		scene.getRoot().setRotation(Quaternion.fromEulerAngles(rot, rot, rot));
+		scene.getRoot().setRotation(Quaternion.fromEulerAngles(rot/2, rot, 0));
 
 		fearGl.glClear(EnumSet.of(ClearBit.GL_COLOR_BUFFER_BIT, ClearBit.GL_DEPTH_BUFFER_BIT));
 		scene.render(renderer);
@@ -75,7 +75,7 @@ public class Main {
 
 		Node root = new Node("root");
 		Mesh boxMesh = new Mesh(vertexBufferObject);
-		Texture texture = textureManager.loadTexture(TextureType.PNG, new FileInputStream("src/main/resources/texture/earth.png"));
+		Texture texture = textureManager.loadTextureFlipped(TextureType.PNG, new FileInputStream("src/main/resources/texture/earth.png"));
 		boxMesh.setTexture(texture);
 		Node boxNode = new Node("Box", boxMesh);
 		//boxNode.setScale(new Vector3(1, 1.4, 0.2));
