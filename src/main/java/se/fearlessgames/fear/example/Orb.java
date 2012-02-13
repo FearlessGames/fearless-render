@@ -43,4 +43,8 @@ public class Orb {
 	public Node getRoot() {
 		return rotationCenterNode;
 	}
+
+	public Mesh getMesh() {
+		return orbMesh;
+	}
 }

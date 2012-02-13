@@ -11,8 +11,13 @@ import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.shape.ShapeFactory;
 import se.fearlessgames.fear.shape.SphereFactory;
+import se.fearlessgames.fear.texture.Texture;
+import se.fearlessgames.fear.texture.TextureLoader;
+import se.fearlessgames.fear.texture.TextureLoaderImpl;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
@@ -50,11 +55,19 @@ public class ManyOrbs {
 		int c = 0;
 
 		Random rand = new Random();
+		TextureLoader textureManager = new TextureLoaderImpl();
+		Texture texture = null;
+		try {
+			texture = textureManager.loadTexture(se.fearlessgames.fear.texture.TextureType.PNG, new FileInputStream("src/main/resources/texture/earth.png"));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 
 		for (int i = 0; i < numOrbs; i++) {
 			Orb orb = new Orb("orb" + i, vbo, 1 * rand.nextDouble(), 1e-4 * rand.nextDouble(), 1e-3 * (rand.nextDouble() - 0.5));
 			orb.setRotationRadius(new Vector3(30 * rand.nextDouble(), 20 * rand.nextDouble(), 0));
 			orbs.add(orb);
+			orb.getMesh().setTexture(texture);
 			scene.getRoot().addChild(orb.getRoot());
 		}
 		System.out.printf("Scene contains %d vertices\n", scene.getRoot().getVertexCount());
@@ -92,8 +105,8 @@ public class ManyOrbs {
 
 	private ShaderProgram createShaderProgram() {
 		ShaderProgram shaderProgram = new ShaderProgram(fearGl);
-		shaderProgram.loadAndCompile("src/main/resources/shaders/screen.vert", ShaderType.VERTEX_SHADER);
-		shaderProgram.loadAndCompile("src/main/resources/shaders/screen.frag", ShaderType.FRAGMENT_SHADER);
+		shaderProgram.loadAndCompile("src/main/resources/shaders/textured.vert", ShaderType.VERTEX_SHADER);
+		shaderProgram.loadAndCompile("src/main/resources/shaders/textured.frag", ShaderType.FRAGMENT_SHADER);
 		shaderProgram.attachToProgram(ShaderType.VERTEX_SHADER);
 		shaderProgram.attachToProgram(ShaderType.FRAGMENT_SHADER);
 		return shaderProgram;

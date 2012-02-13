@@ -23,6 +23,7 @@ public class SphereFactory implements ShapeFactory {
 	private FloatBuffer normalBuffer;
 	private IntBuffer indexBuffer;
 	private FloatBuffer colorBuffer;
+	private FloatBuffer textureCoordinates;
 
 	public SphereFactory(FearGl fearGl, int zSamples, int radialSamples, double radius) {
 		this.fearGl = fearGl;
@@ -36,7 +37,20 @@ public class SphereFactory implements ShapeFactory {
 
 	@Override
 	public VertexBufferObject create() {
-		return VboBuilder.fromBuffer(fearGl, vertexBuffer).normals(normalBuffer).indices(indexBuffer).colors(colorBuffer).triangles().build();
+		int verts = vertexBuffer.limit() / 3;
+		int normals = normalBuffer.limit() / 3;
+		if (verts != normals) {
+			throw new RuntimeException(String.format("%d vertices but %d normals", verts, normals));
+		}
+		int colors = colorBuffer.limit() / 4;
+		if (verts != colors) {
+			throw new RuntimeException(String.format("%d vertices but %d color", verts, colors));
+		}
+		int texCoords = textureCoordinates.limit() / 2;
+		if (verts != texCoords) {
+			throw new RuntimeException(String.format("%d vertices but %d texture coordinates", verts, texCoords));
+		}
+		return VboBuilder.fromBuffer(fearGl, vertexBuffer).normals(normalBuffer).indices(indexBuffer).colors(colorBuffer).textureCoords(textureCoordinates).triangles().build();
 	}
 
 	private void createGeometryData() {
@@ -45,6 +59,7 @@ public class SphereFactory implements ShapeFactory {
 		vertexBuffer = ByteBuffer.allocateDirect(4 * 3 * verts).order(ByteOrder.nativeOrder()).asFloatBuffer();
 		normalBuffer = ByteBuffer.allocateDirect(4 * 3 * verts).order(ByteOrder.nativeOrder()).asFloatBuffer();
 		colorBuffer = ByteBuffer.allocateDirect(4 * 4 * verts).order(ByteOrder.nativeOrder()).asFloatBuffer();
+		textureCoordinates = ByteBuffer.allocateDirect(4 * 2 * verts).order(ByteOrder.nativeOrder()).asFloatBuffer();
 
 
 		// generate geometry
@@ -100,12 +115,15 @@ public class SphereFactory implements ShapeFactory {
 						put(random.nextFloat()).
 						put(random.nextFloat()).
 						put(0.0f);
+				textureCoordinates.put((float)(Math.asin(kNormal.getX())/Math.PI + 0.5)).
+						put((float)(Math.asin(kNormal.getY())/Math.PI + 0.5));
 
 				i++;
 			}
 
-			copyInternalVector3(vertexBuffer, iSave, i);
-			copyInternalVector3(normalBuffer, iSave, i);
+			copyInternalVector(vertexBuffer, iSave, i, 3);
+			copyInternalVector(normalBuffer, iSave, i, 3);
+			copyInternalVector(textureCoordinates, iSave, i, 2);
 
 			i++;
 		}
@@ -116,21 +134,26 @@ public class SphereFactory implements ShapeFactory {
 		vertexBuffer.put((float) center.getX()).put((float) center.getY()).put((float) (center.getZ() - radius));
 		normalBuffer.position(i * 3);
 		normalBuffer.put(0).put(0).put(-1);
+		textureCoordinates.put((float)(Math.asin(0)/Math.PI + 0.5)).
+				put((float) (Math.asin(0) / Math.PI + 0.5));
 
 		// north pole
 		vertexBuffer.put((float) center.getX()).put((float) center.getY()).put((float) (center.getZ() + radius));
 		normalBuffer.put(0).put(0).put(1);
+		textureCoordinates.put((float)(Math.asin(0)/Math.PI + 0.5)).
+				put((float)(Math.asin(0)/Math.PI + 0.5));
 
 		normalBuffer.flip();
 		vertexBuffer.flip();
+		textureCoordinates.flip();
 
 	}
 
-	private void copyInternalVector3(final FloatBuffer buf, final int fromPos, final int toPos) {
-		final float[] data = new float[3];
-		buf.position(fromPos * 3);
+	private void copyInternalVector(final FloatBuffer buf, final int fromPos, final int toPos, int size) {
+		final float[] data = new float[size];
+		buf.position(fromPos * size);
 		buf.get(data);
-		buf.position(toPos * 3);
+		buf.position(toPos * size);
 		buf.put(data);
 	}
 
