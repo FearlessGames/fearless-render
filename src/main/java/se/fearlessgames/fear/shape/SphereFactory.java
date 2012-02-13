@@ -24,12 +24,14 @@ public class SphereFactory implements ShapeFactory {
 	private IntBuffer indexBuffer;
 	private FloatBuffer colorBuffer;
 	private FloatBuffer textureCoordinates;
+	private final TextureMode textureMode;
 
-	public SphereFactory(FearGl fearGl, int zSamples, int radialSamples, double radius) {
+	public SphereFactory(FearGl fearGl, int zSamples, int radialSamples, double radius, TextureMode textureMode) {
 		this.fearGl = fearGl;
 		this.zSamples = zSamples;
 		this.radialSamples = radialSamples;
 		this.radius = radius;
+		this.textureMode = textureMode;
 
 		createGeometryData();
 		createIndexData();
@@ -99,6 +101,7 @@ public class SphereFactory implements ShapeFactory {
 
 			final int iSave = i;
 			for (int iR = 0; iR < radialSamples; iR++) {
+				final double fRadialFraction = iR * fInvRS; // in [0,1)
 				final Vector3 kRadial = new Vector3(afCos[iR], afSin[iR], 0);
 				Vector3 tempVa = kRadial.multiply(fSliceRadius);
 				float x = (float) (kSliceCenter.getX() + tempVa.getX());
@@ -115,15 +118,36 @@ public class SphereFactory implements ShapeFactory {
 						put(random.nextFloat()).
 						put(random.nextFloat()).
 						put(0.0f);
-				textureCoordinates.put((float)(Math.asin(kNormal.getX())/Math.PI + 0.5)).
-						put((float)(Math.asin(kNormal.getY())/Math.PI + 0.5));
+
+
+				if (textureMode == TextureMode.LINEAR) {
+					textureCoordinates.put((float) fRadialFraction).put(
+							(float) (0.5 * (fZFraction + 1.0)));
+				} else if (textureMode == TextureMode.PROJECTED) {
+					textureCoordinates.put((float) fRadialFraction).put(
+							(float) (MathUtils.INV_PI * (MathUtils.HALF_PI + Math.asin(fZFraction))));
+				} else if (textureMode == TextureMode.POLAR) {
+					final double r = (MathUtils.HALF_PI - Math.abs(fAFraction)) / MathUtils.PI;
+					final double u = r * afCos[iR] + 0.5;
+					final double v = r * afSin[iR] + 0.5;
+					textureCoordinates.put((float) u).put((float) v);
+				}
 
 				i++;
 			}
 
 			copyInternalVector(vertexBuffer, iSave, i, 3);
 			copyInternalVector(normalBuffer, iSave, i, 3);
-			copyInternalVector(textureCoordinates, iSave, i, 2);
+
+			if (textureMode == TextureMode.LINEAR) {
+				textureCoordinates.put(1.0f).put((float) (0.5 * (fZFraction + 1.0)));
+			} else if (textureMode == TextureMode.PROJECTED) {
+				textureCoordinates.put(1.0f).put(
+						(float) (MathUtils.INV_PI * (MathUtils.HALF_PI + Math.asin(fZFraction))));
+			} else if (textureMode == TextureMode.POLAR) {
+				final float r = (float) ((MathUtils.HALF_PI - Math.abs(fAFraction)) / MathUtils.PI);
+				textureCoordinates.put(r + 0.5f).put(0.5f);
+			}
 
 			i++;
 		}
@@ -134,14 +158,23 @@ public class SphereFactory implements ShapeFactory {
 		vertexBuffer.put((float) center.getX()).put((float) center.getY()).put((float) (center.getZ() - radius));
 		normalBuffer.position(i * 3);
 		normalBuffer.put(0).put(0).put(-1);
-		textureCoordinates.put((float)(Math.asin(0)/Math.PI + 0.5)).
-				put((float) (Math.asin(0) / Math.PI + 0.5));
+
+		if (textureMode == TextureMode.POLAR) {
+			textureCoordinates.put(0.5f).put(0.5f);
+		} else {
+			textureCoordinates.put(0.5f).put(0.0f);
+		}
 
 		// north pole
 		vertexBuffer.put((float) center.getX()).put((float) center.getY()).put((float) (center.getZ() + radius));
 		normalBuffer.put(0).put(0).put(1);
-		textureCoordinates.put((float)(Math.asin(0)/Math.PI + 0.5)).
-				put((float)(Math.asin(0)/Math.PI + 0.5));
+
+		if (textureMode == TextureMode.POLAR) {
+			textureCoordinates.put(0.5f).put(0.5f);
+		} else {
+			textureCoordinates.put(0.5f).put(1.0f);
+		}
+
 
 		normalBuffer.flip();
 		vertexBuffer.flip();
@@ -199,6 +232,12 @@ public class SphereFactory implements ShapeFactory {
 		}
 
 		indexBuffer.flip();
+	}
+
+	public enum TextureMode {
+		LINEAR,
+		PROJECTED,
+		POLAR
 	}
 
 }

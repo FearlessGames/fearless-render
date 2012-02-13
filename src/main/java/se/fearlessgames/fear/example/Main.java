@@ -71,7 +71,7 @@ public class Main {
 	}
 
 	private Scene createScene() throws IOException {
-		VertexBufferObject vertexBufferObject = new SphereFactory(fearGl, 100, 100, 1.5).create();
+		VertexBufferObject vertexBufferObject = new SphereFactory(fearGl, 100, 100, 1.5, SphereFactory.TextureMode.PROJECTED).create();
 
 		Node root = new Node("root");
 		Mesh boxMesh = new Mesh(vertexBufferObject);

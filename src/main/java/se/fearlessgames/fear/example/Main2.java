@@ -131,7 +131,7 @@ public class Main2 {
 	}
 
 	private VertexBufferObject createVbo() {
-		ShapeFactory factory = new SphereFactory(fearGl, 40, 40, 1);
+		ShapeFactory factory = new SphereFactory(fearGl, 40, 40, 1, SphereFactory.TextureMode.PROJECTED);
 		return factory.create();
 	}
 

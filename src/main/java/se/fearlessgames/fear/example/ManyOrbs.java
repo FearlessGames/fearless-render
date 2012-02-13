@@ -42,7 +42,7 @@ public class ManyOrbs {
 
 		int numOrbs = 100;
 
-		ShapeFactory shapeFactory = new SphereFactory(fearGl, 100, 100, 2);
+		ShapeFactory shapeFactory = new SphereFactory(fearGl, 100, 100, 2, SphereFactory.TextureMode.PROJECTED);
 		vbo = shapeFactory.create();
 
 
