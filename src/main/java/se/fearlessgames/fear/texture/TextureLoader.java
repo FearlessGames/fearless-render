@@ -7,4 +7,5 @@ public interface TextureLoader {
 	Texture loadTexture(TextureType textureType, InputStream inputStream) throws IOException;
 
 
+	Texture loadTextureFlipped(TextureType textureType, InputStream inputStream) throws IOException;
 }
