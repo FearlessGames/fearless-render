@@ -7,7 +7,7 @@ import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
-import se.fearlessgames.fear.shape.BoxFactory;
+import se.fearlessgames.fear.shape.SphereFactory;
 import se.fearlessgames.fear.texture.Texture;
 import se.fearlessgames.fear.texture.TextureLoader;
 import se.fearlessgames.fear.texture.TextureLoaderImpl;
@@ -71,14 +71,14 @@ public class Main {
 	}
 
 	private Scene createScene() throws IOException {
-		VertexBufferObject vertexBufferObject = new BoxFactory(fearGl).create();
+		VertexBufferObject vertexBufferObject = new SphereFactory(fearGl, 100, 100, 1.5).create();
 
 		Node root = new Node("root");
 		Mesh boxMesh = new Mesh(vertexBufferObject);
-		Texture texture = textureManager.loadTexture(TextureType.PNG, new FileInputStream("src/main/resources/texture/crate.png"));
+		Texture texture = textureManager.loadTexture(TextureType.PNG, new FileInputStream("src/main/resources/texture/earth.png"));
 		boxMesh.setTexture(texture);
 		Node boxNode = new Node("Box", boxMesh);
-		boxNode.setScale(new Vector3(1, 1.4, 0.2));
+		//boxNode.setScale(new Vector3(1, 1.4, 0.2));
 		root.addChild(boxNode);
 
 		return new Scene(root);
