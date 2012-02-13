@@ -16,7 +16,7 @@ public class SimpleVisualTest {
 	public void testSimple() throws Exception {
 		DisplaySupplier supplier = new DisplaySupplier();
 		supplier.setDimensions(100, 100);
-		FearDisplay output = supplier.showDisplay();
+		Display output = supplier.showDisplay();
 		FearLwjgl fearGl = new FearLwjgl();
 		Renderer renderer = new Renderer(new MeshRenderer(fearGl, new ShaderProgram(fearGl), mock(PerspectiveBuilder.class)));
 		Scene scene = new Scene(new Node());

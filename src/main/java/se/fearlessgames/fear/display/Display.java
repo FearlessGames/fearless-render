@@ -1,28 +1,27 @@
 package se.fearlessgames.fear.display;
 
 import org.lwjgl.LWJGLException;
-import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import se.fearlessgames.fear.FearError;
 import se.fearlessgames.fear.FearOutput;
 import se.fearlessgames.fear.GlCommand;
 
-public class FearDisplay implements FearOutput {
+public class Display implements FearOutput {
 	private static volatile boolean ACTIVE = false;
 	private boolean destroyed;
 
-	FearDisplay(int width, int height, boolean fullScreen) {
+	Display(int width, int height, boolean fullScreen) {
 		if (ACTIVE) {
 			throw new FearError("Multiple displays may not be active at the same time");
 		}
 		try {
-			Display.setFullscreen(fullScreen);
+			org.lwjgl.opengl.Display.setFullscreen(fullScreen);
 			if (!fullScreen) {
-				Display.setDisplayMode(new DisplayMode(width, height));
+				org.lwjgl.opengl.Display.setDisplayMode(new DisplayMode(width, height));
 			}
-			Display.setTitle("Title");
-			Display.setVSyncEnabled(true);
-			Display.create();
+			org.lwjgl.opengl.Display.setTitle("Title");
+			org.lwjgl.opengl.Display.setVSyncEnabled(true);
+			org.lwjgl.opengl.Display.create();
 			ACTIVE = true;
 			destroyed = false;
 		} catch (LWJGLException e) {
@@ -39,7 +38,7 @@ public class FearDisplay implements FearOutput {
 		if (!destroyed) {
 			destroyed = true;
 			ACTIVE = false;
-			Display.destroy();
+			org.lwjgl.opengl.Display.destroy();
 		}
 	}
 
@@ -51,13 +50,13 @@ public class FearDisplay implements FearOutput {
 
 	public boolean isCloseRequested() {
 		assertValid();
-		return Display.isCloseRequested();
+		return org.lwjgl.opengl.Display.isCloseRequested();
 	}
 
 	@Override
 	public void flush() {
 		assertValid();
-		Display.update();
+		org.lwjgl.opengl.Display.update();
 	}
 
 	@Override

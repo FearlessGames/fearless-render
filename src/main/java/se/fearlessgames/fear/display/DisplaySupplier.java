@@ -1,20 +1,20 @@
 package se.fearlessgames.fear.display;
 
 public class DisplaySupplier {
-	private FearDisplay display;
+	private Display display;
 	private int width;
 	private int height;
 	private boolean fullscreen;
 
-	public FearDisplay showDisplay() {
+	public Display showDisplay() {
 		if (display == null) {
 			display = createDisplay();
 		}
 		return display;
 	}
 
-	private FearDisplay createDisplay() {
-		return new FearDisplay(width, height, fullscreen);
+	private Display createDisplay() {
+		return new Display(width, height, fullscreen);
 	}
 
 	public void setDimensions(int w, int h) {
