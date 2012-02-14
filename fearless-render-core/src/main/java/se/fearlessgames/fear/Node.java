@@ -82,7 +82,7 @@ public class Node {
 				"name='" + name + '\'' +
 				'}';
 	}
-	
+
 	public int getVertexCount() {
 		int count = 0;
 		for (Node childNode : childNodes) {

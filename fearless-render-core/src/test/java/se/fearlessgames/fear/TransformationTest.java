@@ -47,7 +47,7 @@ public class TransformationTest {
 
 	@Test
 	public void rotateAroundZ() throws Exception {
-		Transformation transformation = new Transformation(new Vector3(0, 0, 0), Quaternion.fromEulerAngles(0, Math.PI/2, 0), Vector3.ONE);
+		Transformation transformation = new Transformation(new Vector3(0, 0, 0), Quaternion.fromEulerAngles(0, Math.PI / 2, 0), Vector3.ONE);
 		Matrix4 matrix4 = transformation.asMatrix();
 
 		assertEquals(0, matrix4.getValue(2, 0), EPSILON);

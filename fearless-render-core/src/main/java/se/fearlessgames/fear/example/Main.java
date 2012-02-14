@@ -64,7 +64,7 @@ public class Main {
 
 	private void render() {
 		rot += 0.0005d;
-		scene.getRoot().setRotation(Quaternion.fromEulerAngles(rot/2, rot, 0));
+		scene.getRoot().setRotation(Quaternion.fromEulerAngles(rot / 2, rot, 0));
 
 		fearGl.glClear(EnumSet.of(ClearBit.GL_COLOR_BUFFER_BIT, ClearBit.GL_DEPTH_BUFFER_BIT));
 		scene.render(renderer);

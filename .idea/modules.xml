@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/fearless-render.iml" filepath="$PROJECT_DIR$/fearless-render.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fearless-render-core/fearless-render-core.iml" filepath="$PROJECT_DIR$/fearless-render-core/fearless-render-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fearless-render-example/fearless-render-example.iml" filepath="$PROJECT_DIR$/fearless-render-example/fearless-render-example.iml" />
     </modules>
   </component>
 </project>

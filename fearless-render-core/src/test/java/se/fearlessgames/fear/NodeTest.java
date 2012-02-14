@@ -12,7 +12,7 @@ public class NodeTest {
 	@Test
 	public void noVertexCount() throws Exception {
 		Node node = new Node();
-		
+
 		assertEquals(0, node.getVertexCount());
 	}
 
@@ -31,7 +31,7 @@ public class NodeTest {
 		VertexBufferObject vbo = mock(VertexBufferObject.class);
 		when(vbo.getIndexBufferSize()).thenReturn(4);
 		Mesh mesh = new Mesh(vbo);
-		
+
 		Node root = new Node("root");
 		Node left = new Node("left", mesh);
 		root.addChild(left);
