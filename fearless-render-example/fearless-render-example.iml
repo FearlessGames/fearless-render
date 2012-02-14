@@ -10,8 +10,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="fearless-render-core" />
     <orderEntry type="library" name="groovy-1.8.5" level="application" />
+    <orderEntry type="module" module-name="fearless-render-core" />
   </component>
 </module>
 

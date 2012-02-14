@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="lwjgl-2.8.3">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/artifacts-7/artifacts/56865c09425cc6ecda8606d7e6035ceb/org.lwjgl.lwjgl/lwjgl/2.8.3/jar/lwjgl-2.8.3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/artifacts-7/artifacts/56865c09425cc6ecda8606d7e6035ceb/org.lwjgl.lwjgl/lwjgl/2.8.3/source/lwjgl-2.8.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
