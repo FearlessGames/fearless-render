@@ -33,14 +33,17 @@ public class Main {
 	private final TextureLoader textureManager = new TextureLoaderImpl();
 	private double rot;
 	private Transformation camera = new Transformation(Vector3.ZERO, Quaternion.IDENTITY, Vector3.ONE);
+	private ShaderProgram shaderProgram;
 
 	public Main() throws IOException {
 		fearGl = new FearLwjgl();
 		init();
 
+		shaderProgram = createShaderProgram();
 		scene = createScene();
 		scene.getRoot().setPosition(new Vector3(0, 0, -4));
-		renderer = new Renderer(new MeshRenderer(fearGl, createShaderProgram(), perspectiveBuilder));
+
+        renderer = new Renderer(new MeshRenderer(fearGl, perspectiveBuilder));
 
 		long t1 = System.nanoTime();
 		long t2;
@@ -98,7 +101,7 @@ public class Main {
 		VertexBufferObject vertexBufferObject = new SphereFactory(fearGl, 100, 100, 1.5, SphereFactory.TextureMode.PROJECTED).create();
 
 		Node root = new Node("root");
-		Mesh boxMesh = new Mesh(vertexBufferObject);
+		Mesh boxMesh = new Mesh(vertexBufferObject, shaderProgram);
 		Texture texture = textureManager.loadTextureFlipped(TextureType.PNG, new FileInputStream("src/main/resources/texture/earth.png"));
 		boxMesh.setTexture(texture);
 		Node boxNode = new Node("Box", boxMesh);

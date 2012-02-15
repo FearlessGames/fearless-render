@@ -34,8 +34,6 @@ public class ManyOrbs {
 	private final FearGl fearGl;
 	private final Scene scene;
 	private final Renderer renderer;
-	private final List<Orb> orbs = Lists.newArrayList();
-	private final VertexBufferObject vbo;
 
 	public ManyOrbs() {
 		fearGl = new FearLwjgl();
@@ -44,12 +42,13 @@ public class ManyOrbs {
 		int numOrbs = 100;
 
 		ShapeFactory shapeFactory = new SphereFactory(fearGl, 100, 100, 2, SphereFactory.TextureMode.PROJECTED);
-		vbo = shapeFactory.create();
+		VertexBufferObject vbo = shapeFactory.create();
 
 
 		scene = createScene();
 		scene.getRoot().setPosition(new Vector3(0, -15, -80));
-		renderer = new Renderer(new MeshRenderer(fearGl, createShaderProgram(), perspectiveBuilder));
+		ShaderProgram shaderProgram = createShaderProgram();
+        renderer = new Renderer(new MeshRenderer(fearGl, perspectiveBuilder));
 		long t1 = System.nanoTime();
 		long t2;
 		TimeProvider timeProvider = new SystemTimeProvider();
@@ -64,8 +63,9 @@ public class ManyOrbs {
 			throw new RuntimeException(e);
 		}
 
-		for (int i = 0; i < numOrbs; i++) {
-			Orb orb = new Orb("orb" + i, vbo, 1 * rand.nextDouble(), 1e-4 * rand.nextDouble(), 1e-3 * (rand.nextDouble() - 0.5));
+		List<Orb> orbs = Lists.newArrayList();
+        for (int i = 0; i < numOrbs; i++) {
+			Orb orb = new Orb("orb" + i, vbo, shaderProgram, 1 * rand.nextDouble(), 1e-4 * rand.nextDouble(), 1e-3 * (rand.nextDouble() - 0.5));
 			orb.setRotationRadius(new Vector3(30 * rand.nextDouble(), 20 * rand.nextDouble(), 0));
 			orbs.add(orb);
 			orb.getMesh().setTexture(texture);

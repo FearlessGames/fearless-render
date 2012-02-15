@@ -5,11 +5,13 @@ import se.fearlessgames.fear.vbo.VertexBufferObject;
 
 public class Mesh {
 	private final VertexBufferObject vbo;
+	private final ShaderProgram shaderProgram;
 	private Texture texture;
 
-	public Mesh(VertexBufferObject vbo) {
+	public Mesh(VertexBufferObject vbo, ShaderProgram shaderProgram) {
 		this.vbo = vbo;
-	}
+		this.shaderProgram = shaderProgram;
+    }
 
 	public boolean isOpaque() {
 		return true;
@@ -31,4 +33,7 @@ public class Mesh {
 		return texture != null;
 	}
 
+	public ShaderProgram getShaderProgram() {
+		return shaderProgram;
+	}
 }

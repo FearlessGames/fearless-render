@@ -13,16 +13,15 @@ public class MeshRenderer {
 	// TODO: replace this reference with an output to keep rendering and OpenGL calls in different threads
 	private final FearGl fearGl;
 	// TODO: probably move this
-	private final ShaderProgram shader;
 	private final PerspectiveBuilder perspectiveBuilder;
 
-	public MeshRenderer(FearGl fearGl, ShaderProgram shader, PerspectiveBuilder perspectiveBuilder) {
+	public MeshRenderer(FearGl fearGl, PerspectiveBuilder perspectiveBuilder) {
 		this.fearGl = fearGl;
-		this.shader = shader;
 		this.perspectiveBuilder = perspectiveBuilder;
 	}
 
 	public void render(Mesh mesh, Matrix4 modelView) {
+		ShaderProgram shader = mesh.getShaderProgram();
 
 		fearGl.glUseProgram(shader.getShaderProgram());
 

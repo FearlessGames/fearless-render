@@ -31,15 +31,17 @@ public class Main2 {
 	private final Renderer renderer;
 	private final List<Orb> orbs = Lists.newArrayList();
     private Transformation camera = new Transformation(Vector3.ZERO, Quaternion.IDENTITY, Vector3.ONE);
+	private ShaderProgram shaderProgram;
 
-    public Main2() {
+	public Main2() {
 		fearGl = new FearLwjgl();
 		init();
 
-
+		shaderProgram = createShaderProgram();
 		scene = createScene();
 		scene.getRoot().setPosition(new Vector3(0, -15, -80));
-		renderer = new Renderer(new MeshRenderer(fearGl, createShaderProgram(), perspectiveBuilder));
+
+        renderer = new Renderer(new MeshRenderer(fearGl, perspectiveBuilder));
 		long t1 = System.nanoTime();
 		long t2;
 		TimeProvider timeProvider = new SystemTimeProvider();
@@ -91,13 +93,13 @@ public class Main2 {
 		VertexBufferObject vbo = createVbo();
 		Node root = new Node("root");
 
-		Orb sun = new Orb("Sun", vbo, 2.5, 0, 0);
+		Orb sun = new Orb("Sun", vbo, shaderProgram, 2.5, 0, 0);
 
-		Orb planet = new Orb("Planet", vbo, 1, 1e-3, 1e-3);
+		Orb planet = new Orb("Planet", vbo, shaderProgram, 1, 1e-3, 1e-3);
 		planet.setRotationRadius(new Vector3(30, 0, 0));
 		sun.addChild(planet);
 
-		Orb moon = new Orb("Moon", vbo, 0.25, 1e-2, 1e-5);
+		Orb moon = new Orb("Moon", vbo, shaderProgram, 0.25, 1e-2, 1e-5);
 		moon.setRotationRadius(new Vector3(10, 0, 0));
 		planet.addChild(moon);
 

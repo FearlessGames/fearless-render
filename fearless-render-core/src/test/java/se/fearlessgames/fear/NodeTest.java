@@ -20,7 +20,7 @@ public class NodeTest {
 	public void simpleVertexCount() throws Exception {
 		VertexBufferObject vbo = mock(VertexBufferObject.class);
 		when(vbo.getIndexBufferSize()).thenReturn(4);
-		Mesh mesh = new Mesh(vbo);
+		Mesh mesh = new Mesh(vbo, mock(ShaderProgram.class));
 		Node node = new Node("foo", mesh);
 
 		assertEquals(4, node.getVertexCount());
@@ -30,7 +30,7 @@ public class NodeTest {
 	public void compoundNodeVertexCount() throws Exception {
 		VertexBufferObject vbo = mock(VertexBufferObject.class);
 		when(vbo.getIndexBufferSize()).thenReturn(4);
-		Mesh mesh = new Mesh(vbo);
+		Mesh mesh = new Mesh(vbo, mock(ShaderProgram.class));
 
 		Node root = new Node("root");
 		Node left = new Node("left", mesh);
