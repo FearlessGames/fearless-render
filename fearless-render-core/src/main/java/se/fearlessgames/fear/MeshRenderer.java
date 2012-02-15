@@ -2,6 +2,7 @@ package se.fearlessgames.fear;
 
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.math.GlMatrixBuilder;
+import se.fearlessgames.fear.math.Matrix3;
 import se.fearlessgames.fear.math.Matrix4;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.vbo.InterleavedBuffer;
@@ -21,7 +22,7 @@ public class MeshRenderer {
 		this.perspectiveBuilder = perspectiveBuilder;
 	}
 
-	public void render(Mesh mesh, Matrix4 matrix) {
+	public void render(Mesh mesh, Matrix4 modelView) {
 
 		fearGl.glUseProgram(shader.getShaderProgram());
 
@@ -33,8 +34,11 @@ public class MeshRenderer {
 		VertexBufferObject vbo = mesh.getVbo();
 		InterleavedBuffer interleavedBuffer = vbo.getInterleavedBuffer();
 
-		shader.setUniformMatrix4("projection", perspectiveBuilder.getMatrix());
-		shader.setUniformMatrix4("translation", GlMatrixBuilder.convert(matrix));
+		Matrix3 normalMatrix = new Matrix3(modelView).invert().transpose();
+
+		shader.setUniformMatrix4("projectionMatrix", perspectiveBuilder.getMatrixAsBuffer());
+		shader.setUniformMatrix4("modelViewMatrix", GlMatrixBuilder.convert(modelView));
+		shader.setUniformMatrix3("normalMatrix", GlMatrixBuilder.convert(normalMatrix));
 
 		fearGl.glBindFragDataLocation(shader.getShaderProgram(), 0, "fragColor");
 

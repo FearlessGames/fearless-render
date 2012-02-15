@@ -11,6 +11,8 @@ public interface FearGl {
 
 	void glUniformMatrix4(int uniformLocation, boolean transpose, FloatBuffer matrix);
 
+	void glUniformMatrix3(int uniformLocation, boolean transpose, FloatBuffer matrix);
+
 	void glClear(EnumSet<ClearBit> clearBits);
 
 	void glClearColor(float r, float g, float b, float a);
@@ -72,4 +74,6 @@ public interface FearGl {
 	void glEnableVertexAttribArray(int index);
 
 	void glBindFragDataLocation(int shaderProgram, int colorNumber, String name);
+
+
 }

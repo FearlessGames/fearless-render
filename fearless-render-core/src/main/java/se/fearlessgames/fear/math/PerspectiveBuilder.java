@@ -13,7 +13,7 @@ public class PerspectiveBuilder {
 		matrix = buildPerspectiveMatrix(fovInDegrees, aspect, znear, zfar);
 	}
 
-	public FloatBuffer getMatrix() {
+	public FloatBuffer getMatrixAsBuffer() {
 		return matrix;
 	}
 

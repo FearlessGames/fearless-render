@@ -61,14 +61,23 @@ public class ShaderProgram {
 	}
 
 	public void setUniformMatrix4(String name, FloatBuffer matrix) {
+		int pointer = getUniformPointer(name);
+		fearGl.glUniformMatrix4(pointer, false, matrix);
+	}
+
+	public void setUniformMatrix3(String name, FloatBuffer matrix) {
+		int pointer = getUniformPointer(name);
+		fearGl.glUniformMatrix3(pointer, false, matrix);
+	}
+
+    private int getUniformPointer(String name) {
 		int pointer;
 		if (!uniformPointerCache.containsKey(name)) {
 			uniformPointerCache.put(name, fearGl.glGetUniformLocation(shaderProgram, name));
 		}
 		pointer = uniformPointerCache.get(name);
-
-		fearGl.glUniformMatrix4(pointer, false, matrix);
-	}
+        return pointer;
+    }
 
 	public void setVertexAttribute(String name, int size, int stride, int offset) {
 
@@ -104,6 +113,7 @@ public class ShaderProgram {
 		String out = fearGl.glGetShaderInfoLog(obj, 1024);
 		System.out.println("Info log: " + out);
 	}
+
 
 
 }

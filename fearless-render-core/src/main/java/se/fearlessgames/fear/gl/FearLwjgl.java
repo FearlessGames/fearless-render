@@ -25,6 +25,11 @@ public class FearLwjgl implements FearGl {
 		GL20.glUniformMatrix4(uniformLocation, transpose, matrix);
 	}
 
+    @Override
+	public void glUniformMatrix3(int uniformLocation, boolean transpose, FloatBuffer matrix) {
+		GL20.glUniformMatrix3(uniformLocation, transpose, matrix);
+	}
+
 	@Override
 	public void glClear(EnumSet<ClearBit> clearBits) {
 		int mask = 0;

@@ -5,7 +5,7 @@ import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
 
 public class Scene {
-    public static final Transformation DEFAULT_CAMERA = new Transformation(Vector3.ZERO, Quaternion.IDENTITY, Vector3.ONE);
+
     private final Node root;
 
 	public Scene(Node root) {
@@ -15,10 +15,6 @@ public class Scene {
 	public Node getRoot() {
 		return root;
 	}
-
-	public void render(Renderer renderer) {
-        render(renderer, DEFAULT_CAMERA);
-    }
 
 	public void render(Renderer renderer, Transformation camera) {
 		renderSkybox(renderer, camera);

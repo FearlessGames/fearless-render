@@ -8,6 +8,7 @@ import se.fearlessgames.common.util.TimeProvider;
 import se.fearlessgames.fear.*;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
+import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.shape.ShapeFactory;
 import se.fearlessgames.fear.shape.SphereFactory;
@@ -27,7 +28,7 @@ import java.util.Random;
 loop.
 */
 public class ManyOrbs {
-
+	public static final Transformation DEFAULT_CAMERA = new Transformation(Vector3.ZERO, Quaternion.IDENTITY, Vector3.ONE);
 	private boolean done = false; //game runs until done is set to true
 	private PerspectiveBuilder perspectiveBuilder;
 	private final FearGl fearGl;
@@ -115,7 +116,7 @@ public class ManyOrbs {
 
 	private void render() {
 		fearGl.glClear(EnumSet.of(ClearBit.GL_COLOR_BUFFER_BIT, ClearBit.GL_DEPTH_BUFFER_BIT));
-		scene.render(renderer);
+		scene.render(renderer, DEFAULT_CAMERA);
 	}
 
 	private void init() {

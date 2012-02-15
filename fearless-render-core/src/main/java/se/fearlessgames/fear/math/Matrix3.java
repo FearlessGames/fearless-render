@@ -61,6 +61,14 @@ public class Matrix3 {
 		}
 	}
 
+	public Matrix3(Matrix4 matrix4) {
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				data[i][j] = matrix4.getValue(i,j);
+			}
+		}
+	}
+
 
 	public static Matrix3 fromAxes(final Vector3 uAxis, final Vector3 vAxis, final Vector3 wAxis) {
 		Matrix3 matrix3 = new Matrix3();

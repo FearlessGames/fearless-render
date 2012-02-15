@@ -1,17 +1,19 @@
 #version 140
 
-uniform mat4 projection;
-uniform mat4 translation;
+uniform mat4 projectionMatrix;
+uniform mat4 modelViewMatrix;
+uniform mat3 normalMatrix;
 
-in vec4 vertex;
-in vec4 normal;
+in vec3 vertex;
+in vec3 normal;
 in vec4 color;
+in vec2 textureCoord;
 
-varying vec4 vertColor;
-
+out vec4 vertColor;
 
 void main(){
-    gl_Position = projection*translation*vertex;
-    //vertColor = color;
+	vec4 modelViewPosition = modelViewMatrix * vec4(vertex, 1.0);
+	gl_Position = projectionMatrix * modelViewPosition;
+
     vertColor = vec4(normal.xyz, 1.0);
 }

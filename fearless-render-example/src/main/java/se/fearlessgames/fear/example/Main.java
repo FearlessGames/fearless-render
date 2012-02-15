@@ -1,5 +1,6 @@
 package se.fearlessgames.fear.example;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import se.fearlessgames.fear.*;
@@ -31,6 +32,7 @@ public class Main {
 	private final Renderer renderer;
 	private final TextureLoader textureManager = new TextureLoaderImpl();
 	private double rot;
+	private Transformation camera = new Transformation(Vector3.ZERO, Quaternion.IDENTITY, Vector3.ONE);
 
 	public Main() throws IOException {
 		fearGl = new FearLwjgl();
@@ -43,10 +45,32 @@ public class Main {
 		long t1 = System.nanoTime();
 		long t2;
 		int c = 0;
+		int x = 0, y = 0, z = 0;
 		while (!done) {
 			if (Display.isCloseRequested()) {
 				done = true;
 			}
+
+
+			if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
+				x++;
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
+				x--;
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
+				y--;
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
+				y++;
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+				z--;
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_Z)) {
+				z++;
+			}
+			camera = new Transformation(new Vector3(x, y, z), Quaternion.IDENTITY, Vector3.ONE);
 
 			render();
 
@@ -67,7 +91,7 @@ public class Main {
 		scene.getRoot().setRotation(Quaternion.fromEulerAngles(rot / 2, rot, 0));
 
 		fearGl.glClear(EnumSet.of(ClearBit.GL_COLOR_BUFFER_BIT, ClearBit.GL_DEPTH_BUFFER_BIT));
-		scene.render(renderer);
+		scene.render(renderer, camera);
 	}
 
 	private Scene createScene() throws IOException {
