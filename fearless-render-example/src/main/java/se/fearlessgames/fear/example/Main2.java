@@ -1,6 +1,7 @@
 package se.fearlessgames.fear.example;
 
 import com.google.common.collect.Lists;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import se.fearlessgames.common.util.SystemTimeProvider;
@@ -8,6 +9,7 @@ import se.fearlessgames.common.util.TimeProvider;
 import se.fearlessgames.fear.*;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
+import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.shape.ShapeFactory;
 import se.fearlessgames.fear.shape.SphereFactory;
@@ -28,8 +30,9 @@ public class Main2 {
 	private final Scene scene;
 	private final Renderer renderer;
 	private final List<Orb> orbs = Lists.newArrayList();
+    private Transformation camera = new Transformation(Vector3.ZERO, Quaternion.IDENTITY, Vector3.ONE);
 
-	public Main2() {
+    public Main2() {
 		fearGl = new FearLwjgl();
 		init();
 
@@ -41,6 +44,7 @@ public class Main2 {
 		long t2;
 		TimeProvider timeProvider = new SystemTimeProvider();
 		int c = 0;
+        int x = 0, y = 0, z = 0;
 		while (!done) {
 			if (Display.isCloseRequested()) {
 				done = true;
@@ -51,6 +55,25 @@ public class Main2 {
 				orb.update(now);
 			}
 
+            if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
+                x++;
+            }
+            if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
+                x--;
+            }
+            if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
+                y--;
+            }
+            if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
+                y++;
+            }
+            if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+                z--;
+            }
+            if (Keyboard.isKeyDown(Keyboard.KEY_Z)) {
+                z++;
+            }
+            camera = new Transformation(new Vector3(x, y, z), Quaternion.IDENTITY, Vector3.ONE);
 			render();
 			Display.update();
 			t2 = System.nanoTime();
@@ -100,7 +123,7 @@ public class Main2 {
 
 	private void render() {
 		fearGl.glClear(EnumSet.of(ClearBit.GL_COLOR_BUFFER_BIT, ClearBit.GL_DEPTH_BUFFER_BIT));
-		scene.render(renderer);
+		scene.render(renderer, camera);
 	}
 
 	private void init() {

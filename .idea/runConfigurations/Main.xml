@@ -18,7 +18,7 @@
     <module name="fearless-render-example" />
     <envs />
     <RunnerSettings RunnerId="Debug">
-      <option name="DEBUG_PORT" value="" />
+      <option name="DEBUG_PORT" value="57282" />
       <option name="TRANSPORT" value="0" />
       <option name="LOCAL" value="true" />
     </RunnerSettings>

@@ -1,9 +1,12 @@
 package se.fearlessgames.fear;
 
 import se.fearlessgames.fear.math.Matrix4;
+import se.fearlessgames.fear.math.Quaternion;
+import se.fearlessgames.fear.math.Vector3;
 
 public class Scene {
-	private final Node root;
+    public static final Transformation DEFAULT_CAMERA = new Transformation(Vector3.ZERO, Quaternion.IDENTITY, Vector3.ONE);
+    private final Node root;
 
 	public Scene(Node root) {
 		this.root = root;
@@ -14,12 +17,16 @@ public class Scene {
 	}
 
 	public void render(Renderer renderer) {
-		renderSkybox(renderer);
-		renderObjects(renderer);
+        render(renderer, DEFAULT_CAMERA);
+    }
+
+	public void render(Renderer renderer, Transformation camera) {
+		renderSkybox(renderer, camera);
+		renderObjects(renderer, camera);
 	}
 
-	private void renderObjects(Renderer renderer) {
-		render(renderer, root, Matrix4.IDENTITY);
+	private void renderObjects(Renderer renderer, Transformation camera) {
+		render(renderer, root, camera.asMatrix());
 
 		renderer.render();
 	}
@@ -47,7 +54,7 @@ public class Scene {
 		renderer.addMeshToRender(mesh, parentTransform);
 	}
 
-	private void renderSkybox(Renderer output) {
+	private void renderSkybox(Renderer output, Transformation camera) {
 	}
 
 }
