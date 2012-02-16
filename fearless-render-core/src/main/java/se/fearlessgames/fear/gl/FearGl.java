@@ -15,6 +15,10 @@ public interface FearGl {
 
 	void glUniform3f(int pointer, float v0, float v1, float v2);
 
+	void glUniform1f(int pointer, float value);
+
+	void glUniform1i(int pointer, int value);
+
 	void glClear(EnumSet<ClearBit> clearBits);
 
 	void glClearColor(float r, float g, float b, float a);

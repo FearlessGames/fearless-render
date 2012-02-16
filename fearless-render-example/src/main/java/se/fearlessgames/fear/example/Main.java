@@ -5,6 +5,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import se.fearlessgames.fear.*;
 import se.fearlessgames.fear.gl.*;
+import se.fearlessgames.fear.light.MutableSpotLight;
 import se.fearlessgames.fear.light.PointLight;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.math.Quaternion;
@@ -104,6 +105,19 @@ public class Main {
 		Node root = new Node("root");
 		Mesh earth = new Mesh(vertexBufferObject, shaderProgram);
 		earth.setPointLight(new SunLight());
+
+		MutableSpotLight spotLight = new MutableSpotLight();
+		spotLight.setDirection(new Vector3(0, 0, -1));
+		spotLight.setLocation(new Vector3(0, 0, 4));
+		spotLight.setAngle(180);
+		spotLight.setExponent(1);
+		spotLight.setConstantAttenuation(2);
+		spotLight.setLinearAttenuation(0f);
+		spotLight.setQuadraticAttenuation(0f);
+		spotLight.setLightColor(new ColorRGBA(1, 1, 1, 0));
+
+		earth.getSpotLights().add(spotLight);
+
 		Texture texture = textureManager.loadTextureFlipped(TextureType.PNG, new FileInputStream("src/main/resources/texture/earth.png"));
 		earth.setTexture(texture);
 		Node boxNode = new Node("Box", earth);
@@ -152,8 +166,10 @@ public class Main {
 
 	private class SunLight implements PointLight {
 		private final Vector3 location = new Vector3(20f, 20f, 0f);
-		private final ColorRGBA lightColor = new ColorRGBA(0.8f, 0.8f, 0.8f, 0f);
-		private final ColorRGBA ambientColor = new ColorRGBA(0.1f, 0.1f, 0.1f, 0f);
+		//private final ColorRGBA lightColor = new ColorRGBA(0.8f, 0.8f, 0.8f, 0f);
+		private final ColorRGBA lightColor = new ColorRGBA(0.0f, 0.0f, 0.0f, 0f);
+		private final ColorRGBA ambientColor = new ColorRGBA(0.0f, 0.0f, 0.0f, 0f);
+		//private final ColorRGBA ambientColor = new ColorRGBA(0.1f, 0.1f, 0.1f, 0f);
 
 		@Override
 		public Vector3 getLocation() {

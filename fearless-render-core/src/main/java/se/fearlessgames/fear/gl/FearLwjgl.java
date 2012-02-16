@@ -36,6 +36,16 @@ public class FearLwjgl implements FearGl {
 	}
 
 	@Override
+	public void glUniform1f(int pointer, float value) {
+		GL20.glUniform1f(pointer, value);
+	}
+
+	@Override
+	public void glUniform1i(int pointer, int value) {
+		GL20.glUniform1i(pointer, value);
+	}
+
+	@Override
 	public void glClear(EnumSet<ClearBit> clearBits) {
 		int mask = 0;
 		for (ClearBit bit : clearBits) {

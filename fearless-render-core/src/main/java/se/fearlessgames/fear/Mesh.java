@@ -2,8 +2,12 @@ package se.fearlessgames.fear;
 
 import se.fearlessgames.fear.light.DefaultAmbientPointLight;
 import se.fearlessgames.fear.light.PointLight;
+import se.fearlessgames.fear.light.SpotLight;
 import se.fearlessgames.fear.texture.Texture;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Mesh {
 	private final VertexBufferObject vbo;
@@ -11,6 +15,7 @@ public class Mesh {
 
 	private Texture texture;
 	private PointLight pointLight = new DefaultAmbientPointLight();
+	private List<SpotLight> spotLights = new ArrayList<SpotLight>();
 
 	public Mesh(VertexBufferObject vbo, ShaderProgram shaderProgram) {
 		this.vbo = vbo;
@@ -47,5 +52,9 @@ public class Mesh {
 
 	public ShaderProgram getShaderProgram() {
 		return shaderProgram;
+	}
+
+	public List<SpotLight> getSpotLights() {
+		return spotLights;
 	}
 }

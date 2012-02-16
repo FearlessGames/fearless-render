@@ -76,6 +76,17 @@ public class ShaderProgram {
 		fearGl.glUniform3f(pointer, (float) vector3.getX(), (float) vector3.getY(), (float) vector3.getZ());
 	}
 
+
+	public void setUniformFloat(String name, float value) {
+		int pointer = getUniformPointer(name);
+		fearGl.glUniform1f(pointer, value);
+	}
+
+	public void setUniformInt(String name, int value) {
+		int pointer = getUniformPointer(name);
+		fearGl.glUniform1i(pointer, value);
+	}
+
 	private int getUniformPointer(String name) {
 		int pointer;
 		if (!uniformPointerCache.containsKey(name)) {

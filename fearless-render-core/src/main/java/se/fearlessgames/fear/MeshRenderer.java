@@ -1,6 +1,7 @@
 package se.fearlessgames.fear;
 
 import se.fearlessgames.fear.gl.*;
+import se.fearlessgames.fear.light.SpotlightShaderPopulator;
 import se.fearlessgames.fear.math.GlMatrixBuilder;
 import se.fearlessgames.fear.math.Matrix3;
 import se.fearlessgames.fear.math.Matrix4;
@@ -42,6 +43,10 @@ public class MeshRenderer {
 		shader.setUniformVector3("pointLight.location", mesh.getPointLight().getLocation());
 		shader.setUniformVector3("pointLight.lightingColor", mesh.getPointLight().getLightColor().toVector3());
 		shader.setUniformVector3("pointLight.ambientColor", mesh.getPointLight().getAmbientColor().toVector3());
+
+		if (!mesh.getSpotLights().isEmpty()) {
+			new SpotlightShaderPopulator(shader, mesh.getSpotLights(), "spotLights", "nrOfSpotLights").populate();
+		}
 
 
 		fearGl.glBindFragDataLocation(shader.getShaderProgram(), 0, "fragColor");
