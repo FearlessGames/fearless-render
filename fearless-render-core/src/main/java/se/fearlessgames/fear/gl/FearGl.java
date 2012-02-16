@@ -13,6 +13,8 @@ public interface FearGl {
 
 	void glUniformMatrix3(int uniformLocation, boolean transpose, FloatBuffer matrix);
 
+	void glUniform3f(int pointer, float v0, float v1, float v2);
+
 	void glClear(EnumSet<ClearBit> clearBits);
 
 	void glClearColor(float r, float g, float b, float a);

@@ -1,8 +1,6 @@
 package se.fearlessgames.fear;
 
 import se.fearlessgames.fear.math.Matrix4;
-import se.fearlessgames.fear.math.Quaternion;
-import se.fearlessgames.fear.math.Vector3;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -25,9 +25,14 @@ public class FearLwjgl implements FearGl {
 		GL20.glUniformMatrix4(uniformLocation, transpose, matrix);
 	}
 
-    @Override
+	@Override
 	public void glUniformMatrix3(int uniformLocation, boolean transpose, FloatBuffer matrix) {
 		GL20.glUniformMatrix3(uniformLocation, transpose, matrix);
+	}
+
+	@Override
+	public void glUniform3f(int pointer, float v0, float v1, float v2) {
+		GL20.glUniform3f(pointer, v0, v1, v2);
 	}
 
 	@Override

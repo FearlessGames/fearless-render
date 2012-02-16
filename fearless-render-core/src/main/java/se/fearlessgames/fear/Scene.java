@@ -1,12 +1,10 @@
 package se.fearlessgames.fear;
 
 import se.fearlessgames.fear.math.Matrix4;
-import se.fearlessgames.fear.math.Quaternion;
-import se.fearlessgames.fear.math.Vector3;
 
 public class Scene {
 
-    private final Node root;
+	private final Node root;
 
 	public Scene(Node root) {
 		this.root = root;

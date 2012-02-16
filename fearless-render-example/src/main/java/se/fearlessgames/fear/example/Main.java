@@ -5,6 +5,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import se.fearlessgames.fear.*;
 import se.fearlessgames.fear.gl.*;
+import se.fearlessgames.fear.light.PointLight;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
@@ -43,7 +44,7 @@ public class Main {
 		scene = createScene();
 		scene.getRoot().setPosition(new Vector3(0, 0, -4));
 
-        renderer = new Renderer(new MeshRenderer(fearGl, perspectiveBuilder));
+		renderer = new Renderer(new MeshRenderer(fearGl, perspectiveBuilder));
 
 		long t1 = System.nanoTime();
 		long t2;
@@ -101,10 +102,11 @@ public class Main {
 		VertexBufferObject vertexBufferObject = new SphereFactory(fearGl, 100, 100, 1.5, SphereFactory.TextureMode.PROJECTED).create();
 
 		Node root = new Node("root");
-		Mesh boxMesh = new Mesh(vertexBufferObject, shaderProgram);
+		Mesh earth = new Mesh(vertexBufferObject, shaderProgram);
+		earth.setPointLight(new SunLight());
 		Texture texture = textureManager.loadTextureFlipped(TextureType.PNG, new FileInputStream("src/main/resources/texture/earth.png"));
-		boxMesh.setTexture(texture);
-		Node boxNode = new Node("Box", boxMesh);
+		earth.setTexture(texture);
+		Node boxNode = new Node("Box", earth);
 		//boxNode.setScale(new Vector3(1, 1.4, 0.2));
 		root.addChild(boxNode);
 
@@ -146,5 +148,26 @@ public class Main {
 
 	public static void main(String[] args) throws IOException {
 		new Main();
+	}
+
+	private class SunLight implements PointLight {
+		private final Vector3 location = new Vector3(20f, 20f, 0f);
+		private final ColorRGBA lightColor = new ColorRGBA(0.8f, 0.8f, 0.8f, 0f);
+		private final ColorRGBA ambientColor = new ColorRGBA(0.1f, 0.1f, 0.1f, 0f);
+
+		@Override
+		public Vector3 getLocation() {
+			return location;
+		}
+
+		@Override
+		public ColorRGBA getLightColor() {
+			return lightColor;
+		}
+
+		@Override
+		public ColorRGBA getAmbientColor() {
+			return ambientColor;
+		}
 	}
 }

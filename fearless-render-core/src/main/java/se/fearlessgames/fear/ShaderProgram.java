@@ -3,6 +3,7 @@ package se.fearlessgames.fear;
 import se.fearlessgames.fear.gl.DataType;
 import se.fearlessgames.fear.gl.FearGl;
 import se.fearlessgames.fear.gl.ShaderType;
+import se.fearlessgames.fear.math.Vector3;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -70,14 +71,19 @@ public class ShaderProgram {
 		fearGl.glUniformMatrix3(pointer, false, matrix);
 	}
 
-    private int getUniformPointer(String name) {
+	public void setUniformVector3(String name, Vector3 vector3) {
+		int pointer = getUniformPointer(name);
+		fearGl.glUniform3f(pointer, (float) vector3.getX(), (float) vector3.getY(), (float) vector3.getZ());
+	}
+
+	private int getUniformPointer(String name) {
 		int pointer;
 		if (!uniformPointerCache.containsKey(name)) {
 			uniformPointerCache.put(name, fearGl.glGetUniformLocation(shaderProgram, name));
 		}
 		pointer = uniformPointerCache.get(name);
-        return pointer;
-    }
+		return pointer;
+	}
 
 	public void setVertexAttribute(String name, int size, int stride, int offset) {
 
@@ -113,7 +119,6 @@ public class ShaderProgram {
 		String out = fearGl.glGetShaderInfoLog(obj, 1024);
 		System.out.println("Info log: " + out);
 	}
-
 
 
 }
