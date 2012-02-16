@@ -4,9 +4,11 @@ uniform mat4 projectionMatrix;
 uniform mat4 modelViewMatrix;
 uniform mat3 normalMatrix;
 
-uniform vec3 pointLightingLocation;
-uniform vec3 pointLightingColor;
-uniform vec3 pointLightningAmbientColor;
+uniform struct PointLight {
+	vec3 location;
+	vec3 lightingColor;
+	vec3 ambientColor;
+} pointLight;
 
 
 in vec3 vertex;
@@ -31,8 +33,8 @@ void main(){
 
 
 vec3 calcPointLightningWeight(vec4 modelViewPosition) {
-	vec3 lightDirection = normalize(pointLightingLocation - modelViewPosition.xyz);
+	vec3 lightDirection = normalize(pointLight.location - modelViewPosition.xyz);
 	vec3 transformedNormal = normalMatrix * normal;
 	float directionalLightWeighting = max(dot(transformedNormal, lightDirection), 0.0);
-	return pointLightningAmbientColor + (pointLightingColor * directionalLightWeighting);
+	return pointLight.ambientColor + (pointLight.lightingColor * directionalLightWeighting);
 }

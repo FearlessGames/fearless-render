@@ -39,9 +39,9 @@ public class MeshRenderer {
 		shader.setUniformMatrix4("modelViewMatrix", GlMatrixBuilder.convert(modelView));
 		shader.setUniformMatrix3("normalMatrix", GlMatrixBuilder.convert(normalMatrix));
 
-		shader.setUniformVector3("pointLightingLocation", mesh.getPointLight().getLocation());
-		shader.setUniformVector3("pointLightingColor", mesh.getPointLight().getLightColor().toVector3());
-		shader.setUniformVector3("pointLightningAmbientColor", mesh.getPointLight().getAmbientColor().toVector3());
+		shader.setUniformVector3("pointLight.location", mesh.getPointLight().getLocation());
+		shader.setUniformVector3("pointLight.lightingColor", mesh.getPointLight().getLightColor().toVector3());
+		shader.setUniformVector3("pointLight.ambientColor", mesh.getPointLight().getAmbientColor().toVector3());
 
 
 		fearGl.glBindFragDataLocation(shader.getShaderProgram(), 0, "fragColor");
