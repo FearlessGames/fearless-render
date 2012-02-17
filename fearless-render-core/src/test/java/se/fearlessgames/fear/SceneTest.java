@@ -4,8 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import se.fearlessgames.fear.math.Matrix4;
 
-import static se.mockachino.Mockachino.mock;
-import static se.mockachino.Mockachino.verifyNever;
+import static se.mockachino.Mockachino.*;
 import static se.mockachino.matchers.Matchers.any;
 
 public class SceneTest {
@@ -23,7 +22,9 @@ public class SceneTest {
 
 	@Test
 	public void renderSimpleNode() throws Exception {
-		scene.render(renderer, mock(Transformation.class));
+		Transformation mock = mock(Transformation.class);
+		when(mock.asMatrix()).thenReturn(new Matrix4());
+		scene.render(renderer, mock);
 		verifyNever().on(renderer).addMeshToRender(any(Mesh.class), any(Matrix4.class));
 	}
 
