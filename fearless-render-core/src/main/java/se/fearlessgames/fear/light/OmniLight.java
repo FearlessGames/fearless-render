@@ -3,7 +3,7 @@ package se.fearlessgames.fear.light;
 import se.fearlessgames.fear.ColorRGBA;
 import se.fearlessgames.fear.math.Vector3;
 
-public interface PointLight {
+public interface OmniLight {
 	public Vector3 getLocation();
 
 	public ColorRGBA getLightColor();

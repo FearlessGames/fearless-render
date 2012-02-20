@@ -40,9 +40,9 @@ public class MeshRenderer {
 		shader.setUniformMatrix4("modelViewMatrix", GlMatrixBuilder.convert(modelView));
 		shader.setUniformMatrix3("normalMatrix", GlMatrixBuilder.convert(normalMatrix));
 
-		shader.setUniformVector3("pointLight.location", mesh.getPointLight().getLocation());
-		shader.setUniformVector3("pointLight.lightingColor", mesh.getPointLight().getLightColor().toVector3());
-		shader.setUniformVector3("pointLight.ambientColor", mesh.getPointLight().getAmbientColor().toVector3());
+		shader.setUniformVector3("omniLight.location", mesh.getOmniLight().getLocation());
+		shader.setUniformVector3("omniLight.lightingColor", mesh.getOmniLight().getLightColor().toVector3());
+		shader.setUniformVector3("omniLight.ambientColor", mesh.getOmniLight().getAmbientColor().toVector3());
 
 		if (!mesh.getSpotLights().isEmpty()) {
 			new SpotlightShaderPopulator(shader, mesh.getSpotLights(), "spotLights", "nrOfSpotLights").populate();

@@ -24,7 +24,7 @@ import java.util.EnumSet;
 * Sets up the Display, the GL context, and runs the main game
 loop.
 */
-public class Main {
+public class OmniLightExample {
 
 	private boolean done = false; //game runs until done is set to true
 	private PerspectiveBuilder perspectiveBuilder;
@@ -36,7 +36,7 @@ public class Main {
 	private Transformation camera = new Transformation(Vector3.ZERO, Quaternion.IDENTITY, Vector3.ONE);
 	private ShaderProgram shaderProgram;
 
-	public Main() throws IOException {
+	public OmniLightExample() throws IOException {
 		fearGl = new FearLwjgl();
 		init();
 
@@ -148,7 +148,7 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws IOException {
-		new Main();
+		new OmniLightExample();
 	}
 
 	private class SunLight implements OmniLight {

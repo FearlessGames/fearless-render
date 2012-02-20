@@ -5,6 +5,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import se.fearlessgames.fear.*;
 import se.fearlessgames.fear.gl.*;
+import se.fearlessgames.fear.light.MutableSpotLight;
 import se.fearlessgames.fear.light.OmniLight;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.math.Quaternion;
@@ -24,7 +25,7 @@ import java.util.EnumSet;
 * Sets up the Display, the GL context, and runs the main game
 loop.
 */
-public class Main {
+public class SpotLightExample {
 
 	private boolean done = false; //game runs until done is set to true
 	private PerspectiveBuilder perspectiveBuilder;
@@ -36,7 +37,7 @@ public class Main {
 	private Transformation camera = new Transformation(Vector3.ZERO, Quaternion.IDENTITY, Vector3.ONE);
 	private ShaderProgram shaderProgram;
 
-	public Main() throws IOException {
+	public SpotLightExample() throws IOException {
 		fearGl = new FearLwjgl();
 		init();
 
@@ -105,6 +106,18 @@ public class Main {
 		Mesh earth = new Mesh(vertexBufferObject, shaderProgram);
 		earth.setOmniLight(new SunLight());
 
+		MutableSpotLight spotLight = new MutableSpotLight();
+		spotLight.setDirection(new Vector3(0, 0, -1));
+		spotLight.setLocation(new Vector3(0, 0, 7));
+		spotLight.setAngle(10);
+		spotLight.setExponent(1);
+		spotLight.setConstantAttenuation(1);
+		spotLight.setLinearAttenuation(0.22f);
+		spotLight.setQuadraticAttenuation(0.37f);
+		spotLight.setLightColor(new ColorRGBA(1, 1, 1, 0));
+
+		earth.getSpotLights().add(spotLight);
+
 		Texture texture = textureManager.loadTextureFlipped(TextureType.PNG, new FileInputStream("src/main/resources/texture/earth.png"));
 		earth.setTexture(texture);
 		Node boxNode = new Node("Box", earth);
@@ -148,13 +161,15 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws IOException {
-		new Main();
+		new SpotLightExample();
 	}
 
 	private class SunLight implements OmniLight {
 		private final Vector3 location = new Vector3(20f, 20f, 0f);
-		private final ColorRGBA lightColor = new ColorRGBA(0.8f, 0.8f, 0.8f, 0f);
-		private final ColorRGBA ambientColor = new ColorRGBA(0.1f, 0.1f, 0.1f, 0f);
+		//private final ColorRGBA lightColor = new ColorRGBA(0.8f, 0.8f, 0.8f, 0f);
+		private final ColorRGBA lightColor = new ColorRGBA(0.0f, 0.0f, 0.0f, 0f);
+		private final ColorRGBA ambientColor = new ColorRGBA(0.0f, 0.0f, 0.0f, 0f);
+		//private final ColorRGBA ambientColor = new ColorRGBA(0.1f, 0.1f, 0.1f, 0f);
 
 		@Override
 		public Vector3 getLocation() {

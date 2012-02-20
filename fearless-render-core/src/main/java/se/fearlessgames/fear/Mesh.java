@@ -1,7 +1,7 @@
 package se.fearlessgames.fear;
 
-import se.fearlessgames.fear.light.DefaultAmbientPointLight;
-import se.fearlessgames.fear.light.PointLight;
+import se.fearlessgames.fear.light.DefaultAmbientOmniLight;
+import se.fearlessgames.fear.light.OmniLight;
 import se.fearlessgames.fear.light.SpotLight;
 import se.fearlessgames.fear.texture.Texture;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
@@ -14,7 +14,7 @@ public class Mesh {
 	private final ShaderProgram shaderProgram;
 
 	private Texture texture;
-	private PointLight pointLight = new DefaultAmbientPointLight();
+	private OmniLight omniLight = new DefaultAmbientOmniLight();
 	private List<SpotLight> spotLights = new ArrayList<SpotLight>();
 
 	public Mesh(VertexBufferObject vbo, ShaderProgram shaderProgram) {
@@ -38,12 +38,12 @@ public class Mesh {
 		this.texture = texture;
 	}
 
-	public PointLight getPointLight() {
-		return pointLight;
+	public OmniLight getOmniLight() {
+		return omniLight;
 	}
 
-	public void setPointLight(PointLight pointLight) {
-		this.pointLight = pointLight;
+	public void setOmniLight(OmniLight omniLight) {
+		this.omniLight = omniLight;
 	}
 
 	public boolean hasTexture() {
