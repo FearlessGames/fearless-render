@@ -215,3 +215,4 @@ public class FearLwjgl implements FearGl {
 		GL11.glBlendFunc(sFactor.getGlValue(), dFactor.getGlValue());
 	}
 }
+

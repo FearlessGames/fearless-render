@@ -5,39 +5,38 @@ import se.fearlessgames.fear.mesh.Mesh;
 import se.fearlessgames.fear.mesh.MeshRenderer;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
 
 
 public class Renderer {
-
-	private final MeshRenderer meshRenderer;
-	private final List<AddedMesh> addedMeshes;
+    private final MeshRenderer meshRenderer;
+	private final EnumMap<RenderBucket, List<AddedMesh>> addedMeshes;
 
 	public Renderer(MeshRenderer meshRenderer) {
 		this.meshRenderer = meshRenderer;
-		addedMeshes = new ArrayList<AddedMesh>();
+		addedMeshes = new EnumMap<RenderBucket, List<AddedMesh>>(RenderBucket.class);
+        for (RenderBucket bucket : RenderBucket.values()) {
+            addedMeshes.put(bucket, new ArrayList<AddedMesh>());
+        }
 	}
 
 	public void addMeshToRender(Mesh mesh, Matrix4 matrix) {
-		addedMeshes.add(new AddedMesh(mesh, matrix));
+        RenderBucket bucket = mesh.getBucket();
+        addedMeshes.get(bucket).add(new AddedMesh(mesh, matrix));
 	}
 
 	public void render() {
-		List<AddedMesh> meshesToRender = new ArrayList<AddedMesh>(addedMeshes);
-		addedMeshes.clear();
-
-		optimiseObjects(meshesToRender);
-
-		for (AddedMesh addedMesh : meshesToRender) {
-			meshRenderer.render(addedMesh.mesh, addedMesh.transform);
-		}
+        for (RenderBucket bucket : RenderBucket.values()) {
+            List<AddedMesh> meshesToRender = addedMeshes.get(bucket);
+            if (!meshesToRender.isEmpty()) {
+                addedMeshes.put(bucket, new ArrayList<AddedMesh>());
+                bucket.render(meshesToRender, meshRenderer);
+            }
+        }
 	}
 
-	private void optimiseObjects(List<AddedMesh> meshesToRender) {
-		//todo: sort meshes, cull them etc
-	}
-
-	private static class AddedMesh {
+	static class AddedMesh {
 		Mesh mesh;
 		Matrix4 transform;
 

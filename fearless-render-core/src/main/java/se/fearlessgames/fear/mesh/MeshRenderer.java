@@ -21,6 +21,10 @@ public class MeshRenderer {
 		this.perspectiveBuilder = perspectiveBuilder;
 	}
 
+    public FearGl getGL() {
+        return fearGl;
+    }
+
 	public void render(Mesh mesh, Matrix4 modelView) {
 		ShaderProgram shader = mesh.getShaderProgram();
 
