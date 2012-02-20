@@ -1,6 +1,7 @@
 package se.fearlessgames.fear;
 
 import org.junit.Test;
+import se.fearlessgames.fear.mesh.Mesh;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
 import static org.junit.Assert.assertEquals;

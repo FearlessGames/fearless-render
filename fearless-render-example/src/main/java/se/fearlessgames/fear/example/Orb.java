@@ -1,10 +1,11 @@
 package se.fearlessgames.fear.example;
 
-import se.fearlessgames.fear.Mesh;
 import se.fearlessgames.fear.Node;
 import se.fearlessgames.fear.ShaderProgram;
+import se.fearlessgames.fear.light.OmniLightRenderState;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
+import se.fearlessgames.fear.mesh.Mesh;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
 public class Orb {
@@ -19,6 +20,8 @@ public class Orb {
 		this.orbitSpeed = orbitSpeed;
 		this.rotationSpeed = rotationSpeed;
 		orbMesh = new Mesh(vbo, shaderProgram);
+		orbMesh.addRenderState(OmniLightRenderState.DEFAULT);
+
 		rotationCenterNode = new Node(name + "-rotationCenter");
 		meshCenterNode = new Node(name + "-meshCenter");
 		meshNode = new Node(name + "-mesh", orbMesh);

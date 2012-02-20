@@ -5,6 +5,7 @@ import org.lwjgl.input.Keyboard;
 import se.fearlessgames.fear.*;
 import se.fearlessgames.fear.gl.FearLwjgl;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
+import se.fearlessgames.fear.mesh.MeshRenderer;
 
 import static se.mockachino.Mockachino.mock;
 

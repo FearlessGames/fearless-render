@@ -6,13 +6,14 @@ import org.lwjgl.opengl.DisplayMode;
 import se.fearlessgames.fear.*;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.light.OmniLight;
+import se.fearlessgames.fear.light.OmniLightRenderState;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
+import se.fearlessgames.fear.mesh.Mesh;
+import se.fearlessgames.fear.mesh.MeshRenderer;
 import se.fearlessgames.fear.shape.SphereFactory;
-import se.fearlessgames.fear.texture.Texture;
-import se.fearlessgames.fear.texture.TextureLoader;
-import se.fearlessgames.fear.texture.TextureLoaderImpl;
+import se.fearlessgames.fear.texture.*;
 import se.fearlessgames.fear.texture.TextureType;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
@@ -103,10 +104,10 @@ public class OmniLightExample {
 
 		Node root = new Node("root");
 		Mesh earth = new Mesh(vertexBufferObject, shaderProgram);
-		earth.setOmniLight(new SunLight());
+		earth.addRenderState(new OmniLightRenderState(new SunLight()));
 
 		Texture texture = textureManager.loadTextureFlipped(TextureType.PNG, new FileInputStream("src/main/resources/texture/earth.png"));
-		earth.setTexture(texture);
+		earth.addRenderState(new SingleTextureRenderState(texture));
 		Node boxNode = new Node("Box", earth);
 		//boxNode.setScale(new Vector3(1, 1.4, 0.2));
 		root.addChild(boxNode);

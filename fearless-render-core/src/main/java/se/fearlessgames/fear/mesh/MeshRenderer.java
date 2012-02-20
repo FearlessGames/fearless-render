@@ -1,7 +1,7 @@
-package se.fearlessgames.fear;
+package se.fearlessgames.fear.mesh;
 
+import se.fearlessgames.fear.ShaderProgram;
 import se.fearlessgames.fear.gl.*;
-import se.fearlessgames.fear.light.SpotlightShaderPopulator;
 import se.fearlessgames.fear.math.GlMatrixBuilder;
 import se.fearlessgames.fear.math.Matrix3;
 import se.fearlessgames.fear.math.Matrix4;
@@ -26,9 +26,8 @@ public class MeshRenderer {
 
 		fearGl.glUseProgram(shader.getShaderProgram());
 
-		if (mesh.hasTexture()) {
-			fearGl.glEnable(Capability.GL_TEXTURE_2D);
-			fearGl.glBindTexture(TextureType.TEXTURE_2D, mesh.getTexture().getId());
+		for (RenderState renderState : mesh.getRenderStates()) {
+			renderState.enable(fearGl, shader);
 		}
 
 		VertexBufferObject vbo = mesh.getVbo();
@@ -39,14 +38,6 @@ public class MeshRenderer {
 		shader.setUniformMatrix4("projectionMatrix", perspectiveBuilder.getMatrixAsBuffer());
 		shader.setUniformMatrix4("modelViewMatrix", GlMatrixBuilder.convert(modelView));
 		shader.setUniformMatrix3("normalMatrix", GlMatrixBuilder.convert(normalMatrix));
-
-		shader.setUniformVector3("omniLight.location", mesh.getOmniLight().getLocation());
-		shader.setUniformVector3("omniLight.lightingColor", mesh.getOmniLight().getLightColor().toVector3());
-		shader.setUniformVector3("omniLight.ambientColor", mesh.getOmniLight().getAmbientColor().toVector3());
-
-		if (!mesh.getSpotLights().isEmpty()) {
-			new SpotlightShaderPopulator(shader, mesh.getSpotLights(), "spotLights", "nrOfSpotLights").populate();
-		}
 
 
 		fearGl.glBindFragDataLocation(shader.getShaderProgram(), 0, "fragColor");
@@ -88,6 +79,11 @@ public class MeshRenderer {
 		fearGl.glDrawElements(vbo.getDrawMode(), vbo.getIndexBufferSize(), IndexDataType.GL_UNSIGNED_INT, 0);
 
 		disableStates(interleavedBuffer);
+
+		for (RenderState renderState : mesh.getRenderStates()) {
+			renderState.disable(fearGl, shader);
+		}
+
 		fearGl.glUseProgram(0);
 	}
 

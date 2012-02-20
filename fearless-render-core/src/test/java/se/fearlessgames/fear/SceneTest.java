@@ -3,6 +3,7 @@ package se.fearlessgames.fear;
 import org.junit.Before;
 import org.junit.Test;
 import se.fearlessgames.fear.math.Matrix4;
+import se.fearlessgames.fear.mesh.Mesh;
 
 import static se.mockachino.Mockachino.*;
 import static se.mockachino.matchers.Matchers.any;

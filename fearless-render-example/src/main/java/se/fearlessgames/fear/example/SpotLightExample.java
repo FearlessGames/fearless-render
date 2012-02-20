@@ -6,19 +6,21 @@ import org.lwjgl.opengl.DisplayMode;
 import se.fearlessgames.fear.*;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.light.MutableSpotLight;
-import se.fearlessgames.fear.light.OmniLight;
+import se.fearlessgames.fear.light.SpotLight;
+import se.fearlessgames.fear.light.SpotLightRenderState;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
+import se.fearlessgames.fear.mesh.Mesh;
+import se.fearlessgames.fear.mesh.MeshRenderer;
 import se.fearlessgames.fear.shape.SphereFactory;
-import se.fearlessgames.fear.texture.Texture;
-import se.fearlessgames.fear.texture.TextureLoader;
-import se.fearlessgames.fear.texture.TextureLoaderImpl;
+import se.fearlessgames.fear.texture.*;
 import se.fearlessgames.fear.texture.TextureType;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.EnumSet;
 
 /*
@@ -104,7 +106,7 @@ public class SpotLightExample {
 
 		Node root = new Node("root");
 		Mesh earth = new Mesh(vertexBufferObject, shaderProgram);
-		earth.setOmniLight(new SunLight());
+
 
 		MutableSpotLight spotLight = new MutableSpotLight();
 		spotLight.setDirection(new Vector3(0, 0, -1));
@@ -116,10 +118,10 @@ public class SpotLightExample {
 		spotLight.setQuadraticAttenuation(0.37f);
 		spotLight.setLightColor(new ColorRGBA(1, 1, 1, 0));
 
-		earth.getSpotLights().add(spotLight);
+		earth.addRenderState(new SpotLightRenderState(Arrays.asList((SpotLight) spotLight)));
 
 		Texture texture = textureManager.loadTextureFlipped(TextureType.PNG, new FileInputStream("src/main/resources/texture/earth.png"));
-		earth.setTexture(texture);
+		earth.addRenderState(new SingleTextureRenderState(texture));
 		Node boxNode = new Node("Box", earth);
 		//boxNode.setScale(new Vector3(1, 1.4, 0.2));
 		root.addChild(boxNode);
@@ -164,26 +166,5 @@ public class SpotLightExample {
 		new SpotLightExample();
 	}
 
-	private class SunLight implements OmniLight {
-		private final Vector3 location = new Vector3(20f, 20f, 0f);
-		//private final ColorRGBA lightColor = new ColorRGBA(0.8f, 0.8f, 0.8f, 0f);
-		private final ColorRGBA lightColor = new ColorRGBA(0.0f, 0.0f, 0.0f, 0f);
-		private final ColorRGBA ambientColor = new ColorRGBA(0.0f, 0.0f, 0.0f, 0f);
-		//private final ColorRGBA ambientColor = new ColorRGBA(0.1f, 0.1f, 0.1f, 0f);
 
-		@Override
-		public Vector3 getLocation() {
-			return location;
-		}
-
-		@Override
-		public ColorRGBA getLightColor() {
-			return lightColor;
-		}
-
-		@Override
-		public ColorRGBA getAmbientColor() {
-			return ambientColor;
-		}
-	}
 }

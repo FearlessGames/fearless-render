@@ -1,6 +1,8 @@
 package se.fearlessgames.fear;
 
 import se.fearlessgames.fear.math.Matrix4;
+import se.fearlessgames.fear.mesh.Mesh;
+import se.fearlessgames.fear.mesh.MeshRenderer;
 
 import java.util.ArrayList;
 import java.util.List;

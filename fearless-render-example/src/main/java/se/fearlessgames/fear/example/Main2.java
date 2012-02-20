@@ -11,6 +11,7 @@ import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
+import se.fearlessgames.fear.mesh.MeshRenderer;
 import se.fearlessgames.fear.shape.ShapeFactory;
 import se.fearlessgames.fear.shape.SphereFactory;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
@@ -30,7 +31,7 @@ public class Main2 {
 	private final Scene scene;
 	private final Renderer renderer;
 	private final List<Orb> orbs = Lists.newArrayList();
-    private Transformation camera = new Transformation(Vector3.ZERO, Quaternion.IDENTITY, Vector3.ONE);
+	private Transformation camera = new Transformation(Vector3.ZERO, Quaternion.IDENTITY, Vector3.ONE);
 	private ShaderProgram shaderProgram;
 
 	public Main2() {
@@ -41,12 +42,12 @@ public class Main2 {
 		scene = createScene();
 		scene.getRoot().setPosition(new Vector3(0, -15, -80));
 
-        renderer = new Renderer(new MeshRenderer(fearGl, perspectiveBuilder));
+		renderer = new Renderer(new MeshRenderer(fearGl, perspectiveBuilder));
 		long t1 = System.nanoTime();
 		long t2;
 		TimeProvider timeProvider = new SystemTimeProvider();
 		int c = 0;
-        int x = 0, y = 0, z = 0;
+		int x = 0, y = 0, z = 0;
 		while (!done) {
 			if (Display.isCloseRequested()) {
 				done = true;
@@ -57,25 +58,25 @@ public class Main2 {
 				orb.update(now);
 			}
 
-            if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-                x++;
-            }
-            if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-                x--;
-            }
-            if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-                y--;
-            }
-            if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-                y++;
-            }
-            if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-                z--;
-            }
-            if (Keyboard.isKeyDown(Keyboard.KEY_Z)) {
-                z++;
-            }
-            camera = new Transformation(new Vector3(x, y, z), Quaternion.IDENTITY, Vector3.ONE);
+			if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
+				x++;
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
+				x--;
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
+				y--;
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
+				y++;
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+				z--;
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_Z)) {
+				z++;
+			}
+			camera = new Transformation(new Vector3(x, y, z), Quaternion.IDENTITY, Vector3.ONE);
 			render();
 			Display.update();
 			t2 = System.nanoTime();
@@ -92,6 +93,7 @@ public class Main2 {
 	private Scene createScene() {
 		VertexBufferObject vbo = createVbo();
 		Node root = new Node("root");
+
 
 		Orb sun = new Orb("Sun", vbo, shaderProgram, 2.5, 0, 0);
 

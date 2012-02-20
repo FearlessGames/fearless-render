@@ -10,8 +10,10 @@ import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
+import se.fearlessgames.fear.mesh.MeshRenderer;
 import se.fearlessgames.fear.shape.ShapeFactory;
 import se.fearlessgames.fear.shape.SphereFactory;
+import se.fearlessgames.fear.texture.SingleTextureRenderState;
 import se.fearlessgames.fear.texture.Texture;
 import se.fearlessgames.fear.texture.TextureLoader;
 import se.fearlessgames.fear.texture.TextureLoaderImpl;
@@ -48,7 +50,7 @@ public class ManyOrbs {
 		scene = createScene();
 		scene.getRoot().setPosition(new Vector3(0, -15, -80));
 		ShaderProgram shaderProgram = createShaderProgram();
-        renderer = new Renderer(new MeshRenderer(fearGl, perspectiveBuilder));
+		renderer = new Renderer(new MeshRenderer(fearGl, perspectiveBuilder));
 		long t1 = System.nanoTime();
 		long t2;
 		TimeProvider timeProvider = new SystemTimeProvider();
@@ -64,11 +66,11 @@ public class ManyOrbs {
 		}
 
 		List<Orb> orbs = Lists.newArrayList();
-        for (int i = 0; i < numOrbs; i++) {
+		for (int i = 0; i < numOrbs; i++) {
 			Orb orb = new Orb("orb" + i, vbo, shaderProgram, 1 * rand.nextDouble(), 1e-4 * rand.nextDouble(), 1e-3 * (rand.nextDouble() - 0.5));
 			orb.setRotationRadius(new Vector3(30 * rand.nextDouble(), 20 * rand.nextDouble(), 0));
 			orbs.add(orb);
-			orb.getMesh().setTexture(texture);
+			orb.getMesh().addRenderState(new SingleTextureRenderState(texture));
 			scene.getRoot().addChild(orb.getRoot());
 		}
 		System.out.printf("Scene contains %d vertices\n", scene.getRoot().getVertexCount());

@@ -3,6 +3,7 @@ package se.fearlessgames.fear;
 import com.google.common.collect.Lists;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
+import se.fearlessgames.fear.mesh.Mesh;
 
 import java.util.List;
 
