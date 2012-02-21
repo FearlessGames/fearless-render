@@ -1,5 +1,6 @@
 package se.fearlessgames.fear.mesh;
 
+import se.fearlessgames.fear.RenderBucket;
 import se.fearlessgames.fear.ShaderProgram;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
@@ -10,8 +11,9 @@ public class Mesh {
 	private final VertexBufferObject vbo;
 	private final ShaderProgram shaderProgram;
 	private final Map<Class<? extends RenderState>, RenderState> renderStateMap = new HashMap<Class<? extends RenderState>, RenderState>();
+    private final RenderBucket bucket = RenderBucket.OPAQUE;
 
-	public Mesh(VertexBufferObject vbo, ShaderProgram shaderProgram) {
+    public Mesh(VertexBufferObject vbo, ShaderProgram shaderProgram) {
 		this.vbo = vbo;
 		this.shaderProgram = shaderProgram;
 	}
@@ -40,4 +42,8 @@ public class Mesh {
 	public boolean hasRenderState(Class<? extends RenderState> clazz) {
 		return renderStateMap.containsKey(clazz);
 	}
+
+    public RenderBucket getBucket() {
+        return bucket;
+    }
 }
