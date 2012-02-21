@@ -53,6 +53,8 @@ public interface FearGl {
 
 	void glEnable(Capability capability);
 
+	void glDisable(Capability capability);
+
 	void glDepthFunc(DepthFunction function);
 
 	int glCreateShader(ShaderType type);
@@ -81,5 +83,5 @@ public interface FearGl {
 
 	void glBindFragDataLocation(int shaderProgram, int colorNumber, String name);
 
-
+	void glBlendFunc(BlendFunction sFactor, BlendFunction dFactor);
 }

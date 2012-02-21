@@ -136,6 +136,11 @@ public class FearLwjgl implements FearGl {
 	}
 
 	@Override
+	public void glDisable(Capability capability) {
+		GL11.glDisable(capability.getGlCap());
+	}
+
+	@Override
 	public void glDepthFunc(DepthFunction function) {
 		GL11.glDepthFunc(function.getGlFunction());
 	}
@@ -203,5 +208,10 @@ public class FearLwjgl implements FearGl {
 	@Override
 	public void glBindFragDataLocation(int shaderProgram, int colorNumber, String name) {
 		GL30.glBindFragDataLocation(shaderProgram, colorNumber, name);
+	}
+
+	@Override
+	public void glBlendFunc(BlendFunction sFactor, BlendFunction dFactor) {
+		GL11.glBlendFunc(sFactor.getGlValue(), dFactor.getGlValue());
 	}
 }
