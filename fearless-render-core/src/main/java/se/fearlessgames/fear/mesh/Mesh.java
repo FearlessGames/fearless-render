@@ -11,11 +11,18 @@ public class Mesh {
 	private final VertexBufferObject vbo;
 	private final ShaderProgram shaderProgram;
 	private final Map<Class<? extends RenderState>, RenderState> renderStateMap = new HashMap<Class<? extends RenderState>, RenderState>();
-    private final RenderBucket bucket = RenderBucket.OPAQUE;
+	private final RenderBucket bucket;
 
-    public Mesh(VertexBufferObject vbo, ShaderProgram shaderProgram) {
+	public Mesh(VertexBufferObject vbo, ShaderProgram shaderProgram) {
 		this.vbo = vbo;
 		this.shaderProgram = shaderProgram;
+		bucket = RenderBucket.OPAQUE;
+	}
+
+	public Mesh(VertexBufferObject vbo, ShaderProgram shaderProgram, RenderBucket bucket) {
+		this.vbo = vbo;
+		this.shaderProgram = shaderProgram;
+		this.bucket = bucket;
 	}
 
 
@@ -43,7 +50,7 @@ public class Mesh {
 		return renderStateMap.containsKey(clazz);
 	}
 
-    public RenderBucket getBucket() {
-        return bucket;
-    }
+	public RenderBucket getBucket() {
+		return bucket;
+	}
 }
