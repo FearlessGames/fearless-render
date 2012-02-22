@@ -150,5 +150,5 @@ task intellijModuleSync(dependsOn: intellijSync) << {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.0-milestone-7'
+    gradleVersion = '1.0-milestone-8'
 }
