@@ -104,12 +104,10 @@ public class Main {
 		VertexBufferObject vertexBufferObject = new SphereFactory(fearGl, 100, 100, 1.5, SphereFactory.TextureMode.PROJECTED).create();
 
 		Node root = new Node("root");
-        MeshType earthMeshType = new MeshType(shaderProgram, RenderBucket.OPAQUE);
-        earthMeshType.addRenderState(new OmniLightRenderState(new SunLight()));
+        Texture texture = textureManager.loadTextureFlipped(TextureType.PNG, new FileInputStream("src/main/resources/texture/earth.png"));
+        MeshType earthMeshType = new MeshType(shaderProgram, RenderBucket.OPAQUE, new OmniLightRenderState(new SunLight()), new SingleTextureRenderState(texture));
         Mesh earth = new Mesh(vertexBufferObject, earthMeshType);
 
-		Texture texture = textureManager.loadTextureFlipped(TextureType.PNG, new FileInputStream("src/main/resources/texture/earth.png"));
-		earthMeshType.addRenderState(new SingleTextureRenderState(texture));
 		Node boxNode = new Node("Box", earth);
 		//boxNode.setScale(new Vector3(1, 1.4, 0.2));
 		root.addChild(boxNode);

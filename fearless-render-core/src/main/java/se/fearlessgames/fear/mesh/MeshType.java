@@ -11,9 +11,12 @@ public class MeshType {
     private final Collection<RenderState> renderStates = new ArrayList<RenderState>();
     private final RenderBucket bucket;
 
-    public MeshType(ShaderProgram shaderProgram, RenderBucket bucket) {
+    public MeshType(ShaderProgram shaderProgram, RenderBucket bucket, RenderState... renderStates) {
         this.shaderProgram = shaderProgram;
         this.bucket = bucket;
+        for (RenderState renderState : renderStates) {
+            this.renderStates.add(renderState);
+        }
     }
 
     public ShaderProgram getShaderProgram() {
@@ -22,10 +25,6 @@ public class MeshType {
 
     public Collection<RenderState> getRenderStates() {
         return renderStates;
-    }
-
-    public void addRenderState(RenderState renderState) {
-        renderStates.add(renderState);
     }
 
     public RenderBucket getBucket() {

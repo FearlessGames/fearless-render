@@ -67,9 +67,7 @@ public class ManyOrbs {
 			throw new RuntimeException(e);
 		}
 
-        MeshType orbMeshType = new MeshType(shaderProgram, RenderBucket.OPAQUE);
-        orbMeshType.addRenderState(OmniLightRenderState.DEFAULT);
-        orbMeshType.addRenderState(new SingleTextureRenderState(texture));
+        MeshType orbMeshType = new MeshType(shaderProgram, RenderBucket.OPAQUE, OmniLightRenderState.DEFAULT, new SingleTextureRenderState(texture));
 
 		List<Orb> orbs = Lists.newArrayList();
 		for (int i = 0; i < numOrbs; i++) {
