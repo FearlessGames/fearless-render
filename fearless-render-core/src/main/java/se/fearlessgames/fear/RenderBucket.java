@@ -10,18 +10,14 @@ public enum RenderBucket {
 		@Override
 		public void render(List<Renderer.AddedMesh> meshes, MeshRenderer meshRenderer) {
 			Collections.sort(meshes, Sorters.FRONT_TO_BACK);
-			for (Renderer.AddedMesh addedMesh : meshes) {
-				meshRenderer.render(addedMesh.mesh, addedMesh.transform);
-			}
+            meshRenderer.renderMeshes(meshes);
 		}
 	},
 	TRANSPARENT {
 		@Override
 		public void render(List<Renderer.AddedMesh> meshes, MeshRenderer meshRenderer) {
 			Collections.sort(meshes, Sorters.BACK_TO_FRONT);
-			for (Renderer.AddedMesh addedMesh : meshes) {
-				meshRenderer.render(addedMesh.mesh, addedMesh.transform);
-			}
+            meshRenderer.renderMeshes(meshes);
 		}
 	};
 

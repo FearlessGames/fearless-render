@@ -31,4 +31,8 @@ public class Mesh {
     public RenderBucket getBucket() {
 		return meshType.getBucket();
 	}
+
+    public MeshType getMeshType() {
+        return meshType;
+    }
 }

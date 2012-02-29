@@ -1,5 +1,6 @@
 package se.fearlessgames.fear.mesh;
 
+import se.fearlessgames.fear.Renderer;
 import se.fearlessgames.fear.ShaderProgram;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.math.GlMatrixBuilder;
@@ -9,6 +10,7 @@ import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.vbo.InterleavedBuffer;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
+import java.util.Collection;
 import java.util.List;
 
 public class MeshRenderer {
@@ -24,71 +26,106 @@ public class MeshRenderer {
 	}
 
 	public void render(Mesh mesh, Matrix4 modelView) {
-		ShaderProgram shader = mesh.getShaderProgram();
+        MeshType meshType = mesh.getMeshType();
+        ShaderProgram shader = meshType.getShaderProgram();
+        List<RenderState> renderStates = meshType.getRenderStates();
 
-		fearGl.glUseProgram(shader.getShaderProgram());
+        prepareTransform(modelView, shader);
+        prepareShader(shader);
+        enableStates(shader, renderStates);
+        renderMesh(mesh, shader);
+        disableStates(shader, renderStates);
+    }
 
-        List<RenderState> renderStates = mesh.getRenderStates();
-        for (RenderState renderState : renderStates) {
-			renderState.enable(fearGl, shader);
-		}
+    public void renderMeshes(Collection<Renderer.AddedMesh> meshes) {
+        MeshType prev = null;
+        ShaderProgram shader = null;
+        List<RenderState> renderStates = null;
+        for (Renderer.AddedMesh mesh : meshes) {
+            MeshType meshType = mesh.mesh.getMeshType();
+            if (prev != meshType) {
+                if (prev != null) {
+                    disableStates(shader, renderStates);
+                }
+                shader = meshType.getShaderProgram();
+                renderStates = meshType.getRenderStates();
+                prev = meshType;
+                prepareShader(shader);
+                enableStates(shader, renderStates);
+            }
+            prepareTransform(mesh.transform, shader);
+            renderMesh(mesh.mesh, shader);
+        }
+        if (prev != null) {
+            disableStates(shader, renderStates);
+        }
+    }
 
-		VertexBufferObject vbo = mesh.getVbo();
-		InterleavedBuffer interleavedBuffer = vbo.getInterleavedBuffer();
-
-		Matrix3 normalMatrix = new Matrix3(modelView).invert().transpose();
-
-		shader.setUniformMatrix4("projectionMatrix", perspectiveBuilder.getMatrixAsBuffer());
-		shader.setUniformMatrix4("modelViewMatrix", GlMatrixBuilder.convert(modelView));
-		shader.setUniformMatrix3("normalMatrix", GlMatrixBuilder.convert(normalMatrix));
-
-
-		fearGl.glBindFragDataLocation(shader.getShaderProgram(), 0, "fragColor");
-
-		enableStates(interleavedBuffer);
-
-		fearGl.glBindBuffer(BufferTarget.GL_ARRAY_BUFFER, vbo.getVertexBufferId());
-
-
-		int stride = interleavedBuffer.getStride();
-		int offset = 0;
-
-		fearGl.glVertexPointer(3, DataType.GL_FLOAT, stride, offset);
-		shader.setVertexAttribute("vertex", 3, stride, offset);
-
-
-		offset = 3 * 4;
-
-		if (interleavedBuffer.isNormals()) {
-			fearGl.glNormalPointer(DataType.GL_FLOAT, stride, offset);
-			shader.setVertexAttribute("normal", 3, stride, offset);
-			offset += (3 * 4);
-		}
-
-		if (interleavedBuffer.isColors()) {
-			fearGl.glColorPointer(4, DataType.GL_FLOAT, stride, offset);
-			shader.setVertexAttribute("color", 4, stride, offset);
-			offset += (4 * 4);
-		}
-
-		if (interleavedBuffer.isTextureCords()) {
-			fearGl.glTexCoordPointer(2, DataType.GL_FLOAT, stride, offset);
-			shader.setVertexAttribute("textureCoord", 2, stride, offset);
-		}
-
-
-		fearGl.glBindBuffer(BufferTarget.GL_ELEMENT_ARRAY_BUFFER, vbo.getIndexBufferId());
-
-		fearGl.glDrawElements(vbo.getDrawMode(), vbo.getIndexBufferSize(), IndexDataType.GL_UNSIGNED_INT, 0);
-
-		disableStates(interleavedBuffer);
+    private void disableStates(ShaderProgram shader, List<RenderState> renderStates) {
         for (int i = renderStates.size() - 1; i >= 0; i--) {
             renderStates.get(i).disable(fearGl, shader);
         }
-	}
+    }
+
+    private void enableStates(ShaderProgram shader, List<RenderState> renderStates) {
+        for (RenderState renderState : renderStates) {
+			renderState.enable(fearGl, shader);
+		}
+    }
+
+    private void prepareShader(ShaderProgram shader) {
+        fearGl.glUseProgram(shader.getShaderProgram());
+        fearGl.glBindFragDataLocation(shader.getShaderProgram(), 0, "fragColor");
+    }
+
+    private void prepareTransform(Matrix4 modelView, ShaderProgram shader) {
+        Matrix3 normalMatrix = new Matrix3(modelView).invert().transpose();
+
+        shader.setUniformMatrix4("projectionMatrix", perspectiveBuilder.getMatrixAsBuffer());
+        shader.setUniformMatrix4("modelViewMatrix", GlMatrixBuilder.convert(modelView));
+        shader.setUniformMatrix3("normalMatrix", GlMatrixBuilder.convert(normalMatrix));
+    }
+
+    private void renderMesh(Mesh mesh, ShaderProgram shader) {
+        VertexBufferObject vbo = mesh.getVbo();
+        InterleavedBuffer interleavedBuffer = vbo.getInterleavedBuffer();
+        enableStates(interleavedBuffer);
+        fearGl.glBindBuffer(BufferTarget.GL_ARRAY_BUFFER, vbo.getVertexBufferId());
+        int stride = interleavedBuffer.getStride();
+        int offset = 0;
+        fearGl.glVertexPointer(3, DataType.GL_FLOAT, stride, offset);
+        shader.setVertexAttribute("vertex", 3, stride, offset);
 
 
-	private void enableStates(InterleavedBuffer interleavedBuffer) {
+        offset = 3 * 4;
+
+        if (interleavedBuffer.isNormals()) {
+            fearGl.glNormalPointer(DataType.GL_FLOAT, stride, offset);
+            shader.setVertexAttribute("normal", 3, stride, offset);
+            offset += (3 * 4);
+        }
+
+        if (interleavedBuffer.isColors()) {
+            fearGl.glColorPointer(4, DataType.GL_FLOAT, stride, offset);
+            shader.setVertexAttribute("color", 4, stride, offset);
+            offset += (4 * 4);
+        }
+
+        if (interleavedBuffer.isTextureCords()) {
+            fearGl.glTexCoordPointer(2, DataType.GL_FLOAT, stride, offset);
+            shader.setVertexAttribute("textureCoord", 2, stride, offset);
+        }
+
+
+        fearGl.glBindBuffer(BufferTarget.GL_ELEMENT_ARRAY_BUFFER, vbo.getIndexBufferId());
+
+        fearGl.glDrawElements(vbo.getDrawMode(), vbo.getIndexBufferSize(), IndexDataType.GL_UNSIGNED_INT, 0);
+
+        disableStates(interleavedBuffer);
+    }
+
+
+    private void enableStates(InterleavedBuffer interleavedBuffer) {
 		fearGl.glEnableClientState(ClientState.GL_VERTEX_ARRAY);
 
 		if (interleavedBuffer.isNormals()) {

@@ -36,9 +36,9 @@ public class Renderer {
         }
 	}
 
-	static class AddedMesh {
-		Mesh mesh;
-		Matrix4 transform;
+	public static class AddedMesh {
+		public final Mesh mesh;
+		public final Matrix4 transform;
 
 		private AddedMesh(Mesh mesh, Matrix4 transform) {
 			this.mesh = mesh;
