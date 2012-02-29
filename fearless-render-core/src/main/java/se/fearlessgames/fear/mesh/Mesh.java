@@ -4,6 +4,8 @@ import se.fearlessgames.fear.RenderBucket;
 import se.fearlessgames.fear.ShaderProgram;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
+import java.util.List;
+
 public class Mesh {
 	private final VertexBufferObject vbo;
     private final MeshType meshType;
@@ -22,7 +24,7 @@ public class Mesh {
 		return meshType.getShaderProgram();
 	}
 
-	public Iterable<RenderState> getRenderStates() {
+	public List<RenderState> getRenderStates() {
 		return meshType.getRenderStates();
 	}
 

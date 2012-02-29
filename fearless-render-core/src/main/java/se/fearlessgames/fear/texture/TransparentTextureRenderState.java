@@ -7,16 +7,18 @@ import se.fearlessgames.fear.mesh.RenderState;
 
 public class TransparentTextureRenderState implements RenderState {
 	private final Texture texture;
+    private boolean needsDisableBlend;
+    private DepthFunction previousDepthFunc;
 
-	public TransparentTextureRenderState(Texture texture) {
+    public TransparentTextureRenderState(Texture texture) {
 		this.texture = texture;
 	}
 
 	@Override
 	public void enable(FearGl fearGl, ShaderProgram shaderProgram) {
-		fearGl.glDepthFunc(DepthFunction.GL_NEVER);
+		previousDepthFunc = fearGl.glDepthFunc(DepthFunction.GL_NEVER);
 
-		fearGl.glEnable(Capability.GL_BLEND);
+		needsDisableBlend = fearGl.glEnable(Capability.GL_BLEND);
 		fearGl.glBlendFunc(BlendFunction.SRC_ALPHA, BlendFunction.ONE_MINUS_SRC_ALPHA);
 
 		fearGl.glEnable(Capability.GL_TEXTURE_2D);
@@ -25,7 +27,9 @@ public class TransparentTextureRenderState implements RenderState {
 
 	@Override
 	public void disable(FearGl fearGl, ShaderProgram shaderProgram) {
-		fearGl.glDisable(Capability.GL_BLEND);
-		fearGl.glDepthFunc(DepthFunction.GL_LEQUAL);
-	}
+        if (needsDisableBlend) {
+            fearGl.glDisable(Capability.GL_BLEND);
+        }
+        fearGl.glDepthFunc(previousDepthFunc);
+    }
 }

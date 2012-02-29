@@ -5,10 +5,11 @@ import se.fearlessgames.fear.ShaderProgram;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class MeshType {
     private final ShaderProgram shaderProgram;
-    private final Collection<RenderState> renderStates = new ArrayList<RenderState>();
+    private final List<RenderState> renderStates = new ArrayList<RenderState>();
     private final RenderBucket bucket;
 
     public MeshType(ShaderProgram shaderProgram, RenderBucket bucket, RenderState... renderStates) {
@@ -23,7 +24,7 @@ public class MeshType {
         return shaderProgram;
     }
 
-    public Collection<RenderState> getRenderStates() {
+    public List<RenderState> getRenderStates() {
         return renderStates;
     }
 

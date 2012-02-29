@@ -51,11 +51,21 @@ public interface FearGl {
 
 	void glViewport(int x, int y, int width, int height);
 
-	void glEnable(Capability capability);
+    /**
+     *
+     * @param capability
+     * @return true if the capability was already enabled,
+     */
+	boolean glEnable(Capability capability);
 
 	void glDisable(Capability capability);
 
-	void glDepthFunc(DepthFunction function);
+    /**
+     *
+     * @param function
+     * @return the previous depth function
+     */
+	DepthFunction glDepthFunc(DepthFunction function);
 
 	int glCreateShader(ShaderType type);
 

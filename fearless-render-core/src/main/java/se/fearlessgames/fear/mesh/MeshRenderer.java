@@ -9,6 +9,8 @@ import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.vbo.InterleavedBuffer;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
+import java.util.List;
+
 public class MeshRenderer {
 
 	// TODO: replace this reference with an output to keep rendering and OpenGL calls in different threads
@@ -26,7 +28,8 @@ public class MeshRenderer {
 
 		fearGl.glUseProgram(shader.getShaderProgram());
 
-		for (RenderState renderState : mesh.getRenderStates()) {
+        List<RenderState> renderStates = mesh.getRenderStates();
+        for (RenderState renderState : renderStates) {
 			renderState.enable(fearGl, shader);
 		}
 
@@ -79,12 +82,9 @@ public class MeshRenderer {
 		fearGl.glDrawElements(vbo.getDrawMode(), vbo.getIndexBufferSize(), IndexDataType.GL_UNSIGNED_INT, 0);
 
 		disableStates(interleavedBuffer);
-
-		for (RenderState renderState : mesh.getRenderStates()) {
-			renderState.disable(fearGl, shader);
-		}
-
-		fearGl.glUseProgram(0);
+        for (int i = renderStates.size() - 1; i >= 0; i--) {
+            renderStates.get(i).disable(fearGl, shader);
+        }
 	}
 
 

@@ -8,19 +8,22 @@ import se.fearlessgames.fear.mesh.RenderState;
 
 public class SingleTextureRenderState implements RenderState {
 	private final Texture texture;
+    private boolean needsDisable;
 
-	public SingleTextureRenderState(Texture texture) {
+    public SingleTextureRenderState(Texture texture) {
 		this.texture = texture;
 	}
 
 	@Override
 	public void enable(FearGl fearGl, ShaderProgram shaderProgram) {
-		fearGl.glEnable(Capability.GL_TEXTURE_2D);
+		needsDisable = fearGl.glEnable(Capability.GL_TEXTURE_2D);
 		fearGl.glBindTexture(TextureType.TEXTURE_2D, texture.getId());
 	}
 
 	@Override
 	public void disable(FearGl fearGl, ShaderProgram shaderProgram) {
-
-	}
+        if (needsDisable) {
+            fearGl.glDisable(Capability.GL_TEXTURE_2D);
+        }
+    }
 }
