@@ -13,6 +13,7 @@ import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.mesh.Mesh;
 import se.fearlessgames.fear.mesh.MeshRenderer;
+import se.fearlessgames.fear.mesh.MeshType;
 import se.fearlessgames.fear.shape.SphereFactory;
 import se.fearlessgames.fear.texture.*;
 import se.fearlessgames.fear.texture.TextureType;
@@ -105,7 +106,8 @@ public class SpotLightExample {
 		VertexBufferObject vertexBufferObject = new SphereFactory(fearGl, 100, 100, 1.5, SphereFactory.TextureMode.PROJECTED).create();
 
 		Node root = new Node("root");
-		Mesh earth = new Mesh(vertexBufferObject, shaderProgram);
+        MeshType meshType = new MeshType(shaderProgram, RenderBucket.OPAQUE);
+        Mesh earth = new Mesh(vertexBufferObject, meshType);
 
 
 		MutableSpotLight spotLight = new MutableSpotLight();
@@ -118,10 +120,10 @@ public class SpotLightExample {
 		spotLight.setQuadraticAttenuation(0.37f);
 		spotLight.setLightColor(new ColorRGBA(1, 1, 1, 0));
 
-		earth.addRenderState(new SpotLightRenderState(Arrays.asList((SpotLight) spotLight)));
+		meshType.addRenderState(new SpotLightRenderState(Arrays.asList((SpotLight) spotLight)));
 
 		Texture texture = textureManager.loadTextureFlipped(TextureType.PNG, new FileInputStream("src/main/resources/texture/earth.png"));
-		earth.addRenderState(new SingleTextureRenderState(texture));
+		meshType.addRenderState(new SingleTextureRenderState(texture));
 		Node boxNode = new Node("Box", earth);
 		//boxNode.setScale(new Vector3(1, 1.4, 0.2));
 		root.addChild(boxNode);

@@ -12,6 +12,7 @@ import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.mesh.Mesh;
 import se.fearlessgames.fear.mesh.MeshRenderer;
+import se.fearlessgames.fear.mesh.MeshType;
 import se.fearlessgames.fear.shape.SphereFactory;
 import se.fearlessgames.fear.texture.*;
 import se.fearlessgames.fear.texture.TextureType;
@@ -103,11 +104,12 @@ public class Main {
 		VertexBufferObject vertexBufferObject = new SphereFactory(fearGl, 100, 100, 1.5, SphereFactory.TextureMode.PROJECTED).create();
 
 		Node root = new Node("root");
-		Mesh earth = new Mesh(vertexBufferObject, shaderProgram);
-		earth.addRenderState(new OmniLightRenderState(new SunLight()));
+        MeshType earthMeshType = new MeshType(shaderProgram, RenderBucket.OPAQUE);
+        earthMeshType.addRenderState(new OmniLightRenderState(new SunLight()));
+        Mesh earth = new Mesh(vertexBufferObject, earthMeshType);
 
 		Texture texture = textureManager.loadTextureFlipped(TextureType.PNG, new FileInputStream("src/main/resources/texture/earth.png"));
-		earth.addRenderState(new SingleTextureRenderState(texture));
+		earthMeshType.addRenderState(new SingleTextureRenderState(texture));
 		Node boxNode = new Node("Box", earth);
 		//boxNode.setScale(new Vector3(1, 1.4, 0.2));
 		root.addChild(boxNode);

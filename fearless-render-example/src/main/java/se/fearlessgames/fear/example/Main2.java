@@ -12,6 +12,7 @@ import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.mesh.MeshRenderer;
+import se.fearlessgames.fear.mesh.MeshType;
 import se.fearlessgames.fear.shape.ShapeFactory;
 import se.fearlessgames.fear.shape.SphereFactory;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
@@ -95,13 +96,13 @@ public class Main2 {
 		Node root = new Node("root");
 
 
-		Orb sun = new Orb("Sun", vbo, shaderProgram, 2.5, 0, 0);
+		Orb sun = new Orb("Sun", vbo, 2.5, 0, 0, new MeshType(shaderProgram, RenderBucket.OPAQUE));
 
-		Orb planet = new Orb("Planet", vbo, shaderProgram, 1, 1e-3, 1e-3);
+		Orb planet = new Orb("Planet", vbo, 1, 1e-3, 1e-3, new MeshType(shaderProgram, RenderBucket.OPAQUE));
 		planet.setRotationRadius(new Vector3(30, 0, 0));
 		sun.addChild(planet);
 
-		Orb moon = new Orb("Moon", vbo, shaderProgram, 0.25, 1e-2, 1e-5);
+		Orb moon = new Orb("Moon", vbo, 0.25, 1e-2, 1e-5, new MeshType(shaderProgram, RenderBucket.OPAQUE));
 		moon.setRotationRadius(new Vector3(10, 0, 0));
 		planet.addChild(moon);
 
