@@ -11,20 +11,16 @@ import java.util.Map;
 
 public class Mesh {
 	private final VertexBufferObject vbo;
-	private final ShaderProgram shaderProgram;
-	private final Collection<RenderState> renderStates = new ArrayList<RenderState>();
-	private final RenderBucket bucket;
+    private final MeshType meshType;
 
 	public Mesh(VertexBufferObject vbo, ShaderProgram shaderProgram) {
 		this.vbo = vbo;
-		this.shaderProgram = shaderProgram;
-		bucket = RenderBucket.OPAQUE;
+        this.meshType = new MeshType(shaderProgram, RenderBucket.OPAQUE);
 	}
 
 	public Mesh(VertexBufferObject vbo, ShaderProgram shaderProgram, RenderBucket bucket) {
 		this.vbo = vbo;
-		this.shaderProgram = shaderProgram;
-		this.bucket = bucket;
+        this.meshType = new MeshType(shaderProgram, bucket);
 	}
 
 
@@ -33,18 +29,18 @@ public class Mesh {
 	}
 
 	public ShaderProgram getShaderProgram() {
-		return shaderProgram;
+		return meshType.getShaderProgram();
 	}
 
 	public Iterable<RenderState> getRenderStates() {
-		return renderStates;
+		return meshType.getRenderStates();
 	}
 
-	public <T extends RenderState> void addRenderState(T renderState) {
-        renderStates.add(renderState);
+	public void addRenderState(RenderState renderState) {
+        meshType.addRenderState(renderState);
 	}
 
     public RenderBucket getBucket() {
-		return bucket;
+		return meshType.getBucket();
 	}
 }
