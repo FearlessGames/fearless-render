@@ -4,13 +4,15 @@ import se.fearlessgames.fear.RenderBucket;
 import se.fearlessgames.fear.ShaderProgram;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Mesh {
 	private final VertexBufferObject vbo;
 	private final ShaderProgram shaderProgram;
-	private final Map<Class<? extends RenderState>, RenderState> renderStateMap = new HashMap<Class<? extends RenderState>, RenderState>();
+	private final Collection<RenderState> renderStates = new ArrayList<RenderState>();
 	private final RenderBucket bucket;
 
 	public Mesh(VertexBufferObject vbo, ShaderProgram shaderProgram) {
@@ -35,22 +37,14 @@ public class Mesh {
 	}
 
 	public Iterable<RenderState> getRenderStates() {
-		return renderStateMap.values();
+		return renderStates;
 	}
 
 	public <T extends RenderState> void addRenderState(T renderState) {
-		renderStateMap.put(renderState.getClass(), renderState);
+        renderStates.add(renderState);
 	}
 
-	public void removeRenderState(Class<? extends RenderState> clazz) {
-		renderStateMap.remove(clazz);
-	}
-
-	public boolean hasRenderState(Class<? extends RenderState> clazz) {
-		return renderStateMap.containsKey(clazz);
-	}
-
-	public RenderBucket getBucket() {
+    public RenderBucket getBucket() {
 		return bucket;
 	}
 }
