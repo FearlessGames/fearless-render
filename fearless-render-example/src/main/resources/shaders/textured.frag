@@ -1,6 +1,7 @@
 #version 140
 #define MAX_SPOT_LIGHTS 10
 
+uniform float globalAlpha = 1.0;
 uniform sampler2D texture0;
 
 uniform struct SpotLight {
@@ -68,6 +69,5 @@ void main(){
 	}
 
 
-    fragColor = vec4(textureColor.rgb * color.rgb, textureColor.a);;
-
+    fragColor = vec4(textureColor.rgb * color.rgb, globalAlpha);;
 }

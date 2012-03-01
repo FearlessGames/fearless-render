@@ -51,21 +51,13 @@ public interface FearGl {
 
 	void glViewport(int x, int y, int width, int height);
 
-    /**
-     *
-     * @param capability
-     * @return true if the capability was already enabled,
-     */
-	boolean glEnable(Capability capability);
+	void glEnable(Capability capability);
 
 	void glDisable(Capability capability);
 
-    /**
-     *
-     * @param function
-     * @return the previous depth function
-     */
-	DepthFunction glDepthFunc(DepthFunction function);
+	void glDepthFunc(DepthFunction function);
+
+	void glDepthMask(boolean on);
 
 	int glCreateShader(ShaderType type);
 
@@ -94,4 +86,6 @@ public interface FearGl {
 	void glBindFragDataLocation(int shaderProgram, int colorNumber, String name);
 
 	void glBlendFunc(BlendFunction sFactor, BlendFunction dFactor);
+
+	void glCullFace(Culling culling);
 }

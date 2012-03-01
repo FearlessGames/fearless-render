@@ -2,13 +2,13 @@ package se.fearlessgames.fear.texture;
 
 import se.fearlessgames.fear.ShaderProgram;
 import se.fearlessgames.fear.gl.Capability;
+import se.fearlessgames.fear.gl.DepthFunction;
 import se.fearlessgames.fear.gl.FearGl;
 import se.fearlessgames.fear.gl.TextureType;
 import se.fearlessgames.fear.mesh.RenderState;
 
 public class SingleTextureRenderState implements RenderState {
 	private final Texture texture;
-    private boolean needsDisable;
 
     public SingleTextureRenderState(Texture texture) {
 		this.texture = texture;
@@ -16,14 +16,14 @@ public class SingleTextureRenderState implements RenderState {
 
 	@Override
 	public void enable(FearGl fearGl, ShaderProgram shaderProgram) {
-		needsDisable = fearGl.glEnable(Capability.GL_TEXTURE_2D);
+        fearGl.glEnable(Capability.GL_DEPTH_TEST);
+        fearGl.glDepthFunc(DepthFunction.GL_LEQUAL);
+		fearGl.glEnable(Capability.GL_TEXTURE_2D);
 		fearGl.glBindTexture(TextureType.TEXTURE_2D, texture.getId());
 	}
 
 	@Override
 	public void disable(FearGl fearGl, ShaderProgram shaderProgram) {
-        if (needsDisable) {
-            fearGl.glDisable(Capability.GL_TEXTURE_2D);
-        }
+		fearGl.glDisable(Capability.GL_TEXTURE_2D);
     }
 }

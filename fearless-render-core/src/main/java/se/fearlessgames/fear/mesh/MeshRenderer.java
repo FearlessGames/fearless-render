@@ -16,7 +16,7 @@ import java.util.List;
 public class MeshRenderer {
 
 	// TODO: replace this reference with an output to keep rendering and OpenGL calls in different threads
-	private final FearGl fearGl;
+	public final FearGl fearGl;
 	// TODO: probably move this
 	private final PerspectiveBuilder perspectiveBuilder;
 

@@ -10,9 +10,7 @@ import java.nio.IntBuffer;
 import java.util.EnumSet;
 
 public class FearLwjgl implements FearGl {
-    private DepthFunction currentDepthFunction = DepthFunction.GL_NEVER;
-
-    @Override
+	@Override
 	public void glUseProgram(int programId) {
 		GL20.glUseProgram(programId);
 	}
@@ -133,13 +131,8 @@ public class FearLwjgl implements FearGl {
 	}
 
 	@Override
-	public boolean glEnable(Capability capability) {
-        int cap = capability.getGlCap();
-        if (GL11.glIsEnabled(cap)) {
-            return true;
-        }
-        GL11.glEnable(cap);
-        return false;
+	public void  glEnable(Capability capability) {
+		GL11.glEnable(capability.getGlCap());
 	}
 
 	@Override
@@ -148,13 +141,13 @@ public class FearLwjgl implements FearGl {
 	}
 
 	@Override
-	public DepthFunction glDepthFunc(DepthFunction function) {
-        DepthFunction returnValue = currentDepthFunction;
-        if (returnValue != function) {
-            GL11.glDepthFunc(function.getGlFunction());
-            currentDepthFunction = function;
-        }
-        return returnValue;
+	public void glDepthFunc(DepthFunction function) {
+		GL11.glDepthFunc(function.getGlFunction());
+	}
+
+	@Override
+	public void glDepthMask(boolean on) {
+		GL11.glDepthMask(on);
 	}
 
 	@Override
@@ -225,6 +218,11 @@ public class FearLwjgl implements FearGl {
 	@Override
 	public void glBlendFunc(BlendFunction sFactor, BlendFunction dFactor) {
 		GL11.glBlendFunc(sFactor.getGlValue(), dFactor.getGlValue());
+	}
+
+	@Override
+	public void glCullFace(Culling culling) {
+		GL11.glCullFace(culling.getGlValue());
 	}
 }
 

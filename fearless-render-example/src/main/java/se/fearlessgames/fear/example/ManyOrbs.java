@@ -15,10 +15,7 @@ import se.fearlessgames.fear.mesh.MeshRenderer;
 import se.fearlessgames.fear.mesh.MeshType;
 import se.fearlessgames.fear.shape.ShapeFactory;
 import se.fearlessgames.fear.shape.SphereFactory;
-import se.fearlessgames.fear.texture.SingleTextureRenderState;
-import se.fearlessgames.fear.texture.Texture;
-import se.fearlessgames.fear.texture.TextureLoader;
-import se.fearlessgames.fear.texture.TextureLoaderImpl;
+import se.fearlessgames.fear.texture.*;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
 import java.io.FileInputStream;
@@ -43,7 +40,8 @@ public class ManyOrbs {
 		fearGl = new FearLwjgl();
 		init();
 
-		int numOrbs = 100;
+		int numOrbs = 20;
+		int numTransparent = 10;
 
 		ShapeFactory shapeFactory = new SphereFactory(fearGl, 100, 100, 2, SphereFactory.TextureMode.PROJECTED);
 		VertexBufferObject vbo = shapeFactory.create();
@@ -68,10 +66,12 @@ public class ManyOrbs {
 		}
 
         MeshType orbMeshType = new MeshType(shaderProgram, RenderBucket.OPAQUE, OmniLightRenderState.DEFAULT, new SingleTextureRenderState(texture));
+        MeshType orbMeshType2 = new MeshType(shaderProgram, RenderBucket.TRANSPARENT, OmniLightRenderState.DEFAULT, new TransparentTextureRenderState(texture));
 
 		List<Orb> orbs = Lists.newArrayList();
 		for (int i = 0; i < numOrbs; i++) {
-            Orb orb = new Orb("orb" + i, vbo, 1 * rand.nextDouble(), 1e-4 * rand.nextDouble(), 1e-3 * (rand.nextDouble() - 0.5), orbMeshType);
+            MeshType type = (i < numOrbs - numTransparent) ? orbMeshType : orbMeshType2;
+            Orb orb = new Orb("orb" + i, vbo, 0.5+1 * rand.nextDouble(), 1e-3 * rand.nextDouble(), 1e-3 * (rand.nextDouble() - 0.5), type);
 			orb.setRotationRadius(new Vector3(30 * rand.nextDouble(), 20 * rand.nextDouble(), 0));
 			orbs.add(orb);
 			scene.getRoot().addChild(orb.getRoot());
@@ -145,6 +145,7 @@ public class ManyOrbs {
 		fearGl.glClearDepth(1.0f);
 		fearGl.glEnable(Capability.GL_DEPTH_TEST);
 		fearGl.glDepthFunc(DepthFunction.GL_LEQUAL);
+		fearGl.glEnable(Capability.GL_BLEND);
 	}
 
 	public static void main(String[] args) {
