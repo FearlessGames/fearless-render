@@ -10,6 +10,7 @@ public enum RenderBucket {
 		@Override
 		public void render(List<Renderer.AddedMesh> meshes, MeshRenderer meshRenderer) {
 			Collections.sort(meshes, Sorters.FRONT_TO_BACK);
+            Sorters.sortbyMeshType(meshes);
             meshRenderer.renderMeshes(meshes);
 		}
 	},

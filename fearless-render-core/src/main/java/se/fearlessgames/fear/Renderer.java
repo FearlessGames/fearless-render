@@ -40,7 +40,7 @@ public class Renderer {
 		public final Mesh mesh;
 		public final Matrix4 transform;
 
-		private AddedMesh(Mesh mesh, Matrix4 transform) {
+		public AddedMesh(Mesh mesh, Matrix4 transform) {
 			this.mesh = mesh;
 			this.transform = transform;
 		}
