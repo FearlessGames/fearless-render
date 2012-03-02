@@ -1,6 +1,7 @@
 package se.fearlessgames.fear;
 
 import se.fearlessgames.fear.math.Vector3;
+import se.fearlessgames.fear.math.Vector4;
 
 public class ColorRGBA {
 	private final double r;
@@ -33,5 +34,9 @@ public class ColorRGBA {
 
 	public Vector3 toVector3() {
 		return new Vector3(r, g, b);
+	}
+
+	public Vector4 toVector4() {
+		return new Vector4(r, g, b, a);
 	}
 }

@@ -7,7 +7,7 @@ import se.fearlessgames.common.util.SystemTimeProvider;
 import se.fearlessgames.common.util.TimeProvider;
 import se.fearlessgames.fear.*;
 import se.fearlessgames.fear.gl.*;
-import se.fearlessgames.fear.light.OmniLightRenderState;
+import se.fearlessgames.fear.light.DirectionalLightRenderState;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
@@ -65,13 +65,13 @@ public class ManyOrbs {
 			throw new RuntimeException(e);
 		}
 
-        MeshType orbMeshType = new MeshType(shaderProgram, RenderBucket.OPAQUE, OmniLightRenderState.DEFAULT, new SingleTextureRenderState(texture));
-        MeshType orbMeshType2 = new MeshType(shaderProgram, RenderBucket.TRANSPARENT, OmniLightRenderState.DEFAULT, new TransparentTextureRenderState(texture));
+		MeshType orbMeshType = new MeshType(shaderProgram, RenderBucket.OPAQUE, DirectionalLightRenderState.DEFAULT, new SingleTextureRenderState(texture));
+		MeshType orbMeshType2 = new MeshType(shaderProgram, RenderBucket.TRANSPARENT, DirectionalLightRenderState.DEFAULT, new TransparentTextureRenderState(texture));
 
 		List<Orb> orbs = Lists.newArrayList();
 		for (int i = 0; i < numOrbs; i++) {
-            MeshType type = (i < numOrbs - numTransparent) ? orbMeshType : orbMeshType2;
-            Orb orb = new Orb("orb" + i, vbo, 0.5+1 * rand.nextDouble(), 1e-3 * rand.nextDouble(), 1e-3 * (rand.nextDouble() - 0.5), type);
+			MeshType type = (i < numOrbs - numTransparent) ? orbMeshType : orbMeshType2;
+			Orb orb = new Orb("orb" + i, vbo, 0.5 + 1 * rand.nextDouble(), 1e-3 * rand.nextDouble(), 1e-3 * (rand.nextDouble() - 0.5), type);
 			orb.setRotationRadius(new Vector3(30 * rand.nextDouble(), 20 * rand.nextDouble(), 0));
 			orbs.add(orb);
 			scene.getRoot().addChild(orb.getRoot());

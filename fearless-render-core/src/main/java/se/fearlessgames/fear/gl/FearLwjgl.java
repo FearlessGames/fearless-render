@@ -36,6 +36,11 @@ public class FearLwjgl implements FearGl {
 	}
 
 	@Override
+	public void glUniform4f(int pointer, float v0, float v1, float v2, float v3) {
+		GL20.glUniform4f(pointer, v0, v1, v2, v3);
+	}
+
+	@Override
 	public void glUniform1f(int pointer, float value) {
 		GL20.glUniform1f(pointer, value);
 	}
@@ -131,7 +136,7 @@ public class FearLwjgl implements FearGl {
 	}
 
 	@Override
-	public void  glEnable(Capability capability) {
+	public void glEnable(Capability capability) {
 		GL11.glEnable(capability.getGlCap());
 	}
 

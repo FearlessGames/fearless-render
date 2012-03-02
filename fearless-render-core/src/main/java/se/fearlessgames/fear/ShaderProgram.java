@@ -4,6 +4,7 @@ import se.fearlessgames.fear.gl.DataType;
 import se.fearlessgames.fear.gl.FearGl;
 import se.fearlessgames.fear.gl.ShaderType;
 import se.fearlessgames.fear.math.Vector3;
+import se.fearlessgames.fear.math.Vector4;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -74,6 +75,16 @@ public class ShaderProgram {
 	public void setUniformVector3(String name, Vector3 vector3) {
 		int pointer = getUniformPointer(name);
 		fearGl.glUniform3f(pointer, (float) vector3.getX(), (float) vector3.getY(), (float) vector3.getZ());
+	}
+
+	public void setUniformVector4(String name, Vector4 vector4) {
+		int pointer = getUniformPointer(name);
+		fearGl.glUniform4f(pointer, (float) vector4.getX(), (float) vector4.getY(), (float) vector4.getZ(), (float) vector4.getW());
+	}
+
+	public void setUniformVector4(String name, ColorRGBA color) {
+		int pointer = getUniformPointer(name);
+		fearGl.glUniform4f(pointer, (float) color.getR(), (float) color.getG(), (float) color.getB(), (float) color.getA());
 	}
 
 

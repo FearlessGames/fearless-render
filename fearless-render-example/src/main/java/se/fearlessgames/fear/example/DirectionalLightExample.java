@@ -5,8 +5,8 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import se.fearlessgames.fear.*;
 import se.fearlessgames.fear.gl.*;
-import se.fearlessgames.fear.light.OmniLight;
-import se.fearlessgames.fear.light.OmniLightRenderState;
+import se.fearlessgames.fear.light.DirectionalLight;
+import se.fearlessgames.fear.light.DirectionalLightRenderState;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
@@ -26,7 +26,7 @@ import java.util.EnumSet;
 * Sets up the Display, the GL context, and runs the main game
 loop.
 */
-public class OmniLightExample {
+public class DirectionalLightExample {
 
 	private boolean done = false; //game runs until done is set to true
 	private PerspectiveBuilder perspectiveBuilder;
@@ -38,7 +38,7 @@ public class OmniLightExample {
 	private Transformation camera = new Transformation(Vector3.ZERO, Quaternion.IDENTITY, Vector3.ONE);
 	private ShaderProgram shaderProgram;
 
-	public OmniLightExample() throws IOException {
+	public DirectionalLightExample() throws IOException {
 		fearGl = new FearLwjgl();
 		init();
 
@@ -104,9 +104,9 @@ public class OmniLightExample {
 		VertexBufferObject vertexBufferObject = new SphereFactory(fearGl, 100, 100, 1.5, SphereFactory.TextureMode.PROJECTED).create();
 
 		Node root = new Node("root");
-        Texture texture = textureManager.loadTextureFlipped(TextureType.PNG, new FileInputStream("src/main/resources/texture/earth.png"));
-        MeshType meshType = new MeshType(shaderProgram, RenderBucket.OPAQUE, new OmniLightRenderState(new SunLight()), new SingleTextureRenderState(texture));
-        Mesh earth = new Mesh(vertexBufferObject, meshType);
+		Texture texture = textureManager.loadTextureFlipped(TextureType.PNG, new FileInputStream("src/main/resources/texture/earth.png"));
+		MeshType meshType = new MeshType(shaderProgram, RenderBucket.OPAQUE, new DirectionalLightRenderState(new SunLight()), new SingleTextureRenderState(texture));
+		Mesh earth = new Mesh(vertexBufferObject, meshType);
 
 		Node boxNode = new Node("Box", earth);
 		//boxNode.setScale(new Vector3(1, 1.4, 0.2));
@@ -149,13 +149,14 @@ public class OmniLightExample {
 	}
 
 	public static void main(String[] args) throws IOException {
-		new OmniLightExample();
+		new DirectionalLightExample();
 	}
 
-	private class SunLight implements OmniLight {
+	private class SunLight implements DirectionalLight {
 		private final Vector3 location = new Vector3(20f, 20f, 0f);
-		private final ColorRGBA lightColor = new ColorRGBA(0.8f, 0.8f, 0.8f, 0f);
-		private final ColorRGBA ambientColor = new ColorRGBA(0.1f, 0.1f, 0.1f, 0f);
+		private final ColorRGBA diffuse = new ColorRGBA(0.8f, 0.8f, 0.8f, 0f);
+		private final ColorRGBA specular = new ColorRGBA(0.1f, 0.1f, 0.1f, 0f);
+		private final ColorRGBA ambient = new ColorRGBA(0.1f, 0.1f, 0.1f, 0f);
 
 		@Override
 		public Vector3 getLocation() {
@@ -163,13 +164,18 @@ public class OmniLightExample {
 		}
 
 		@Override
-		public ColorRGBA getLightColor() {
-			return lightColor;
+		public ColorRGBA getDiffuse() {
+			return diffuse;
 		}
 
 		@Override
-		public ColorRGBA getAmbientColor() {
-			return ambientColor;
+		public ColorRGBA getAmbient() {
+			return ambient;
+		}
+
+		@Override
+		public ColorRGBA getSpecular() {
+			return specular;
 		}
 	}
 }

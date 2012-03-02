@@ -1,7 +1,6 @@
 package se.fearlessgames.fear.example;
 
 import se.fearlessgames.fear.Node;
-import se.fearlessgames.fear.light.OmniLightRenderState;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.mesh.Mesh;
@@ -16,7 +15,7 @@ public class Orb {
 	private final double rotationSpeed;
 	private final Node meshNode;
 
-    public Orb(String name, VertexBufferObject vbo, double radius, double orbitSpeed, double rotationSpeed, MeshType meshType) {
+	public Orb(String name, VertexBufferObject vbo, double radius, double orbitSpeed, double rotationSpeed, MeshType meshType) {
 		this.orbitSpeed = orbitSpeed;
 		this.rotationSpeed = rotationSpeed;
 		orbMesh = new Mesh(vbo, meshType);

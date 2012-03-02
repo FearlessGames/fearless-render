@@ -5,8 +5,8 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import se.fearlessgames.fear.*;
 import se.fearlessgames.fear.gl.*;
-import se.fearlessgames.fear.light.OmniLight;
-import se.fearlessgames.fear.light.OmniLightRenderState;
+import se.fearlessgames.fear.light.DirectionalLight;
+import se.fearlessgames.fear.light.DirectionalLightRenderState;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
@@ -104,9 +104,9 @@ public class Main {
 		VertexBufferObject vertexBufferObject = new SphereFactory(fearGl, 100, 100, 1.5, SphereFactory.TextureMode.PROJECTED).create();
 
 		Node root = new Node("root");
-        Texture texture = textureManager.loadTextureFlipped(TextureType.PNG, new FileInputStream("src/main/resources/texture/earth.png"));
-        MeshType earthMeshType = new MeshType(shaderProgram, RenderBucket.OPAQUE, new OmniLightRenderState(new SunLight()), new SingleTextureRenderState(texture));
-        Mesh earth = new Mesh(vertexBufferObject, earthMeshType);
+		Texture texture = textureManager.loadTextureFlipped(TextureType.PNG, new FileInputStream("src/main/resources/texture/earth.png"));
+		MeshType earthMeshType = new MeshType(shaderProgram, RenderBucket.OPAQUE, new DirectionalLightRenderState(new SunLight()), new SingleTextureRenderState(texture));
+		Mesh earth = new Mesh(vertexBufferObject, earthMeshType);
 
 		Node boxNode = new Node("Box", earth);
 		//boxNode.setScale(new Vector3(1, 1.4, 0.2));
@@ -152,10 +152,11 @@ public class Main {
 		new Main();
 	}
 
-	private class SunLight implements OmniLight {
+	private class SunLight implements DirectionalLight {
 		private final Vector3 location = new Vector3(20f, 20f, 0f);
-		private final ColorRGBA lightColor = new ColorRGBA(0.8f, 0.8f, 0.8f, 0f);
-		private final ColorRGBA ambientColor = new ColorRGBA(0.1f, 0.1f, 0.1f, 0f);
+		private final ColorRGBA diffuse = new ColorRGBA(0.8f, 0.8f, 0.8f, 0f);
+		private final ColorRGBA ambient = new ColorRGBA(0.1f, 0.1f, 0.1f, 0f);
+		private final ColorRGBA specular = new ColorRGBA(0.1f, 0.1f, 0.1f, 0f);
 
 		@Override
 		public Vector3 getLocation() {
@@ -163,13 +164,18 @@ public class Main {
 		}
 
 		@Override
-		public ColorRGBA getLightColor() {
-			return lightColor;
+		public ColorRGBA getDiffuse() {
+			return diffuse;
 		}
 
 		@Override
-		public ColorRGBA getAmbientColor() {
-			return ambientColor;
+		public ColorRGBA getAmbient() {
+			return ambient;
+		}
+
+		@Override
+		public ColorRGBA getSpecular() {
+			return specular;
 		}
 	}
 }

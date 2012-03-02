@@ -15,6 +15,8 @@ public interface FearGl {
 
 	void glUniform3f(int pointer, float v0, float v1, float v2);
 
+	void glUniform4f(int pointer, float v0, float v1, float v2, float v3);
+
 	void glUniform1f(int pointer, float value);
 
 	void glUniform1i(int pointer, int value);
@@ -88,4 +90,6 @@ public interface FearGl {
 	void glBlendFunc(BlendFunction sFactor, BlendFunction dFactor);
 
 	void glCullFace(Culling culling);
+
+
 }
