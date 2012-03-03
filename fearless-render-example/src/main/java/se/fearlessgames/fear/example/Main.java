@@ -130,6 +130,7 @@ public class Main {
 		int h = 600;
 
 		try {
+			//todo: if os==osx, use new ContextAttirbute(3,2).withCoreProfile(true);
 			Display.setDisplayMode(new DisplayMode(w, h));
 			Display.setVSyncEnabled(true);
 			Display.setTitle("Shader Setup");
