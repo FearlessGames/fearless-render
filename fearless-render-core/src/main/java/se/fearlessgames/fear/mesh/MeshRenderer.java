@@ -37,7 +37,8 @@ public class MeshRenderer {
         disableStates(shader, renderStates);
     }
 
-    public void renderMeshes(Collection<Renderer.AddedMesh> meshes) {
+	public void renderMeshes(Collection<Renderer.AddedMesh> meshes, boolean renderBackFaces) {
+		fearGl.glCullFace(Culling.FRONT);
         MeshType prev = null;
         ShaderProgram shader = null;
         List<RenderState> renderStates = null;
@@ -61,7 +62,12 @@ public class MeshRenderer {
                 enableVBOStates(shader, curVBO);
                 prevVBO = curVBO;
             }
-            drawElements(curVBO);
+			if (renderBackFaces) {
+				fearGl.glCullFace(Culling.BACK);
+				drawElements(curVBO);
+				fearGl.glCullFace(Culling.FRONT);
+			}
+			drawElements(curVBO);
         }
         if (prev != null) {
             disableStates(shader, renderStates);

@@ -12,17 +12,14 @@ public enum RenderBucket {
 		public void render(List<Renderer.AddedMesh> meshes, MeshRenderer meshRenderer) {
 			Collections.sort(meshes, Sorters.FRONT_TO_BACK);
 			Sorters.sortbyMeshType(meshes);
-			meshRenderer.renderMeshes(meshes);
+			meshRenderer.renderMeshes(meshes, false);
 		}
 	},
 	TRANSPARENT {
 		@Override
 		public void render(List<Renderer.AddedMesh> meshes, MeshRenderer meshRenderer) {
 			Collections.sort(meshes, Sorters.BACK_TO_FRONT);
-			meshRenderer.fearGl.glCullFace(Culling.BACK);
-			meshRenderer.renderMeshes(meshes);
-			meshRenderer.fearGl.glCullFace(Culling.FRONT);
-			meshRenderer.renderMeshes(meshes);
+			meshRenderer.renderMeshes(meshes, true);
 		}
 	};
 
