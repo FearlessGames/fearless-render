@@ -26,125 +26,128 @@ public class MeshRenderer {
 	}
 
 	public void render(Mesh mesh, Matrix4 modelView) {
-        MeshType meshType = mesh.getMeshType();
-        ShaderProgram shader = meshType.getShaderProgram();
-        List<RenderState> renderStates = meshType.getRenderStates();
+		MeshType meshType = mesh.getMeshType();
+		ShaderProgram shader = meshType.getShaderProgram();
+		List<RenderState> renderStates = meshType.getRenderStates();
 
-        prepareTransform(modelView, shader);
-        prepareShader(shader);
-        enableStates(shader, renderStates);
-        renderVBO(shader, mesh.getVbo());
-        disableStates(shader, renderStates);
-    }
+		prepareTransform(modelView, shader);
+		prepareShader(shader);
+		enableStates(shader, renderStates);
+		renderVBO(shader, mesh.getVbo());
+		disableStates(shader, renderStates);
+	}
 
 	public void renderMeshes(Collection<Renderer.AddedMesh> meshes, boolean renderBackFaces) {
 		fearGl.glCullFace(Culling.FRONT);
-        MeshType prev = null;
-        ShaderProgram shader = null;
-        List<RenderState> renderStates = null;
-        VertexBufferObject prevVBO = null;
-        for (Renderer.AddedMesh mesh : meshes) {
-            MeshType meshType = mesh.mesh.getMeshType();
-            if (prev != meshType) {
-                if (prev != null) {
-                    disableStates(shader, renderStates);
-                }
-                shader = meshType.getShaderProgram();
-                renderStates = meshType.getRenderStates();
-                prev = meshType;
-                prepareShader(shader);
-                enableStates(shader, renderStates);
-                prevVBO = null;
-            }
-            prepareTransform(mesh.transform, shader);
-            VertexBufferObject curVBO = mesh.mesh.getVbo();
-            if (prevVBO != curVBO) {
-                enableVBOStates(shader, curVBO);
-                prevVBO = curVBO;
-            }
+		MeshType prev = null;
+		ShaderProgram shader = null;
+		List<RenderState> renderStates = null;
+		VertexBufferObject prevVBO = null;
+		for (Renderer.AddedMesh mesh : meshes) {
+			MeshType meshType = mesh.mesh.getMeshType();
+			if (prev != meshType) {
+				if (prev != null) {
+					disableStates(shader, renderStates);
+				}
+				shader = meshType.getShaderProgram();
+				renderStates = meshType.getRenderStates();
+				prev = meshType;
+				prepareShader(shader);
+				enableStates(shader, renderStates);
+				prevVBO = null;
+			}
+			prepareTransform(mesh.transform, shader);
+			VertexBufferObject curVBO = mesh.mesh.getVbo();
+			if (prevVBO != curVBO) {
+				enableVBOStates(shader, curVBO);
+				prevVBO = curVBO;
+			}
 			if (renderBackFaces) {
 				fearGl.glCullFace(Culling.BACK);
 				drawElements(curVBO);
 				fearGl.glCullFace(Culling.FRONT);
 			}
 			drawElements(curVBO);
-        }
-        if (prev != null) {
-            disableStates(shader, renderStates);
-            disableVBOStates(prevVBO.getInterleavedBuffer());
-        }
-    }
+		}
+		if (prev != null) {
+			disableStates(shader, renderStates);
+			disableVBOStates(prevVBO.getInterleavedBuffer());
+		}
+	}
 
-    private void disableStates(ShaderProgram shader, List<RenderState> renderStates) {
-        for (int i = renderStates.size() - 1; i >= 0; i--) {
-            renderStates.get(i).disable(fearGl, shader);
-        }
-    }
+	private void disableStates(ShaderProgram shader, List<RenderState> renderStates) {
+		for (int i = renderStates.size() - 1; i >= 0; i--) {
+			renderStates.get(i).disable(fearGl, shader);
+		}
+	}
 
-    private void enableStates(ShaderProgram shader, List<RenderState> renderStates) {
-        for (RenderState renderState : renderStates) {
+	private void enableStates(ShaderProgram shader, List<RenderState> renderStates) {
+		for (RenderState renderState : renderStates) {
 			renderState.enable(fearGl, shader);
 		}
-    }
+	}
 
-    private void prepareShader(ShaderProgram shader) {
-        fearGl.glUseProgram(shader.getShaderProgram());
-        fearGl.glBindFragDataLocation(shader.getShaderProgram(), 0, "fragColor");
-    }
+	private void prepareShader(ShaderProgram shader) {
+		fearGl.glUseProgram(shader.getShaderProgram());
+		fearGl.glBindFragDataLocation(shader.getShaderProgram(), 0, "fragColor");
+	}
 
-    private void prepareTransform(Matrix4 modelView, ShaderProgram shader) {
-        Matrix3 normalMatrix = new Matrix3(modelView).invert().transpose();
+	private void prepareTransform(Matrix4 modelView, ShaderProgram shader) {
+		Matrix3 normalMatrix = new Matrix3(modelView).invert().transpose();
 
-        shader.setUniformMatrix4("projectionMatrix", perspectiveBuilder.getMatrixAsBuffer());
-        shader.setUniformMatrix4("modelViewMatrix", GlMatrixBuilder.convert(modelView));
-        shader.setUniformMatrix3("normalMatrix", GlMatrixBuilder.convert(normalMatrix));
-    }
+		shader.setUniformMatrix4("projectionMatrix", perspectiveBuilder.getMatrixAsBuffer());
+		shader.setUniformMatrix4("modelViewMatrix", GlMatrixBuilder.convert(modelView));
+		shader.setUniformMatrix3("normalMatrix", GlMatrixBuilder.convert(normalMatrix));
+	}
 
-    private void renderVBO(ShaderProgram shader, VertexBufferObject vbo) {
-        enableVBOStates(shader, vbo);
+	private void renderVBO(ShaderProgram shader, VertexBufferObject vbo) {
+		enableVBOStates(shader, vbo);
 
-        drawElements(vbo);
+		drawElements(vbo);
 
-        disableVBOStates(vbo.getInterleavedBuffer());
-    }
+		disableVBOStates(vbo.getInterleavedBuffer());
+	}
 
-    private void drawElements(VertexBufferObject vbo) {
-        fearGl.glDrawElements(vbo.getDrawMode(), vbo.getIndexBufferSize(), IndexDataType.GL_UNSIGNED_INT, 0);
-    }
+	private void drawElements(VertexBufferObject vbo) {
+		fearGl.glDrawElements(vbo.getDrawMode(), vbo.getIndexBufferSize(), IndexDataType.GL_UNSIGNED_INT, 0);
+	}
 
-    private void enableVBOStates(ShaderProgram shader, VertexBufferObject vbo) {
-        InterleavedBuffer interleavedBuffer = vbo.getInterleavedBuffer();
-        enableStates(interleavedBuffer);
-        fearGl.glBindBuffer(BufferTarget.GL_ARRAY_BUFFER, vbo.getVertexBufferId());
-        int stride = interleavedBuffer.getStride();
-        int offset = 0;
-        fearGl.glVertexPointer(3, DataType.GL_FLOAT, stride, offset);
-        shader.setVertexAttribute("vertex", 3, stride, offset);
+	private void enableVBOStates(ShaderProgram shader, VertexBufferObject vbo) {
 
+		//todo: remove depricated gl*pointer and use glVertexAttribPointer instead
 
-        offset = 3 * 4;
-
-        if (interleavedBuffer.isNormals()) {
-            fearGl.glNormalPointer(DataType.GL_FLOAT, stride, offset);
-            shader.setVertexAttribute("normal", 3, stride, offset);
-            offset += (3 * 4);
-        }
-
-        if (interleavedBuffer.isColors()) {
-            fearGl.glColorPointer(4, DataType.GL_FLOAT, stride, offset);
-            shader.setVertexAttribute("color", 4, stride, offset);
-            offset += (4 * 4);
-        }
-
-        if (interleavedBuffer.isTextureCords()) {
-            fearGl.glTexCoordPointer(2, DataType.GL_FLOAT, stride, offset);
-            shader.setVertexAttribute("textureCoord", 2, stride, offset);
-        }
-        fearGl.glBindBuffer(BufferTarget.GL_ELEMENT_ARRAY_BUFFER, vbo.getIndexBufferId());
-    }
+		InterleavedBuffer interleavedBuffer = vbo.getInterleavedBuffer();
+		enableStates(interleavedBuffer);
+		fearGl.glBindBuffer(BufferTarget.GL_ARRAY_BUFFER, vbo.getVertexBufferId());
+		int stride = interleavedBuffer.getStride();
+		int offset = 0;
+		fearGl.glVertexPointer(3, DataType.GL_FLOAT, stride, offset);
+		shader.setVertexAttribute("vertex", 3, stride, offset);
 
 
-    private void enableStates(InterleavedBuffer interleavedBuffer) {
+		offset = 3 * 4;
+
+		if (interleavedBuffer.isNormals()) {
+			fearGl.glNormalPointer(DataType.GL_FLOAT, stride, offset);
+			shader.setVertexAttribute("normal", 3, stride, offset);
+			offset += (3 * 4);
+		}
+
+		if (interleavedBuffer.isColors()) {
+			fearGl.glColorPointer(4, DataType.GL_FLOAT, stride, offset);
+			shader.setVertexAttribute("color", 4, stride, offset);
+			offset += (4 * 4);
+		}
+
+		if (interleavedBuffer.isTextureCords()) {
+			fearGl.glTexCoordPointer(2, DataType.GL_FLOAT, stride, offset);
+			shader.setVertexAttribute("textureCoord", 2, stride, offset);
+		}
+		fearGl.glBindBuffer(BufferTarget.GL_ELEMENT_ARRAY_BUFFER, vbo.getIndexBufferId());
+	}
+
+
+	private void enableStates(InterleavedBuffer interleavedBuffer) {
 		fearGl.glEnableClientState(ClientState.GL_VERTEX_ARRAY);
 
 		if (interleavedBuffer.isNormals()) {
