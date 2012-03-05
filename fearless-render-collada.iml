@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" exported="" name="unresolved dependency - org.newdawn.slick#slick-util;0" level="project" />
+    <orderEntry type="module" module-name="fearless-render-core" />
+    <orderEntry type="library" exported="" name="unresolved dependency - se.fearlessgames#fearless-commons;0" level="project" />
+    <orderEntry type="library" exported="" name="unresolved dependency - org.apache#commons-math;2" level="project" />
+    <orderEntry type="library" exported="" name="jdom-1.1" level="project" />
+  </component>
+</module>
+
