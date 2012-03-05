@@ -94,40 +94,9 @@ public class FearLwjgl implements FearGl {
 		GL15.glBufferData(target.getGlBufferTarget(), data, usage.getGlUsage());
 	}
 
-
-	@Override
-	public void glVertexPointer(int size, DataType type, int stride, int offset) {
-		GL11.glVertexPointer(size, type.getGlType(), stride, offset);
-	}
-
-	@Override
-	public void glNormalPointer(DataType type, int stride, int offset) {
-		GL11.glNormalPointer(type.getGlType(), stride, offset);
-	}
-
-	@Override
-	public void glColorPointer(int size, DataType type, int stride, int offset) {
-		GL11.glColorPointer(size, type.getGlType(), stride, offset);
-	}
-
-	@Override
-	public void glTexCoordPointer(int size, DataType type, int stride, int offset) {
-		GL11.glTexCoordPointer(size, type.getGlType(), stride, offset);
-	}
-
 	@Override
 	public void glDrawElements(VertexDrawMode drawMode, int count, IndexDataType type, int offset) {
 		GL11.glDrawElements(drawMode.getGlMode(), count, type.getGlType(), offset);
-	}
-
-	@Override
-	public void glEnableClientState(ClientState state) {
-		GL11.glEnableClientState(state.getGlState());
-	}
-
-	@Override
-	public void glDisableClientState(ClientState state) {
-		GL11.glDisableClientState(state.getGlState());
 	}
 
 	@Override

@@ -71,7 +71,6 @@ public class MeshRenderer {
 		}
 		if (prev != null) {
 			disableStates(shader, renderStates);
-			disableVBOStates(prevVBO.getInterleavedBuffer());
 		}
 	}
 
@@ -105,7 +104,7 @@ public class MeshRenderer {
 
 		drawElements(vbo);
 
-		disableVBOStates(vbo.getInterleavedBuffer());
+
 	}
 
 	private void drawElements(VertexBufferObject vbo) {
@@ -114,68 +113,36 @@ public class MeshRenderer {
 
 	private void enableVBOStates(ShaderProgram shader, VertexBufferObject vbo) {
 
-		//todo: remove depricated gl*pointer and use glVertexAttribPointer instead
-
 		InterleavedBuffer interleavedBuffer = vbo.getInterleavedBuffer();
-		enableStates(interleavedBuffer);
-		fearGl.glBindBuffer(BufferTarget.GL_ARRAY_BUFFER, vbo.getVertexBufferId());
+		int vertexBufferId = vbo.getVertexBufferId();
+
+		fearGl.glBindBuffer(BufferTarget.GL_ARRAY_BUFFER, vertexBufferId);
 		int stride = interleavedBuffer.getStride();
 		int offset = 0;
-		fearGl.glVertexPointer(3, DataType.GL_FLOAT, stride, offset);
+		fearGl.glVertexAttribPointer(vertexBufferId, 3, DataType.GL_FLOAT, true, stride, offset);
 		shader.setVertexAttribute("vertex", 3, stride, offset);
 
 
 		offset = 3 * 4;
 
 		if (interleavedBuffer.isNormals()) {
-			fearGl.glNormalPointer(DataType.GL_FLOAT, stride, offset);
+			fearGl.glVertexAttribPointer(vertexBufferId, 3, DataType.GL_FLOAT, true, stride, offset);
 			shader.setVertexAttribute("normal", 3, stride, offset);
 			offset += (3 * 4);
 		}
 
 		if (interleavedBuffer.isColors()) {
-			fearGl.glColorPointer(4, DataType.GL_FLOAT, stride, offset);
+			fearGl.glVertexAttribPointer(vertexBufferId, 4, DataType.GL_FLOAT, true, stride, offset);
 			shader.setVertexAttribute("color", 4, stride, offset);
 			offset += (4 * 4);
 		}
 
 		if (interleavedBuffer.isTextureCords()) {
-			fearGl.glTexCoordPointer(2, DataType.GL_FLOAT, stride, offset);
+			fearGl.glVertexAttribPointer(vertexBufferId, 4, DataType.GL_FLOAT, true, stride, offset);
 			shader.setVertexAttribute("textureCoord", 2, stride, offset);
 		}
 		fearGl.glBindBuffer(BufferTarget.GL_ELEMENT_ARRAY_BUFFER, vbo.getIndexBufferId());
 	}
 
-
-	private void enableStates(InterleavedBuffer interleavedBuffer) {
-		fearGl.glEnableClientState(ClientState.GL_VERTEX_ARRAY);
-
-		if (interleavedBuffer.isNormals()) {
-			fearGl.glEnableClientState(ClientState.GL_NORMAL_ARRAY);
-		}
-
-		if (interleavedBuffer.isColors()) {
-			fearGl.glEnableClientState(ClientState.GL_COLOR_ARRAY);
-		}
-
-		if (interleavedBuffer.isTextureCords()) {
-			fearGl.glEnableClientState(ClientState.GL_TEXTURE_COORD_ARRAY);
-		}
-	}
-
-	private void disableVBOStates(InterleavedBuffer interleavedBuffer) {
-		if (interleavedBuffer.isNormals()) {
-			fearGl.glDisableClientState(ClientState.GL_NORMAL_ARRAY);
-		}
-
-		if (interleavedBuffer.isColors()) {
-			fearGl.glDisableClientState(ClientState.GL_COLOR_ARRAY);
-		}
-
-		if (interleavedBuffer.isTextureCords()) {
-			fearGl.glDisableClientState(ClientState.GL_TEXTURE_COORD_ARRAY);
-		}
-		fearGl.glDisableClientState(ClientState.GL_VERTEX_ARRAY);
-	}
 
 }

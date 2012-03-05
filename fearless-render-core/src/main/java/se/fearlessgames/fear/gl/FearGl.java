@@ -37,19 +37,7 @@ public interface FearGl {
 
 	void glBufferData(BufferTarget target, IntBuffer data, BufferUsage usage);
 
-	void glVertexPointer(int size, DataType type, int stride, int offset);
-
-	void glNormalPointer(DataType type, int stride, int offset);
-
-	void glColorPointer(int size, DataType type, int stride, int offset);
-
-	void glTexCoordPointer(int size, DataType type, int stride, int offset);
-
 	void glDrawElements(VertexDrawMode drawMode, int count, IndexDataType type, int offset);
-
-	void glEnableClientState(ClientState state);
-
-	void glDisableClientState(ClientState state);
 
 	void glViewport(int x, int y, int width, int height);
 
