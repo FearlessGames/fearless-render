@@ -13,11 +13,14 @@ import se.fearlessgames.fear.light.DirectionalLightRenderState;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
+import se.fearlessgames.fear.mesh.Mesh;
 import se.fearlessgames.fear.mesh.MeshRenderer;
 import se.fearlessgames.fear.mesh.MeshType;
+import se.fearlessgames.fear.shape.BoxFactory;
 import se.fearlessgames.fear.shape.ShapeFactory;
 import se.fearlessgames.fear.shape.SphereFactory;
 import se.fearlessgames.fear.texture.*;
+import se.fearlessgames.fear.texture.TextureType;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
 import java.io.FileInputStream;
@@ -78,6 +81,8 @@ public class ManyOrbs {
 			orbs.add(orb);
 			scene.getRoot().addChild(orb.getRoot());
 		}
+
+		scene.getRoot().addChild(createBoxNode(shaderProgram, textureManager));
 		System.out.printf("Scene contains %d vertices\n", scene.getRoot().getVertexCount());
 
 		while (!done) {
@@ -102,6 +107,21 @@ public class ManyOrbs {
 
 		Display.destroy();
 
+	}
+
+	private Node createBoxNode(ShaderProgram shaderProgram, TextureLoader textureManager) {
+		Texture texture = null;
+		try {
+			texture = textureManager.loadTexture(TextureType.PNG, new FileInputStream("src/main/resources/texture/crate.png"));
+		} catch (IOException ignored) {
+		}
+		MeshType meshType = new MeshType(shaderProgram, RenderBucket.OPAQUE, DirectionalLightRenderState.DEFAULT, new SingleTextureRenderState(texture));
+		Mesh boxMesh = new Mesh(new BoxFactory(fearGl).create(), meshType);
+
+		Node node = new Node("Center Box", boxMesh);
+		node.setScale(new Vector3(4, 4, 4));
+		node.setRotation(Quaternion.fromEulerAngles(-30, -30, 30));
+		return node;
 	}
 
 	private Scene createScene() {

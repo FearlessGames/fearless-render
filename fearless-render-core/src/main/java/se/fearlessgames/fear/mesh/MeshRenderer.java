@@ -2,7 +2,10 @@ package se.fearlessgames.fear.mesh;
 
 import se.fearlessgames.fear.Renderer;
 import se.fearlessgames.fear.ShaderProgram;
-import se.fearlessgames.fear.gl.*;
+import se.fearlessgames.fear.gl.BufferTarget;
+import se.fearlessgames.fear.gl.Culling;
+import se.fearlessgames.fear.gl.FearGl;
+import se.fearlessgames.fear.gl.IndexDataType;
 import se.fearlessgames.fear.math.GlMatrixBuilder;
 import se.fearlessgames.fear.math.Matrix3;
 import se.fearlessgames.fear.math.Matrix4;
@@ -33,7 +36,8 @@ public class MeshRenderer {
 		prepareTransform(modelView, shader);
 		prepareShader(shader);
 		enableStates(shader, renderStates);
-		renderVBO(shader, mesh.getVbo());
+		updateVBOStates(shader, mesh.getVbo());
+		drawElements(mesh.getVbo());
 		disableStates(shader, renderStates);
 	}
 
@@ -59,7 +63,8 @@ public class MeshRenderer {
 			prepareTransform(mesh.transform, shader);
 			VertexBufferObject curVBO = mesh.mesh.getVbo();
 			if (prevVBO != curVBO) {
-				enableVBOStates(shader, curVBO);
+
+				updateVBOStates(shader, curVBO);
 				prevVBO = curVBO;
 			}
 			if (renderBackFaces) {
@@ -99,49 +104,39 @@ public class MeshRenderer {
 		shader.setUniformMatrix3("normalMatrix", GlMatrixBuilder.convert(normalMatrix));
 	}
 
-	private void renderVBO(ShaderProgram shader, VertexBufferObject vbo) {
-		enableVBOStates(shader, vbo);
-
-		drawElements(vbo);
-
-
-	}
 
 	private void drawElements(VertexBufferObject vbo) {
 		fearGl.glDrawElements(vbo.getDrawMode(), vbo.getIndexBufferSize(), IndexDataType.GL_UNSIGNED_INT, 0);
 	}
 
-	private void enableVBOStates(ShaderProgram shader, VertexBufferObject vbo) {
+	private void updateVBOStates(ShaderProgram shader, VertexBufferObject vbo) {
 
 		InterleavedBuffer interleavedBuffer = vbo.getInterleavedBuffer();
 		int vertexBufferId = vbo.getVertexBufferId();
 
 		fearGl.glBindBuffer(BufferTarget.GL_ARRAY_BUFFER, vertexBufferId);
+		fearGl.glBindBuffer(BufferTarget.GL_ELEMENT_ARRAY_BUFFER, vbo.getIndexBufferId());
+
 		int stride = interleavedBuffer.getStride();
 		int offset = 0;
-		fearGl.glVertexAttribPointer(vertexBufferId, 3, DataType.GL_FLOAT, true, stride, offset);
-		shader.setVertexAttribute("vertex", 3, stride, offset);
 
+		shader.setVertexAttribute("vertex", 3, stride, offset);
 
 		offset = 3 * 4;
 
 		if (interleavedBuffer.isNormals()) {
-			fearGl.glVertexAttribPointer(vertexBufferId, 3, DataType.GL_FLOAT, true, stride, offset);
 			shader.setVertexAttribute("normal", 3, stride, offset);
 			offset += (3 * 4);
 		}
 
 		if (interleavedBuffer.isColors()) {
-			fearGl.glVertexAttribPointer(vertexBufferId, 4, DataType.GL_FLOAT, true, stride, offset);
 			shader.setVertexAttribute("color", 4, stride, offset);
 			offset += (4 * 4);
 		}
 
 		if (interleavedBuffer.isTextureCords()) {
-			fearGl.glVertexAttribPointer(vertexBufferId, 4, DataType.GL_FLOAT, true, stride, offset);
 			shader.setVertexAttribute("textureCoord", 2, stride, offset);
 		}
-		fearGl.glBindBuffer(BufferTarget.GL_ELEMENT_ARRAY_BUFFER, vbo.getIndexBufferId());
 	}
 
 

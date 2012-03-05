@@ -115,8 +115,9 @@ public class ShaderProgram {
 		}
 		pointer = uniformPointerCache.get(name);
 
-		fearGl.glVertexAttribPointer(pointer, size, DataType.GL_FLOAT, true, stride, offset);
 		fearGl.glEnableVertexAttribArray(pointer);
+		fearGl.glVertexAttribPointer(pointer, size, DataType.GL_FLOAT, true, stride, offset);
+
 	}
 
 

@@ -43,6 +43,7 @@ public class Main {
 	public Main() throws IOException {
 		fearGl = new FearLwjgl();
 		init();
+		System.out.println(org.lwjgl.opengl.GL11.glGetString(org.lwjgl.opengl.GL11.GL_VERSION));
 
 		shaderProgram = createShaderProgram();
 		scene = createScene();
@@ -133,7 +134,7 @@ public class Main {
 
 		try {
 			//todo: if os==osx, use new ContextAttirbute(3,2).withCoreProfile(true);
-			ContextAttribs contextAttribs = new ContextAttribs(3, 2).withProfileCore(true);
+			ContextAttribs contextAttribs = new ContextAttribs(1, 2);//.withProfileCompatibility(true);
 			Display.setDisplayMode(new DisplayMode(w, h));
 			Display.setVSyncEnabled(true);
 			Display.setTitle("Shader Setup");
