@@ -68,11 +68,12 @@ public class MeshRenderer {
 				prevVBO = curVBO;
 			}
 			if (renderBackFaces) {
-				fearGl.glCullFace(Culling.BACK);
+				fearGl.glCullFace(Culling.FRONT_AND_BACK);
 				drawElements(curVBO);
 				fearGl.glCullFace(Culling.FRONT);
+			} else {
+				drawElements(curVBO);
 			}
-			drawElements(curVBO);
 		}
 		if (prev != null) {
 			disableStates(shader, renderStates);
