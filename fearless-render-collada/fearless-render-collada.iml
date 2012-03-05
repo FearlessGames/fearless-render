@@ -11,6 +11,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="fearless-render-core" />
     <orderEntry type="library" exported="" name="jdom-1.1" level="project" />
+    <orderEntry type="library" name="groovy-1.8.5" level="application" />
   </component>
 </module>
 
