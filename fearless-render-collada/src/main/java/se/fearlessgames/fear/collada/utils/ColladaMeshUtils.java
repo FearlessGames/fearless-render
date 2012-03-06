@@ -1,11 +1,13 @@
 package se.fearlessgames.fear.collada.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import se.fearlessgames.fear.collada.data.DataCache;
 
-import java.util.logging.Logger;
 
 public class ColladaMeshUtils {
-	private static final Logger logger = Logger.getLogger(ColladaMeshUtils.class.getName());
+	private Logger logger = LoggerFactory.getLogger(getClass());
+
 	private final DataCache _dataCache;
 	private final ColladaDOMUtil _colladaDOMUtil;
 

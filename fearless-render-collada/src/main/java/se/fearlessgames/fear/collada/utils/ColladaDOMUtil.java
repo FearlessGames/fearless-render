@@ -5,16 +5,17 @@ import org.jdom.DataConversionException;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.xpath.XPath;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import se.fearlessgames.fear.ColorRGBA;
 import se.fearlessgames.fear.collada.ColladaException;
 import se.fearlessgames.fear.collada.data.DataCache;
 
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 public class ColladaDOMUtil {
-	private final Logger logger = Logger.getLogger(ColladaDOMUtil.class.getName());
+	private final Logger logger = LoggerFactory.getLogger(getClass());
 
 	private final DataCache dataCache;
 
@@ -283,7 +284,7 @@ public class ColladaDOMUtil {
 			try {
 				return attribute.getIntValue();
 			} catch (final DataConversionException e) {
-				logger.log(Level.WARNING, "Could not parse int value", e);
+				logger.warn("Could not parse int value", e);
 			}
 		}
 		return defaultVal;

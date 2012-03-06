@@ -4,6 +4,8 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 import org.jdom.input.SAXHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 import se.fearlessgames.fear.collada.data.DataCache;
 import se.fearlessgames.fear.collada.utils.AssetDataParser;
@@ -14,7 +16,9 @@ import se.fearlessgames.fear.collada.utils.SaxFactory;
 import java.io.InputStream;
 
 public class ColladaImporter {
-	ColladaStorage load(InputStream inputStream) {
+	private final Logger logger = LoggerFactory.getLogger(getClass());
+
+	public ColladaStorage load(InputStream inputStream) {
 		ColladaStorage colladaStorage = new ColladaStorage();
 		DataCache dataCache = new DataCache();
 		Element collada = readCollada(inputStream, dataCache);
