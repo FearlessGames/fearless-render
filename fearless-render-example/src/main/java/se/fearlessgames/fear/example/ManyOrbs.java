@@ -5,6 +5,8 @@ import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.PixelFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import se.fearlessgames.common.util.SystemTimeProvider;
 import se.fearlessgames.common.util.TimeProvider;
 import se.fearlessgames.fear.*;
@@ -34,6 +36,7 @@ import java.util.Random;
 loop.
 */
 public class ManyOrbs {
+	private final Logger log = LoggerFactory.getLogger(getClass());
 	public static final Transformation DEFAULT_CAMERA = new Transformation(Vector3.ZERO, Quaternion.IDENTITY, Vector3.ONE);
 	private boolean done = false; //game runs until done is set to true
 	private PerspectiveBuilder perspectiveBuilder;
@@ -83,7 +86,7 @@ public class ManyOrbs {
 		}
 
 		scene.getRoot().addChild(createBoxNode(shaderProgram, textureManager));
-		System.out.printf("Scene contains %d vertices\n", scene.getRoot().getVertexCount());
+		log.info("Scene contains {} vertices", scene.getRoot().getVertexCount());
 
 		while (!done) {
 			if (Display.isCloseRequested()) {
@@ -100,7 +103,7 @@ public class ManyOrbs {
 			Display.update();
 			t2 = System.nanoTime();
 			if ((c++ & 127) == 0) {
-				System.out.printf("Orbs: %10d, FPS: %.3f\n", numOrbs, 1000000000.0d / (t2 - t1));
+				log.info("Orbs: {}, FPS: {}", numOrbs, 1000000000.0d / (t2 - t1));
 			}
 			t1 = t2;
 		}
@@ -156,7 +159,7 @@ public class ManyOrbs {
 			Display.setTitle("Shader Setup");
 			Display.create(new PixelFormat(8, 24, 0), new ContextAttribs(3, 2).withProfileCore(true));
 		} catch (Exception e) {
-			System.out.println("Error setting up display");
+			log.error("Error setting up display", e);
 			System.exit(0);
 		}
 

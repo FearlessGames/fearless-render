@@ -5,6 +5,8 @@ import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.PixelFormat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import se.fearlessgames.fear.*;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.light.DirectionalLight;
@@ -29,7 +31,7 @@ import java.util.EnumSet;
 loop.
 */
 public class Main {
-
+	private final Logger log = LoggerFactory.getLogger(getClass());
 	private boolean done = false; //game runs until done is set to true
 	private PerspectiveBuilder perspectiveBuilder;
 	private final FearGl fearGl;
@@ -43,7 +45,7 @@ public class Main {
 	public Main() throws IOException {
 		fearGl = new FearLwjgl();
 		init();
-		System.out.println(org.lwjgl.opengl.GL11.glGetString(org.lwjgl.opengl.GL11.GL_VERSION));
+		log.info(org.lwjgl.opengl.GL11.glGetString(org.lwjgl.opengl.GL11.GL_VERSION));
 
 		shaderProgram = createShaderProgram();
 		scene = createScene();
@@ -86,7 +88,7 @@ public class Main {
 			Display.update();
 			t2 = System.nanoTime();
 			if ((c++ & 127) == 0) {
-				System.out.printf("FPS: %.3f\n", 1000000000.0d / (t2 - t1));
+				log.info("FPS: {}", 1000000000.0d / (t2 - t1));
 			}
 			t1 = t2;
 		}
@@ -141,7 +143,7 @@ public class Main {
 			Display.create(new PixelFormat(8, 24, 0), contextAttribs);
 
 		} catch (Exception e) {
-			System.out.println("Error setting up display");
+			log.error("Error setting up display", e);
 			System.exit(0);
 		}
 

@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import se.fearlessgames.common.util.SystemTimeProvider;
 import se.fearlessgames.common.util.TimeProvider;
 import se.fearlessgames.fear.*;
@@ -25,7 +27,7 @@ import java.util.List;
 loop.
 */
 public class Main2 {
-
+	private final Logger log = LoggerFactory.getLogger(getClass());
 	private boolean done = false; //game runs until done is set to true
 	private PerspectiveBuilder perspectiveBuilder;
 	private final FearGl fearGl;
@@ -82,7 +84,7 @@ public class Main2 {
 			Display.update();
 			t2 = System.nanoTime();
 			if ((c++ & 127) == 0) {
-				System.out.printf("FPS: %.3f\n", 1000000000.0d / (t2 - t1));
+				log.info("FPS: {}", 1000000000.0d / (t2 - t1));
 			}
 			t1 = t2;
 		}
@@ -141,7 +143,7 @@ public class Main2 {
 			Display.setTitle("Shader Setup");
 			Display.create();
 		} catch (Exception e) {
-			System.out.println("Error setting up display");
+			log.error("Error setting up display", e);
 			System.exit(0);
 		}
 
