@@ -3,7 +3,6 @@ package se.fearlessgames.fear.example;
 import com.google.common.collect.Lists;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.fearlessgames.common.util.SystemTimeProvider;
@@ -138,10 +137,7 @@ public class Main2 {
 		int h = 768;
 
 		try {
-			Display.setDisplayMode(new DisplayMode(w, h));
-			Display.setVSyncEnabled(true);
-			Display.setTitle("Shader Setup");
-			Display.create();
+			DisplayUtil.create(w, h, "Shader Setup");
 		} catch (Exception e) {
 			log.error("Error setting up display", e);
 			System.exit(0);

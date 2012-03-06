@@ -1,10 +1,7 @@
 package se.fearlessgames.fear.example;
 
 import com.google.common.collect.Lists;
-import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
-import org.lwjgl.opengl.PixelFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.fearlessgames.common.util.SystemTimeProvider;
@@ -154,10 +151,8 @@ public class ManyOrbs {
 		int h = 768;
 
 		try {
-			Display.setDisplayMode(new DisplayMode(w, h));
-			Display.setVSyncEnabled(true);
-			Display.setTitle("Shader Setup");
-			Display.create(new PixelFormat(8, 24, 0), new ContextAttribs(3, 2).withProfileCore(true));
+			DisplayUtil.create(w, h, "Shader Setup");
+
 		} catch (Exception e) {
 			log.error("Error setting up display", e);
 			System.exit(0);

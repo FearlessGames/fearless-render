@@ -2,7 +2,6 @@ package se.fearlessgames.fear.example;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
 import se.fearlessgames.fear.*;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.light.DirectionalLight;
@@ -130,10 +129,7 @@ public class DirectionalLightExample {
 		int h = 600;
 
 		try {
-			Display.setDisplayMode(new DisplayMode(w, h));
-			Display.setVSyncEnabled(true);
-			Display.setTitle("Shader Setup");
-			Display.create();
+			DisplayUtil.create(w, h, "Shader Setup");
 		} catch (Exception e) {
 			System.out.println("Error setting up display");
 			System.exit(0);

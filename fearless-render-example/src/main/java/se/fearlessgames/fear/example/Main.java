@@ -1,10 +1,7 @@
 package se.fearlessgames.fear.example;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
-import org.lwjgl.opengl.PixelFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.fearlessgames.fear.*;
@@ -135,12 +132,9 @@ public class Main {
 		int h = 600;
 
 		try {
-			//todo: if os==osx, use new ContextAttirbute(3,2).withCoreProfile(true);
-			ContextAttribs contextAttribs = new ContextAttribs(1, 2);//.withProfileCompatibility(true);
-			Display.setDisplayMode(new DisplayMode(w, h));
-			Display.setVSyncEnabled(true);
-			Display.setTitle("Shader Setup");
-			Display.create(new PixelFormat(8, 24, 0), contextAttribs);
+
+
+			DisplayUtil.create(w, h, "Shader Setup");
 
 		} catch (Exception e) {
 			log.error("Error setting up display", e);

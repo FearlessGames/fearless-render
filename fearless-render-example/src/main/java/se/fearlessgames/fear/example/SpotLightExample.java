@@ -2,7 +2,6 @@ package se.fearlessgames.fear.example;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.fearlessgames.fear.*;
@@ -108,19 +107,19 @@ public class SpotLightExample {
 		VertexBufferObject vertexBufferObject = new SphereFactory(fearGl, 100, 100, 1.5, SphereFactory.TextureMode.PROJECTED).create();
 
 		Node root = new Node("root");
-        MutableSpotLight spotLight = new MutableSpotLight();
-        spotLight.setDirection(new Vector3(0, 0, -1));
-        spotLight.setLocation(new Vector3(0, 0, 7));
-        spotLight.setAngle(10);
-        spotLight.setExponent(1);
-        spotLight.setConstantAttenuation(1);
-        spotLight.setLinearAttenuation(0.22f);
-        spotLight.setQuadraticAttenuation(0.37f);
-        spotLight.setLightColor(new ColorRGBA(1, 1, 1, 0));
+		MutableSpotLight spotLight = new MutableSpotLight();
+		spotLight.setDirection(new Vector3(0, 0, -1));
+		spotLight.setLocation(new Vector3(0, 0, 7));
+		spotLight.setAngle(10);
+		spotLight.setExponent(1);
+		spotLight.setConstantAttenuation(1);
+		spotLight.setLinearAttenuation(0.22f);
+		spotLight.setQuadraticAttenuation(0.37f);
+		spotLight.setLightColor(new ColorRGBA(1, 1, 1, 0));
 
-        Texture texture = textureManager.loadTextureFlipped(TextureType.PNG, new FileInputStream("src/main/resources/texture/earth.png"));
-        MeshType meshType = new MeshType(shaderProgram, RenderBucket.OPAQUE, new SpotLightRenderState(Arrays.asList((SpotLight) spotLight)), new SingleTextureRenderState(texture));
-        Mesh earth = new Mesh(vertexBufferObject, meshType);
+		Texture texture = textureManager.loadTextureFlipped(TextureType.PNG, new FileInputStream("src/main/resources/texture/earth.png"));
+		MeshType meshType = new MeshType(shaderProgram, RenderBucket.OPAQUE, new SpotLightRenderState(Arrays.asList((SpotLight) spotLight)), new SingleTextureRenderState(texture));
+		Mesh earth = new Mesh(vertexBufferObject, meshType);
 
 
 		Node boxNode = new Node("Box", earth);
@@ -145,10 +144,7 @@ public class SpotLightExample {
 		int h = 600;
 
 		try {
-			Display.setDisplayMode(new DisplayMode(w, h));
-			Display.setVSyncEnabled(true);
-			Display.setTitle("Shader Setup");
-			Display.create();
+			DisplayUtil.create(w, h, "Shader Setup");
 		} catch (Exception e) {
 			log.error("Error setting up display", e);
 			System.exit(0);
