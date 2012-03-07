@@ -8,10 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 import se.fearlessgames.fear.collada.data.DataCache;
-import se.fearlessgames.fear.collada.utils.AssetDataParser;
-import se.fearlessgames.fear.collada.utils.ColladaDOMUtil;
-import se.fearlessgames.fear.collada.utils.ColladaMeshUtils;
-import se.fearlessgames.fear.collada.utils.SaxFactory;
+import se.fearlessgames.fear.collada.utils.*;
 
 import java.io.InputStream;
 
@@ -26,8 +23,11 @@ public class ColladaImporter {
 
 		ColladaDOMUtil colladaDomUtil = new ColladaDOMUtil(dataCache);
 		ColladaMeshUtils colladaMeshUtils = new ColladaMeshUtils(dataCache, colladaDomUtil);
+		ColladaNodeParser colladaNodeParser = new ColladaNodeParser(dataCache, colladaDomUtil, colladaMeshUtils);
 
 		colladaStorage.setAssetData(new AssetDataParser(collada.getChild("asset")).parse());
+		colladaStorage.setScene(colladaNodeParser.getVisualScene(collada));
+
 
 		return colladaStorage;
 	}

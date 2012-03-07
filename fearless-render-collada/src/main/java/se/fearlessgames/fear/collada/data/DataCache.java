@@ -28,12 +28,14 @@ public class DataCache {
 	private final Multimap<Element, MeshVertPairs> vertMappings;
 	private final Map<Mesh, VertMap> meshVertMap;
 
+	private JointNode _rootJointNode;
 
-	//private final Map<Element, Joint> _elementJointMapping;
+	private final Map<Element, Joint> _elementJointMapping;
+
 	//private JointNode _rootJointNode;
-	//private final Map<Joint, Skeleton> _jointSkeletonMapping;
+	private final Map<Joint, Skeleton> jointSkeletonMapping;
 	//private final Map<Skeleton, SkeletonPose> _skeletonPoseMapping;
-	//private final List<Skeleton> _skeletons;
+	private final List<Skeleton> _skeletons;
 	//private final List<ControllerStore> _controllers;
 
 	public DataCache() {
@@ -52,10 +54,11 @@ public class DataCache {
 		vertMappings = ArrayListMultimap.create();
 		meshVertMap = Maps.newIdentityHashMap();
 
+		jointSkeletonMapping = Maps.newHashMap();
+		_skeletons = Lists.newArrayList();
 
-		//_elementJointMapping = Maps.newHashMap();
-		//_skeletons = Lists.newArrayList();
-		//_jointSkeletonMapping = Maps.newHashMap();
+		_elementJointMapping = Maps.newHashMap();
+
 		//_skeletonPoseMapping = Maps.newHashMap();
 		//_controllers = Lists.newArrayList();
 	}
@@ -110,7 +113,7 @@ public class DataCache {
 	}
 
 
-	/*public Map<Element, Joint> getElementJointMapping() {
+	public Map<Element, Joint> getElementJointMapping() {
 		return _elementJointMapping;
 	}
 
@@ -123,24 +126,25 @@ public class DataCache {
 	}
 
 	public Map<Joint, Skeleton> getJointSkeletonMapping() {
-		return _jointSkeletonMapping;
+		return jointSkeletonMapping;
 	}
 
-	public Map<Skeleton, SkeletonPose> getSkeletonPoseMapping() {
-		return _skeletonPoseMapping;
-	}
+	/*
+		public Map<Skeleton, SkeletonPose> getSkeletonPoseMapping() {
+			return _skeletonPoseMapping;
+		}
 
-	public List<ControllerStore> getControllers() {
-		return _controllers;
-	}
+		public List<ControllerStore> getControllers() {
+			return _controllers;
+		}
 
-	public List<Skeleton> getSkeletons() {
-		return _skeletons;
-	}
-
+		public List<Skeleton> getSkeletons() {
+			return _skeletons;
+		}
+		*/
 	public void addSkeleton(final Skeleton skeleton) {
 		_skeletons.add(skeleton);
-	}*/
+	}
 
 	public void setMeshVertMap(final Mesh geometry, final VertMap map) {
 		meshVertMap.put(geometry, map);

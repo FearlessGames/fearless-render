@@ -119,6 +119,15 @@ public class Matrix4 {
 		}
 	}
 
+	public Matrix4(Matrix3 source) {
+		this(IDENTITY);
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
+				data[i][j] = source.getValue(i, j);
+			}
+		}
+	}
+
 	public static Matrix4 fromAngleAxis(final double angle, final Vector3 axis) {
 		final Vector3 normAxis = axis.normalize();
 		return fromAngleNormalAxis(angle, normAxis);
@@ -173,6 +182,7 @@ public class Matrix4 {
 		matrix4.data[rowIndex][3] = rowData[3];
 		return this;
 	}
+
 
 	public Vector4 getColumn(final int index) {
 		if (index < 0 || index > 3) {
