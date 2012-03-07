@@ -10,12 +10,12 @@ import java.util.List;
 
 public class SortersTest extends TestCase {
     public void testByMeshType() throws Exception {
-        List<Renderer.AddedMesh> list = new ArrayList<Renderer.AddedMesh>();
+        List<TransformedMesh> list = new ArrayList<TransformedMesh>();
         MeshType meshType1 = new MeshType(null, null);
-        Renderer.AddedMesh mesh1 = new Renderer.AddedMesh(new Mesh(null, meshType1), null);
-        Renderer.AddedMesh mesh2 = new Renderer.AddedMesh(new Mesh(null, new MeshType(null, null)), null);
-        Renderer.AddedMesh mesh3 = new Renderer.AddedMesh(new Mesh(null, new MeshType(null, null)), null);
-        Renderer.AddedMesh mesh4 = new Renderer.AddedMesh(new Mesh(null, meshType1), null);
+        TransformedMesh mesh1 = new TransformedMesh(new Mesh(null, meshType1), null);
+        TransformedMesh mesh2 = new TransformedMesh(new Mesh(null, new MeshType(null, null)), null);
+        TransformedMesh mesh3 = new TransformedMesh(new Mesh(null, new MeshType(null, null)), null);
+        TransformedMesh mesh4 = new TransformedMesh(new Mesh(null, meshType1), null);
         list.add(mesh1);
         list.add(mesh2);
         list.add(mesh3);
@@ -25,14 +25,14 @@ public class SortersTest extends TestCase {
     }
 
     public void testByMeshType2() throws Exception {
-        List<Renderer.AddedMesh> list = new ArrayList<Renderer.AddedMesh>();
+        List<TransformedMesh> list = new ArrayList<TransformedMesh>();
         MeshType meshType1 = new MeshType(null, null);
-        Renderer.AddedMesh mesh1 = new Renderer.AddedMesh(new Mesh(null, meshType1), null);
+        TransformedMesh mesh1 = new TransformedMesh(new Mesh(null, meshType1), null);
         MeshType meshType2 = new MeshType(null, null);
-        Renderer.AddedMesh mesh2 = new Renderer.AddedMesh(new Mesh(null, meshType2), null);
-        Renderer.AddedMesh mesh3 = new Renderer.AddedMesh(new Mesh(null, new MeshType(null, null)), null);
-        Renderer.AddedMesh mesh4 = new Renderer.AddedMesh(new Mesh(null, meshType1), null);
-        Renderer.AddedMesh mesh5 = new Renderer.AddedMesh(new Mesh(null, meshType2), null);
+        TransformedMesh mesh2 = new TransformedMesh(new Mesh(null, meshType2), null);
+        TransformedMesh mesh3 = new TransformedMesh(new Mesh(null, new MeshType(null, null)), null);
+        TransformedMesh mesh4 = new TransformedMesh(new Mesh(null, meshType1), null);
+        TransformedMesh mesh5 = new TransformedMesh(new Mesh(null, meshType2), null);
         list.add(mesh1);
         list.add(mesh2);
         list.add(mesh3);
@@ -46,10 +46,10 @@ public class SortersTest extends TestCase {
         MeshType meshType1 = new MeshType(null, null);
         MeshType meshType2 = new MeshType(null, null);
         for (int N = 0; N < 100; N++) {
-            List<Renderer.AddedMesh> list = new ArrayList<Renderer.AddedMesh>();
+            List<TransformedMesh> list = new ArrayList<TransformedMesh>();
             for (int i = 0; i < N; i++) {
-                list.add(new Renderer.AddedMesh(new Mesh(null, meshType1), null));
-                list.add(new Renderer.AddedMesh(new Mesh(null, meshType2), null));
+                list.add(new TransformedMesh(new Mesh(null, meshType1), null));
+                list.add(new TransformedMesh(new Mesh(null, meshType2), null));
             }
             Sorters.sortbyMeshType(list);
             for (int i = 0; i < N; i++) {

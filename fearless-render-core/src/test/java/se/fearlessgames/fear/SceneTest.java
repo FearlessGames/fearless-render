@@ -21,13 +21,4 @@ public class SceneTest {
 		renderer = mock(Renderer.class);
 	}
 
-	@Test
-	public void renderSimpleNode() throws Exception {
-		Transformation mock = mock(Transformation.class);
-		when(mock.asMatrix()).thenReturn(new Matrix4());
-		scene.render(renderer, mock);
-		verifyNever().on(renderer).addMeshToRender(any(Mesh.class), any(Matrix4.class));
-	}
-
-
 }

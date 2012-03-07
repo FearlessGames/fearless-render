@@ -1,10 +1,9 @@
 package se.fearlessgames.fear.mesh;
 
-import se.fearlessgames.fear.RenderBucket;
+import se.fearlessgames.fear.renderbucket.RenderBucket;
 import se.fearlessgames.fear.ShaderProgram;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class MeshType {

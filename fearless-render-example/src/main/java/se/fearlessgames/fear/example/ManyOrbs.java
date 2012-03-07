@@ -39,7 +39,7 @@ public class ManyOrbs {
 	private PerspectiveBuilder perspectiveBuilder;
 	private final FearGl fearGl;
 	private final Scene scene;
-	private final Renderer renderer;
+	private final ExampleRenderer renderer;
 
 	public ManyOrbs() {
 		fearGl = new FearLwjgl();
@@ -55,7 +55,7 @@ public class ManyOrbs {
 		scene = createScene();
 		scene.getRoot().setPosition(new Vector3(0, -15, -80));
 		ShaderProgram shaderProgram = createShaderProgram();
-		renderer = new Renderer(new MeshRenderer(fearGl, perspectiveBuilder));
+		renderer = new ExampleRenderer(new MeshRenderer(fearGl, perspectiveBuilder));
 		long t1 = System.nanoTime();
 		long t2;
 		TimeProvider timeProvider = new SystemTimeProvider();
@@ -70,8 +70,8 @@ public class ManyOrbs {
 			throw new RuntimeException(e);
 		}
 
-		MeshType orbMeshType = new MeshType(shaderProgram, RenderBucket.OPAQUE, DirectionalLightRenderState.DEFAULT, new SingleTextureRenderState(texture));
-		MeshType orbMeshType2 = new MeshType(shaderProgram, RenderBucket.TRANSPARENT, DirectionalLightRenderState.DEFAULT, new TransparentTextureRenderState(texture));
+		MeshType orbMeshType = new MeshType(shaderProgram, renderer.opaqueBucket, DirectionalLightRenderState.DEFAULT, new SingleTextureRenderState(texture));
+		MeshType orbMeshType2 = new MeshType(shaderProgram, renderer.translucentBucket, DirectionalLightRenderState.DEFAULT, new TransparentTextureRenderState(texture));
 
 		List<Orb> orbs = Lists.newArrayList();
 		for (int i = 0; i < numOrbs; i++) {

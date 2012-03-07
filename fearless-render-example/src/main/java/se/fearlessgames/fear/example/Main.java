@@ -14,6 +14,7 @@ import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.mesh.Mesh;
 import se.fearlessgames.fear.mesh.MeshRenderer;
 import se.fearlessgames.fear.mesh.MeshType;
+import se.fearlessgames.fear.renderbucket.RenderBucket;
 import se.fearlessgames.fear.shape.SphereFactory;
 import se.fearlessgames.fear.texture.*;
 import se.fearlessgames.fear.texture.TextureType;
@@ -33,7 +34,7 @@ public class Main {
 	private PerspectiveBuilder perspectiveBuilder;
 	private final FearGl fearGl;
 	private final Scene scene;
-	private final Renderer renderer;
+	private final ExampleRenderer renderer;
 	private final TextureLoader textureManager = new TextureLoaderImpl();
 	private double rot;
 	private Transformation camera = new Transformation(Vector3.ZERO, Quaternion.IDENTITY, Vector3.ONE);
@@ -48,7 +49,7 @@ public class Main {
 		scene = createScene();
 		scene.getRoot().setPosition(new Vector3(0, 0, -4));
 
-		renderer = new Renderer(new MeshRenderer(fearGl, perspectiveBuilder));
+		renderer = new ExampleRenderer(new MeshRenderer(fearGl, perspectiveBuilder));
 
 		long t1 = System.nanoTime();
 		long t2;
@@ -107,7 +108,7 @@ public class Main {
 
 		Node root = new Node("root");
 		Texture texture = textureManager.loadTextureFlipped(TextureType.PNG, new FileInputStream("src/main/resources/texture/earth.png"));
-		MeshType earthMeshType = new MeshType(shaderProgram, RenderBucket.OPAQUE, new DirectionalLightRenderState(new SunLight()), new SingleTextureRenderState(texture));
+		MeshType earthMeshType = new MeshType(shaderProgram, renderer.opaqueBucket, new DirectionalLightRenderState(new SunLight()), new SingleTextureRenderState(texture));
 		Mesh earth = new Mesh(vertexBufferObject, earthMeshType);
 
 		Node boxNode = new Node("Box", earth);

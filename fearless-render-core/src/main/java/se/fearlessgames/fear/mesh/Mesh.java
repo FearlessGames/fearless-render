@@ -1,6 +1,6 @@
 package se.fearlessgames.fear.mesh;
 
-import se.fearlessgames.fear.RenderBucket;
+import se.fearlessgames.fear.renderbucket.RenderBucket;
 import se.fearlessgames.fear.ShaderProgram;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 

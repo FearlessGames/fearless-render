@@ -2,6 +2,7 @@ package se.fearlessgames.fear.mesh;
 
 import se.fearlessgames.fear.Renderer;
 import se.fearlessgames.fear.ShaderProgram;
+import se.fearlessgames.fear.TransformedMesh;
 import se.fearlessgames.fear.gl.BufferTarget;
 import se.fearlessgames.fear.gl.Culling;
 import se.fearlessgames.fear.gl.FearGl;
@@ -41,13 +42,13 @@ public class MeshRenderer {
 		disableStates(shader, renderStates);
 	}
 
-	public void renderMeshes(Collection<Renderer.AddedMesh> meshes, boolean renderBackFaces) {
+	public void renderMeshes(Collection<TransformedMesh> meshes, boolean renderBackFaces) {
 		fearGl.glCullFace(Culling.FRONT);
 		MeshType prev = null;
 		ShaderProgram shader = null;
 		List<RenderState> renderStates = null;
 		VertexBufferObject prevVBO = null;
-		for (Renderer.AddedMesh mesh : meshes) {
+		for (TransformedMesh mesh : meshes) {
 			MeshType meshType = mesh.mesh.getMeshType();
 			if (prev != meshType) {
 				if (prev != null) {
@@ -142,3 +143,4 @@ public class MeshRenderer {
 
 
 }
+

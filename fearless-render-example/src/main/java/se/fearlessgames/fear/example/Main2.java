@@ -14,6 +14,7 @@ import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.mesh.MeshRenderer;
 import se.fearlessgames.fear.mesh.MeshType;
+import se.fearlessgames.fear.renderbucket.RenderBucket;
 import se.fearlessgames.fear.shape.ShapeFactory;
 import se.fearlessgames.fear.shape.SphereFactory;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
@@ -31,7 +32,7 @@ public class Main2 {
 	private PerspectiveBuilder perspectiveBuilder;
 	private final FearGl fearGl;
 	private final Scene scene;
-	private final Renderer renderer;
+	private final ExampleRenderer renderer;
 	private final List<Orb> orbs = Lists.newArrayList();
 	private Transformation camera = new Transformation(Vector3.ZERO, Quaternion.IDENTITY, Vector3.ONE);
 	private ShaderProgram shaderProgram;
@@ -44,7 +45,7 @@ public class Main2 {
 		scene = createScene();
 		scene.getRoot().setPosition(new Vector3(0, -15, -80));
 
-		renderer = new Renderer(new MeshRenderer(fearGl, perspectiveBuilder));
+		renderer = new ExampleRenderer(new MeshRenderer(fearGl, perspectiveBuilder));
 		long t1 = System.nanoTime();
 		long t2;
 		TimeProvider timeProvider = new SystemTimeProvider();
@@ -97,13 +98,13 @@ public class Main2 {
 		Node root = new Node("root");
 
 
-		Orb sun = new Orb("Sun", vbo, 2.5, 0, 0, new MeshType(shaderProgram, RenderBucket.OPAQUE));
+		Orb sun = new Orb("Sun", vbo, 2.5, 0, 0, new MeshType(shaderProgram, renderer.opaqueBucket));
 
-		Orb planet = new Orb("Planet", vbo, 1, 1e-3, 1e-3, new MeshType(shaderProgram, RenderBucket.OPAQUE));
+		Orb planet = new Orb("Planet", vbo, 1, 1e-3, 1e-3, new MeshType(shaderProgram, renderer.opaqueBucket));
 		planet.setRotationRadius(new Vector3(30, 0, 0));
 		sun.addChild(planet);
 
-		Orb moon = new Orb("Moon", vbo, 0.25, 1e-2, 1e-5, new MeshType(shaderProgram, RenderBucket.OPAQUE));
+		Orb moon = new Orb("Moon", vbo, 0.25, 1e-2, 1e-5, new MeshType(shaderProgram, renderer.opaqueBucket));
 		moon.setRotationRadius(new Vector3(10, 0, 0));
 		planet.addChild(moon);
 
