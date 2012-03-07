@@ -54,11 +54,12 @@ public class ManyOrbs {
 		ShapeFactory shapeFactory = new SphereFactory(fearGl, 100, 100, 2, SphereFactory.TextureMode.PROJECTED);
 		VertexBufferObject vbo = shapeFactory.create();
 
+		renderer = new ExampleRenderer(new MeshRenderer(fearGl, perspectiveBuilder));
 
 		scene = createScene();
 		scene.getRoot().setPosition(new Vector3(0, -15, -80));
 		ShaderProgram shaderProgram = createShaderProgram();
-		renderer = new ExampleRenderer(new MeshRenderer(fearGl, perspectiveBuilder));
+
 		long t1 = System.nanoTime();
 		long t2;
 		TimeProvider timeProvider = new SystemTimeProvider();

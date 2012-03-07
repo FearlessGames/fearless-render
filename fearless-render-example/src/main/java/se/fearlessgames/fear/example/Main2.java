@@ -7,14 +7,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.fearlessgames.common.util.SystemTimeProvider;
 import se.fearlessgames.common.util.TimeProvider;
-import se.fearlessgames.fear.*;
+import se.fearlessgames.fear.Node;
+import se.fearlessgames.fear.Scene;
+import se.fearlessgames.fear.ShaderProgram;
+import se.fearlessgames.fear.Transformation;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.mesh.MeshRenderer;
 import se.fearlessgames.fear.mesh.MeshType;
-import se.fearlessgames.fear.renderbucket.RenderBucket;
 import se.fearlessgames.fear.shape.ShapeFactory;
 import se.fearlessgames.fear.shape.SphereFactory;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
@@ -42,10 +44,11 @@ public class Main2 {
 		init();
 
 		shaderProgram = createShaderProgram();
+		renderer = new ExampleRenderer(new MeshRenderer(fearGl, perspectiveBuilder));
 		scene = createScene();
 		scene.getRoot().setPosition(new Vector3(0, -15, -80));
 
-		renderer = new ExampleRenderer(new MeshRenderer(fearGl, perspectiveBuilder));
+
 		long t1 = System.nanoTime();
 		long t2;
 		TimeProvider timeProvider = new SystemTimeProvider();
