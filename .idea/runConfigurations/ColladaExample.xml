@@ -1,12 +1,12 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Main" type="Application" factoryName="Application">
+  <configuration default="false" name="ColladaExample" type="Application" factoryName="Application">
     <extension name="coverage" enabled="false" merge="false" runner="idea">
       <pattern>
         <option name="PATTERN" value="se.fearlessgames.fear.example.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>
-    <option name="MAIN_CLASS_NAME" value="se.fearlessgames.fear.example.Main" />
+    <option name="MAIN_CLASS_NAME" value="se.fearlessgames.fear.example.ColladaExample" />
     <option name="VM_PARAMETERS" value="-Djava.library.path=build/natives/windows" />
     <option name="PROGRAM_PARAMETERS" value="" />
     <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$/fearless-render-example" />
@@ -17,14 +17,12 @@
     <option name="PASS_PARENT_ENVS" value="true" />
     <module name="fearless-render-example" />
     <envs />
-    <RunnerSettings RunnerId="Cover" />
     <RunnerSettings RunnerId="Debug">
       <option name="DEBUG_PORT" value="" />
       <option name="TRANSPORT" value="0" />
       <option name="LOCAL" value="true" />
     </RunnerSettings>
     <RunnerSettings RunnerId="Run" />
-    <ConfigurationWrapper RunnerId="Cover" />
     <ConfigurationWrapper RunnerId="Debug" />
     <ConfigurationWrapper RunnerId="Run" />
     <method />

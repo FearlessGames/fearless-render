@@ -9,6 +9,7 @@ Gradle version: ${gradle.gradleVersion}
 
 dependencies {
     compile project(':fearless-render-core')
+    compile project(':fearless-render-collada')
 }
 
 ['windows', 'linux', 'osx'].each { platform ->

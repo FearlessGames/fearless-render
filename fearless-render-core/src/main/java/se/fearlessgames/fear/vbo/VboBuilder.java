@@ -66,7 +66,8 @@ public class VboBuilder {
 	}
 
 	public VboBuilder indices(IntBuffer indices) {
-		this.indices = indices;
+		this.indices = indices.duplicate();
+		this.indices.rewind();
 		return this;
 	}
 
