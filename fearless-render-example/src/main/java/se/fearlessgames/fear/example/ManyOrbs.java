@@ -6,7 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.fearlessgames.common.util.SystemTimeProvider;
 import se.fearlessgames.common.util.TimeProvider;
-import se.fearlessgames.fear.*;
+import se.fearlessgames.fear.Node;
+import se.fearlessgames.fear.Scene;
+import se.fearlessgames.fear.ShaderProgram;
+import se.fearlessgames.fear.Transformation;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.light.DirectionalLightRenderState;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
@@ -115,7 +118,7 @@ public class ManyOrbs {
 			texture = textureManager.loadTexture(TextureType.PNG, new FileInputStream("src/main/resources/texture/crate.png"));
 		} catch (IOException ignored) {
 		}
-		MeshType meshType = new MeshType(shaderProgram, RenderBucket.OPAQUE, DirectionalLightRenderState.DEFAULT, new SingleTextureRenderState(texture));
+		MeshType meshType = new MeshType(shaderProgram, renderer.opaqueBucket, DirectionalLightRenderState.DEFAULT, new SingleTextureRenderState(texture));
 		Mesh boxMesh = new Mesh(new BoxFactory(fearGl).create(), meshType);
 
 		Node node = new Node("Center Box", boxMesh);
