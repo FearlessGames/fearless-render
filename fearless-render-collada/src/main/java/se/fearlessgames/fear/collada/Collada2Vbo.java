@@ -27,6 +27,7 @@ public class Collada2Vbo {
 	}
 
 	public VertexBufferObject create(Mesh mesh) {
+		rewindMesh(mesh);
 		VboBuilder vboBuilder = VboBuilder.fromBuffer(fearGl, mesh.getVertexBuffer());
 
 		vboBuilder.indices(mesh.getIndices());
@@ -47,7 +48,12 @@ public class Collada2Vbo {
 	}
 
 	public VertexBufferObject create(Node node) {
+		Mesh mesh = createCombinedMesh(node);
+		rewindMesh(mesh);
+		return create(mesh);
+	}
 
+	protected Mesh createCombinedMesh(Node node) {
 		CombinedMesh combinedMesh = new CombinedMesh();
 
 		combinedMeshes(combinedMesh, new Matrix4(), node, new AtomicInteger());
@@ -60,8 +66,7 @@ public class Collada2Vbo {
 		}
 		mesh.setIndices(toIntBuffer(combinedMesh.indices));
 		mesh.setIndexMode(combinedMesh.indexMode);
-
-		return create(mesh);
+		return mesh;
 	}
 
 	private IntBuffer toIntBuffer(List<Integer> indices) {
