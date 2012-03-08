@@ -40,4 +40,8 @@ public class Node {
 	public List<Mesh> getMeshes() {
 		return meshes;
 	}
+
+	public Matrix4 getTransform() {
+		return transform;
+	}
 }
