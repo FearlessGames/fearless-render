@@ -1,8 +1,11 @@
 package se.fearlessgames.fear.mesh;
 
+import se.fearlessgames.fear.BufferUtils;
+
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.HashMap;
+import java.util.Map;
 
 public class MeshData {
 	private String name;
@@ -23,6 +26,21 @@ public class MeshData {
 		}
 		return vertexBuffer.limit() / indexMode.getVertexCount();
 	}
+
+	public MeshData duplicate() {
+		MeshData meshData = new MeshData(name);
+		meshData.indexMode = indexMode;
+		meshData.vertexBuffer = BufferUtils.duplicate(vertexBuffer);
+		meshData.normalBuffer = BufferUtils.duplicate(normalBuffer);
+		meshData.colorBuffer = BufferUtils.duplicate(colorBuffer);
+		meshData.indices = BufferUtils.duplicate(indices);
+		for (Map.Entry<Integer, FloatBuffer> entry : textureCoordsMap.entrySet()) {
+			meshData.textureCoordsMap.put(entry.getKey(), BufferUtils.duplicate(entry.getValue()));
+		}
+		return meshData;
+
+	}
+
 
 	public void setTextureCoords(int texCoord, FloatBuffer buffer) {
 		textureCoordsMap.put(texCoord, buffer);

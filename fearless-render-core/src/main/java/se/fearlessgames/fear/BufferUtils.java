@@ -44,4 +44,21 @@ public class BufferUtils {
 	}
 
 
+	public static IntBuffer duplicate(IntBuffer buffer) {
+		if (buffer == null) {
+			return null;
+		}
+		IntBuffer duplicate = buffer.duplicate();
+		duplicate.rewind();
+		return duplicate;
+	}
+
+	public static FloatBuffer duplicate(FloatBuffer buffer) {
+		if (buffer == null) {
+			return null;
+		}
+		FloatBuffer duplicate = buffer.duplicate();
+		duplicate.rewind();
+		return duplicate;
+	}
 }

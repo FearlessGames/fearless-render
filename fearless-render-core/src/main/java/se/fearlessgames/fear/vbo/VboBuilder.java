@@ -3,6 +3,8 @@ package se.fearlessgames.fear.vbo;
 import se.fearlessgames.fear.BufferUtils;
 import se.fearlessgames.fear.gl.FearGl;
 import se.fearlessgames.fear.gl.VertexDrawMode;
+import se.fearlessgames.fear.mesh.IndexMode;
+import se.fearlessgames.fear.mesh.MeshData;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -147,6 +149,7 @@ public class VboBuilder {
 		return new VertexBufferObject(fearGl, interleavedBuffer, indices, drawMode);
 	}
 
+
 	static IntBuffer createIntBuffer(int[] indices) {
 		IntBuffer indexBuffer = BufferUtils.createIntBuffer(indices.length);
 		indexBuffer.put(indices);
@@ -159,5 +162,30 @@ public class VboBuilder {
 		vertexBuffer.put(vertices);
 		vertexBuffer.flip();
 		return vertexBuffer;
+	}
+
+	public static VboBuilder fromMeshData(FearGl fearGl, MeshData meshData) {
+		VboBuilder vboBuilder = VboBuilder.fromBuffer(fearGl, meshData.getVertexBuffer());
+		if (meshData.getIndices() != null) {
+			vboBuilder.indices(meshData.getIndices());
+		}
+
+		if (meshData.getNormalBuffer() != null) {
+			vboBuilder.normals(meshData.getNormalBuffer());
+		}
+
+		FloatBuffer texCoords = meshData.getTextureCoordsMap().get(0);
+
+		if (texCoords != null) {
+			vboBuilder.textureCoords(texCoords);
+		}
+
+		if (meshData.getIndexMode() == IndexMode.Triangles) {
+			vboBuilder.triangles();
+		} else if (meshData.getIndexMode() == IndexMode.Quads) {
+			vboBuilder.quads();
+		}
+
+		return vboBuilder;
 	}
 }
