@@ -17,8 +17,8 @@ public class Scene {
 	}
 
 	public void render(Renderer renderer, Transformation camera) {
-		renderSkybox(renderer, camera);
-		renderObjects(renderer, camera);
+		addNode(renderer, root, camera.asMatrix());
+		renderer.render();
 	}
 
 	private void renderObjects(Renderer renderer, Transformation camera) {
@@ -57,8 +57,4 @@ public class Scene {
 			throw new FearError("Object in scene has a render bucket that's not in the renderer");
 		}
 	}
-
-	private void renderSkybox(Renderer output, Transformation camera) {
-	}
-
 }

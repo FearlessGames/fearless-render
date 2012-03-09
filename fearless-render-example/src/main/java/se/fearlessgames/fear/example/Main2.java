@@ -7,20 +7,26 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.fearlessgames.common.util.SystemTimeProvider;
 import se.fearlessgames.common.util.TimeProvider;
-import se.fearlessgames.fear.Node;
-import se.fearlessgames.fear.Scene;
-import se.fearlessgames.fear.ShaderProgram;
-import se.fearlessgames.fear.Transformation;
+import se.fearlessgames.fear.*;
 import se.fearlessgames.fear.gl.*;
+import se.fearlessgames.fear.light.DirectionalLightRenderState;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
+import se.fearlessgames.fear.mesh.Mesh;
 import se.fearlessgames.fear.mesh.MeshRenderer;
 import se.fearlessgames.fear.mesh.MeshType;
+import se.fearlessgames.fear.renderbucket.RenderBucket;
 import se.fearlessgames.fear.shape.ShapeFactory;
 import se.fearlessgames.fear.shape.SphereFactory;
+import se.fearlessgames.fear.texture.SingleTextureRenderState;
+import se.fearlessgames.fear.texture.Texture;
+import se.fearlessgames.fear.texture.TextureLoader;
+import se.fearlessgames.fear.texture.TextureLoaderImpl;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -48,12 +54,16 @@ public class Main2 {
 		scene = createScene();
 		scene.getRoot().setPosition(new Vector3(0, -15, -80));
 
+		Skybox skybox = new Skybox();
+		skybox.getRoot().addChild(new Node("skybox-sphere", createSkyboxSphere(fearGl, shaderProgram, renderer.skyboxBucket)));
+		scene.getRoot().addChild(skybox.getRoot());
 
 		long t1 = System.nanoTime();
 		long t2;
 		TimeProvider timeProvider = new SystemTimeProvider();
 		int c = 0;
 		int x = 0, y = 0, z = 0;
+		int angle = 0;
 		while (!done) {
 			if (Display.isCloseRequested()) {
 				done = true;
@@ -82,7 +92,14 @@ public class Main2 {
 			if (Keyboard.isKeyDown(Keyboard.KEY_Z)) {
 				z++;
 			}
-			camera = new Transformation(new Vector3(x, y, z), Quaternion.IDENTITY, Vector3.ONE);
+			if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
+				angle--;
+			}
+			if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
+				angle++;
+			}
+			camera = new Transformation(new Vector3(x, y, z), Quaternion.fromAngleAxis(angle * 0.01, Vector3.UNIT_Y), Vector3.ONE);
+			skybox.moveToCamera(camera);
 			render();
 			Display.update();
 			t2 = System.nanoTime();
@@ -94,6 +111,20 @@ public class Main2 {
 
 		Display.destroy();
 
+	}
+
+	private Mesh createSkyboxSphere(FearGl fearGl, ShaderProgram shaderProgram, RenderBucket skyboxBucket) {
+		TextureLoader textureManager = new TextureLoaderImpl();
+		Texture texture = null;
+		try {
+			texture = textureManager.loadTexture(se.fearlessgames.fear.texture.TextureType.PNG, new FileInputStream("src/main/resources/texture/earth.png"));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
+		ShapeFactory shapeFactory = new SphereFactory(fearGl, 100, 100, 100, SphereFactory.TextureMode.PROJECTED);
+		VertexBufferObject vbo = shapeFactory.create();
+		return new Mesh(vbo, new MeshType(shaderProgram, skyboxBucket, DirectionalLightRenderState.DEFAULT, new SingleTextureRenderState(texture)));
 	}
 
 	private Scene createScene() {

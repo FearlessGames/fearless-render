@@ -1,11 +1,12 @@
 package se.fearlessgames.fear;
 
-import se.fearlessgames.fear.math.Matrix4;
-import se.fearlessgames.fear.mesh.Mesh;
 import se.fearlessgames.fear.mesh.MeshRenderer;
 import se.fearlessgames.fear.renderbucket.RenderBucket;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 public class Renderer {
