@@ -3,11 +3,10 @@ package se.fearlessgames.fear.collada.data;
 import org.jdom.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import se.fearlessgames.fear.BufferUtils;
 import se.fearlessgames.fear.collada.ColladaException;
 import se.fearlessgames.fear.collada.utils.ColladaDOMUtil;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.util.Arrays;
 import java.util.List;
@@ -179,9 +178,7 @@ public class ColladaInputPipe {
 	}
 
 	private FloatBuffer createFloatBuffer(int size) {
-		final FloatBuffer buf = ByteBuffer.allocateDirect(4 * size).order(ByteOrder.nativeOrder()).asFloatBuffer();
-		buf.clear();
-		return buf;
+		return BufferUtils.createFloatBuffer(size);
 	}
 
 	public void pushValues(final int memberIndex) {

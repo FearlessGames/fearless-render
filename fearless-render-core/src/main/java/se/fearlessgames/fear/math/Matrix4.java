@@ -1,7 +1,7 @@
 package se.fearlessgames.fear.math;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
+import se.fearlessgames.fear.BufferUtils;
+
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 
@@ -214,7 +214,7 @@ public class Matrix4 {
 	}
 
 	public DoubleBuffer toDoubleBuffer(final boolean rowMajor) {
-		DoubleBuffer result = ByteBuffer.allocateDirect(8 * 16).order(ByteOrder.nativeOrder()).asDoubleBuffer();
+		DoubleBuffer result = BufferUtils.createDoubleBuffer(16);
 		result.clear();
 
 
@@ -229,7 +229,7 @@ public class Matrix4 {
 				}
 			}
 		}
-
+		result.flip();
 		return result;
 	}
 
@@ -238,7 +238,7 @@ public class Matrix4 {
 	}
 
 	public FloatBuffer toFloatBuffer(final boolean rowMajor) {
-		FloatBuffer result = ByteBuffer.allocateDirect(4 * 16).order(ByteOrder.nativeOrder()).asFloatBuffer();
+		FloatBuffer result = BufferUtils.createFloatBuffer(16);
 		result.clear();
 
 
@@ -255,7 +255,7 @@ public class Matrix4 {
 				}
 			}
 		}
-
+		result.flip();
 		return result;
 	}
 

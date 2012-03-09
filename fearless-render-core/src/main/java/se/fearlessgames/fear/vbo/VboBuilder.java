@@ -1,6 +1,6 @@
 package se.fearlessgames.fear.vbo;
 
-import org.lwjgl.BufferUtils;
+import se.fearlessgames.fear.BufferUtils;
 import se.fearlessgames.fear.gl.FearGl;
 import se.fearlessgames.fear.gl.VertexDrawMode;
 
@@ -155,7 +155,7 @@ public class VboBuilder {
 	}
 
 	static FloatBuffer createFloatBuffer(float[] vertices) {
-		FloatBuffer vertexBuffer = BufferUtils.createFloatBuffer(vertices.length * 3);
+		FloatBuffer vertexBuffer = BufferUtils.createFloat3Buffer(vertices.length);
 		vertexBuffer.put(vertices);
 		vertexBuffer.flip();
 		return vertexBuffer;

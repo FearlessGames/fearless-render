@@ -1,6 +1,7 @@
 package se.fearlessgames.fear.math;
 
-import org.lwjgl.BufferUtils;
+
+import se.fearlessgames.fear.BufferUtils;
 
 import java.nio.FloatBuffer;
 
@@ -10,7 +11,7 @@ public class GlMatrixBuilder {
 	}
 
 	public static FloatBuffer convert(Matrix4 matrix) {
-		FloatBuffer buffer = BufferUtils.createFloatBuffer(4*4);
+		FloatBuffer buffer = BufferUtils.createFloatBuffer(4 * 4);
 
 		buffer.put(0, (float) matrix.getValue(0, 0));
 		buffer.put(1, (float) matrix.getValue(1, 0));
@@ -35,7 +36,7 @@ public class GlMatrixBuilder {
 	}
 
 	public static FloatBuffer convert(Matrix3 matrix) {
-		FloatBuffer buffer = BufferUtils.createFloatBuffer(3*3);
+		FloatBuffer buffer = BufferUtils.createFloatBuffer(3 * 3);
 
 		buffer.put(0, (float) matrix.getValue(0, 0));
 		buffer.put(1, (float) matrix.getValue(1, 0));

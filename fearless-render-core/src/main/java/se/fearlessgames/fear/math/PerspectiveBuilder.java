@@ -1,6 +1,7 @@
 package se.fearlessgames.fear.math;
 
-import org.lwjgl.BufferUtils;
+
+import se.fearlessgames.fear.BufferUtils;
 
 import java.nio.FloatBuffer;
 

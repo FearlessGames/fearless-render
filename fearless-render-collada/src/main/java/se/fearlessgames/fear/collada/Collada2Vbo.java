@@ -2,6 +2,7 @@ package se.fearlessgames.fear.collada;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import se.fearlessgames.fear.BufferUtils;
 import se.fearlessgames.fear.collada.data.IndexMode;
 import se.fearlessgames.fear.collada.data.Mesh;
 import se.fearlessgames.fear.collada.data.Node;
@@ -11,8 +12,6 @@ import se.fearlessgames.fear.math.Vector4;
 import se.fearlessgames.fear.vbo.VboBuilder;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -71,22 +70,16 @@ public class Collada2Vbo {
 	}
 
 	private IntBuffer toIntBuffer(List<Integer> indices) {
-
-		IntBuffer buffer = createIndexBufferData(indices.size());//ByteBuffer.allocateDirect(indices.size() * 4).asIntBuffer();
+		IntBuffer buffer = BufferUtils.createIntBuffer(indices.size());
 		for (Integer indice : indices) {
 			buffer.put(indice);
 		}
 		return buffer;
 	}
 
-	private IntBuffer createIndexBufferData(int size) {
-		final IntBuffer buf = ByteBuffer.allocateDirect(4 * size).order(ByteOrder.nativeOrder()).asIntBuffer();
-		buf.clear();
-		return buf;
-	}
 
 	private FloatBuffer toFloatBuffer(Collection<Float> vertexBuffer) {
-		FloatBuffer buffer = ByteBuffer.allocateDirect(vertexBuffer.size() * 4).asFloatBuffer();
+		FloatBuffer buffer = BufferUtils.createFloatBuffer(vertexBuffer.size());
 		for (Float aFloat : vertexBuffer) {
 			buffer.put(aFloat);
 		}

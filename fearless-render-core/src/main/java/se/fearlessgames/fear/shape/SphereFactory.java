@@ -1,14 +1,12 @@
 package se.fearlessgames.fear.shape;
 
-import org.lwjgl.BufferUtils;
+import se.fearlessgames.fear.BufferUtils;
 import se.fearlessgames.fear.gl.FearGl;
 import se.fearlessgames.fear.math.MathUtils;
 import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.vbo.VboBuilder;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.Random;
@@ -58,10 +56,10 @@ public class SphereFactory implements ShapeFactory {
 	private void createGeometryData() {
 		// allocate vertices
 		final int verts = (zSamples - 2) * (radialSamples + 1) + 2;
-		vertexBuffer = ByteBuffer.allocateDirect(4 * 3 * verts).order(ByteOrder.nativeOrder()).asFloatBuffer();
-		normalBuffer = ByteBuffer.allocateDirect(4 * 3 * verts).order(ByteOrder.nativeOrder()).asFloatBuffer();
-		colorBuffer = ByteBuffer.allocateDirect(4 * 4 * verts).order(ByteOrder.nativeOrder()).asFloatBuffer();
-		textureCoordinates = ByteBuffer.allocateDirect(4 * 2 * verts).order(ByteOrder.nativeOrder()).asFloatBuffer();
+		vertexBuffer = BufferUtils.createFloat3Buffer(verts);
+		normalBuffer = BufferUtils.createFloat3Buffer(verts);
+		colorBuffer = BufferUtils.createFloat4Buffer(verts);
+		textureCoordinates = BufferUtils.createFloat2Buffer(verts);
 
 
 		// generate geometry

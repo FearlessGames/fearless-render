@@ -1,7 +1,7 @@
 package se.fearlessgames.fear.math;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
+import se.fearlessgames.fear.BufferUtils;
+
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
 
@@ -64,7 +64,7 @@ public class Matrix3 {
 	public Matrix3(Matrix4 matrix4) {
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
-				data[i][j] = matrix4.getValue(i,j);
+				data[i][j] = matrix4.getValue(i, j);
 			}
 		}
 	}
@@ -187,7 +187,7 @@ public class Matrix3 {
 	}
 
 	public DoubleBuffer toDoubleBuffer(final boolean rowMajor) {
-		DoubleBuffer result = ByteBuffer.allocateDirect(8 * 9).order(ByteOrder.nativeOrder()).asDoubleBuffer();
+		DoubleBuffer result = BufferUtils.createDoubleBuffer(9);
 		result.clear();
 
 
@@ -213,7 +213,7 @@ public class Matrix3 {
 	}
 
 	public FloatBuffer toFloatBuffer(final boolean rowMajor) {
-		FloatBuffer result = ByteBuffer.allocateDirect(4 * 9).order(ByteOrder.nativeOrder()).asFloatBuffer();
+		FloatBuffer result = BufferUtils.createFloatBuffer(9);
 		result.clear();
 
 
@@ -230,7 +230,7 @@ public class Matrix3 {
 				}
 			}
 		}
-
+		result.flip();
 		return result;
 	}
 

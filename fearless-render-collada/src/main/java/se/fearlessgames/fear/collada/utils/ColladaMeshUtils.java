@@ -3,10 +3,9 @@ package se.fearlessgames.fear.collada.utils;
 import org.jdom.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import se.fearlessgames.fear.BufferUtils;
 import se.fearlessgames.fear.collada.data.*;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 import java.util.LinkedList;
 import java.util.List;
@@ -185,9 +184,7 @@ public class ColladaMeshUtils {
 	}
 
 	private IntBuffer createIndexBufferData(int size) {
-		final IntBuffer buf = ByteBuffer.allocateDirect(4 * size).order(ByteOrder.nativeOrder()).asIntBuffer();
-		buf.clear();
-		return buf;
+		return BufferUtils.createIntBuffer(size);
 	}
 
 	public Mesh buildMeshPolylist(final Element colladaGeometry, final Element polys) {
