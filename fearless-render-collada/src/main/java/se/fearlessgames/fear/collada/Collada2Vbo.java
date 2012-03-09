@@ -12,6 +12,7 @@ import se.fearlessgames.fear.vbo.VboBuilder;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -71,11 +72,17 @@ public class Collada2Vbo {
 
 	private IntBuffer toIntBuffer(List<Integer> indices) {
 
-		IntBuffer buffer = ByteBuffer.allocateDirect(indices.size() * 4).asIntBuffer();
+		IntBuffer buffer = createIndexBufferData(indices.size());//ByteBuffer.allocateDirect(indices.size() * 4).asIntBuffer();
 		for (Integer indice : indices) {
 			buffer.put(indice);
 		}
 		return buffer;
+	}
+
+	private IntBuffer createIndexBufferData(int size) {
+		final IntBuffer buf = ByteBuffer.allocateDirect(4 * size).order(ByteOrder.nativeOrder()).asIntBuffer();
+		buf.clear();
+		return buf;
 	}
 
 	private FloatBuffer toFloatBuffer(Collection<Float> vertexBuffer) {
@@ -99,7 +106,7 @@ public class Collada2Vbo {
 			rewindMesh(mesh);
 
 			for (int i = 0; i < mesh.getVertexBuffer().limit() / 3; i++) {
-				Vector4 vertex = new Vector4(mesh.getVertexBuffer().get(), mesh.getVertexBuffer().get(), mesh.getVertexBuffer().get(), 0);
+				Vector4 vertex = new Vector4(mesh.getVertexBuffer().get(), mesh.getVertexBuffer().get(), mesh.getVertexBuffer().get(), 1);
 				vertex = matrix4.applyPost(vertex);
 				combinedMesh.vertexBuffer.add((float) vertex.getX());
 				combinedMesh.vertexBuffer.add((float) vertex.getY());

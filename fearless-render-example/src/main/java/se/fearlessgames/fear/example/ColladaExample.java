@@ -112,7 +112,7 @@ public class ColladaExample {
 		ColladaImporter colladaImporter = new ColladaImporter();
 		ColladaStorage colladaStorage = colladaImporter.load(new FileInputStream("src/main/resources/dae/chair.dae"));
 		Collada2Vbo collada2Vbo = new Collada2Vbo(fearGl);
-		VertexBufferObject vertexBufferObject = collada2Vbo.create(colladaStorage.getScene().getChildren().get(0).getChildren().get(0).getMeshes().get(0));
+		VertexBufferObject vertexBufferObject = collada2Vbo.create(colladaStorage.getScene());
 
 
 		MeshType chairType = new MeshType(shaderProgram, renderer.opaqueBucket, new DirectionalLightRenderState(new SunLight()), new SingleTextureRenderState(texture));

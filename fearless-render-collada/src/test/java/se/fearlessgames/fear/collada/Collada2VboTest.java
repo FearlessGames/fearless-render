@@ -28,20 +28,23 @@ public class Collada2VboTest {
 	public void testCombineMeshWithJustOneMeshAndNoTransforms() {
 
 		ColladaImporter colladaImporter = new ColladaImporter();
-		ColladaStorage colladaStorage = colladaImporter.load(getInputData("fearless-render-collada/src/test/resources/boll.dae"));
+		ColladaStorage colladaStorage = colladaImporter.load(getInputData("fearless-render-collada/src/test/resources/notransform.dae"));
 		assertNotNull("Collada storage was null", colladaStorage);
 
 		Mesh mesh = colladaStorage.getScene().getChildren().get(0).getChildren().get(0).getMeshes().get(0);
-		colladaStorage.getScene().setTransform(null);
-		colladaStorage.getScene().getChildren().get(0).setTransform(null);
-		colladaStorage.getScene().getChildren().get(0).getChildren().get(0).setTransform(null);
 
 		Mesh combinedMesh = collada2Vbo.createCombinedMesh(colladaStorage.getScene());
 
 		assertEqualsBuffer(mesh.getVertexBuffer(), combinedMesh.getVertexBuffer());
 		assertEqualsBuffer(mesh.getNormalBuffer(), combinedMesh.getNormalBuffer());
 		assertEqualsBuffer(mesh.getIndices(), combinedMesh.getIndices());
+		assertEqualsBuffer(mesh.getTextureCoordsMap().get(0), combinedMesh.getTextureCoordsMap().get(0));
+
+		assertEquals(mesh.getIndices().getClass(), combinedMesh.getIndices().getClass());
+
+		assertEquals(mesh.getIndexMode(), combinedMesh.getIndexMode());
 	}
+
 
 	private void assertEqualsBuffer(IntBuffer buffer1, IntBuffer buffer2) {
 		buffer1.rewind();
