@@ -2,8 +2,8 @@ package se.fearlessgames.fear.collada;
 
 import org.junit.Before;
 import org.junit.Test;
-import se.fearlessgames.fear.collada.data.Mesh;
 import se.fearlessgames.fear.gl.FearGl;
+import se.fearlessgames.fear.mesh.MeshData;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,18 +31,18 @@ public class Collada2VboTest {
 		ColladaStorage colladaStorage = colladaImporter.load(getInputData("fearless-render-collada/src/test/resources/notransform.dae"));
 		assertNotNull("Collada storage was null", colladaStorage);
 
-		Mesh mesh = colladaStorage.getScene().getChildren().get(0).getChildren().get(0).getMeshes().get(0);
+		MeshData meshData = colladaStorage.getScene().getChildren().get(0).getChildren().get(0).getMeshes().get(0);
 
-		Mesh combinedMesh = collada2Vbo.createCombinedMesh(colladaStorage.getScene());
+		MeshData combinedMeshData = collada2Vbo.createCombinedMesh(colladaStorage.getScene());
 
-		assertEqualsBuffer(mesh.getVertexBuffer(), combinedMesh.getVertexBuffer());
-		assertEqualsBuffer(mesh.getNormalBuffer(), combinedMesh.getNormalBuffer());
-		assertEqualsBuffer(mesh.getIndices(), combinedMesh.getIndices());
-		assertEqualsBuffer(mesh.getTextureCoordsMap().get(0), combinedMesh.getTextureCoordsMap().get(0));
+		assertEqualsBuffer(meshData.getVertexBuffer(), combinedMeshData.getVertexBuffer());
+		assertEqualsBuffer(meshData.getNormalBuffer(), combinedMeshData.getNormalBuffer());
+		assertEqualsBuffer(meshData.getIndices(), combinedMeshData.getIndices());
+		assertEqualsBuffer(meshData.getTextureCoordsMap().get(0), combinedMeshData.getTextureCoordsMap().get(0));
 
-		assertEquals(mesh.getIndices().getClass(), combinedMesh.getIndices().getClass());
+		assertEquals(meshData.getIndices().getClass(), combinedMeshData.getIndices().getClass());
 
-		assertEquals(mesh.getIndexMode(), combinedMesh.getIndexMode());
+		assertEquals(meshData.getIndexMode(), combinedMeshData.getIndexMode());
 	}
 
 

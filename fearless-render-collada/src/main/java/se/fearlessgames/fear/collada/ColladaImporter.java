@@ -22,8 +22,8 @@ public class ColladaImporter {
 
 
 		ColladaDOMUtil colladaDomUtil = new ColladaDOMUtil(dataCache);
-		ColladaMeshUtils colladaMeshUtils = new ColladaMeshUtils(dataCache, colladaDomUtil);
-		ColladaNodeParser colladaNodeParser = new ColladaNodeParser(dataCache, colladaDomUtil, colladaMeshUtils);
+		ColladaMeshParser colladaMeshParser = new ColladaMeshParser(dataCache, colladaDomUtil);
+		ColladaNodeParser colladaNodeParser = new ColladaNodeParser(dataCache, colladaDomUtil, colladaMeshParser);
 
 		colladaStorage.setAssetData(new AssetDataParser(collada.getChild("asset")).parse());
 		colladaStorage.setScene(colladaNodeParser.getVisualScene(collada));

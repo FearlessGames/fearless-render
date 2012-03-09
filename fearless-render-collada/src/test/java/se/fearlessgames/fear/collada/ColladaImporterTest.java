@@ -3,10 +3,10 @@ package se.fearlessgames.fear.collada;
 import org.junit.Before;
 import org.junit.Test;
 import se.fearlessgames.fear.collada.data.AssetData;
-import se.fearlessgames.fear.collada.data.IndexMode;
-import se.fearlessgames.fear.collada.data.Mesh;
 import se.fearlessgames.fear.collada.data.Node;
 import se.fearlessgames.fear.math.Vector3;
+import se.fearlessgames.fear.mesh.IndexMode;
+import se.fearlessgames.fear.mesh.MeshData;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -51,13 +51,13 @@ public class ColladaImporterTest {
 		assertEquals("Sphere01", scene.getChildren().get(0).getName());
 		assertEquals("Sphere01Mesh", scene.getChildren().get(0).getChildren().get(0).getName());
 
-		Mesh mesh = scene.getChildren().get(0).getChildren().get(0).getMeshes().get(0);
-		assertEquals("Sphere01Mesh[_03___Default]", mesh.getName());
-		assertEquals(2880, mesh.getVertexCount());
-		assertEquals(8640, mesh.getVertexBuffer().limit());
-		assertEquals(8640, mesh.getNormalBuffer().limit());
-		assertEquals(2880, mesh.getIndices().limit());
-		assertEquals(IndexMode.Triangles, mesh.getIndexMode());
+		MeshData meshData = scene.getChildren().get(0).getChildren().get(0).getMeshes().get(0);
+		assertEquals("Sphere01Mesh[_03___Default]", meshData.getName());
+		assertEquals(2880, meshData.getVertexCount());
+		assertEquals(8640, meshData.getVertexBuffer().limit());
+		assertEquals(8640, meshData.getNormalBuffer().limit());
+		assertEquals(2880, meshData.getIndices().limit());
+		assertEquals(IndexMode.Triangles, meshData.getIndexMode());
 	}
 
 	private InputStream getInputData(String fileName) {

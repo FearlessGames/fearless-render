@@ -6,6 +6,7 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import org.jdom.Element;
 import org.jdom.xpath.XPath;
+import se.fearlessgames.fear.mesh.MeshData;
 
 import java.util.Collections;
 import java.util.List;
@@ -26,7 +27,7 @@ public class DataCache {
 	private final Map<Element, String[]> stringArrays;
 
 	private final Multimap<Element, MeshVertPairs> vertMappings;
-	private final Map<Mesh, VertMap> meshVertMap;
+	private final Map<MeshData, VertMap> meshVertMap;
 
 	private JointNode _rootJointNode;
 
@@ -108,7 +109,7 @@ public class DataCache {
 		return vertMappings;
 	}
 
-	public Map<Mesh, VertMap> getMeshVertMap() {
+	public Map<MeshData, VertMap> getMeshVertMap() {
 		return meshVertMap;
 	}
 
@@ -146,7 +147,7 @@ public class DataCache {
 		_skeletons.add(skeleton);
 	}
 
-	public void setMeshVertMap(final Mesh geometry, final VertMap map) {
+	public void setMeshVertMap(final MeshData geometry, final VertMap map) {
 		meshVertMap.put(geometry, map);
 	}
 }

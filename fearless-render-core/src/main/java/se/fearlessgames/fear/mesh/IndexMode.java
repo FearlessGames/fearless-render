@@ -1,4 +1,4 @@
-package se.fearlessgames.fear.collada.data;
+package se.fearlessgames.fear.mesh;
 
 public enum IndexMode {
 	Triangles(true),
@@ -47,14 +47,14 @@ public enum IndexMode {
 	 */
 	Points(false);
 
-	private final boolean _hasPolygons;
+	private final boolean hasPolygons;
 
 	private IndexMode(final boolean hasPolygons) {
-		_hasPolygons = hasPolygons;
+		this.hasPolygons = hasPolygons;
 	}
 
 	public boolean hasPolygons() {
-		return _hasPolygons;
+		return hasPolygons;
 	}
 
 	public int getVertexCount() {

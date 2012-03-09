@@ -3,12 +3,12 @@ package se.fearlessgames.fear.collada;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import se.fearlessgames.fear.BufferUtils;
-import se.fearlessgames.fear.collada.data.IndexMode;
-import se.fearlessgames.fear.collada.data.Mesh;
 import se.fearlessgames.fear.collada.data.Node;
 import se.fearlessgames.fear.gl.FearGl;
 import se.fearlessgames.fear.math.Matrix4;
 import se.fearlessgames.fear.math.Vector4;
+import se.fearlessgames.fear.mesh.IndexMode;
+import se.fearlessgames.fear.mesh.MeshData;
 import se.fearlessgames.fear.vbo.VboBuilder;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
@@ -26,21 +26,21 @@ public class Collada2Vbo {
 		this.fearGl = fearGl;
 	}
 
-	public VertexBufferObject create(Mesh mesh) {
-		rewindMesh(mesh);
-		VboBuilder vboBuilder = VboBuilder.fromBuffer(fearGl, mesh.getVertexBuffer());
+	public VertexBufferObject create(MeshData meshData) {
+		rewindMesh(meshData);
+		VboBuilder vboBuilder = VboBuilder.fromBuffer(fearGl, meshData.getVertexBuffer());
 
-		vboBuilder.indices(mesh.getIndices());
-		vboBuilder.normals(mesh.getNormalBuffer());
-		FloatBuffer texCoords = mesh.getTextureCoordsMap().get(0);
+		vboBuilder.indices(meshData.getIndices());
+		vboBuilder.normals(meshData.getNormalBuffer());
+		FloatBuffer texCoords = meshData.getTextureCoordsMap().get(0);
 
 		if (texCoords != null) {
 			vboBuilder.textureCoords(texCoords);
 		}
 
-		if (mesh.getIndexMode() == IndexMode.Triangles) {
+		if (meshData.getIndexMode() == IndexMode.Triangles) {
 			vboBuilder.triangles();
-		} else if (mesh.getIndexMode() == IndexMode.Quads) {
+		} else if (meshData.getIndexMode() == IndexMode.Quads) {
 			vboBuilder.quads();
 		}
 
@@ -48,25 +48,25 @@ public class Collada2Vbo {
 	}
 
 	public VertexBufferObject create(Node node) {
-		Mesh mesh = createCombinedMesh(node);
-		rewindMesh(mesh);
-		return create(mesh);
+		MeshData meshData = createCombinedMesh(node);
+		rewindMesh(meshData);
+		return create(meshData);
 	}
 
-	protected Mesh createCombinedMesh(Node node) {
+	protected MeshData createCombinedMesh(Node node) {
 		CombinedMesh combinedMesh = new CombinedMesh();
 
 		combinedMeshes(combinedMesh, new Matrix4(), node, new AtomicInteger());
 
-		Mesh mesh = new Mesh("CombinedMesh-" + node.getName());
-		mesh.setVertexBuffer(toFloatBuffer(combinedMesh.vertexBuffer));
-		mesh.setNormalBuffer(toFloatBuffer(combinedMesh.normalBuffer));
+		MeshData meshData = new MeshData("CombinedMesh-" + node.getName());
+		meshData.setVertexBuffer(toFloatBuffer(combinedMesh.vertexBuffer));
+		meshData.setNormalBuffer(toFloatBuffer(combinedMesh.normalBuffer));
 		for (Integer texCoordsIndex : combinedMesh.textureCoordsMap.keySet()) {
-			mesh.setTextureCoords(texCoordsIndex, toFloatBuffer(combinedMesh.textureCoordsMap.get(texCoordsIndex)));
+			meshData.setTextureCoords(texCoordsIndex, toFloatBuffer(combinedMesh.textureCoordsMap.get(texCoordsIndex)));
 		}
-		mesh.setIndices(toIntBuffer(combinedMesh.indices));
-		mesh.setIndexMode(combinedMesh.indexMode);
-		return mesh;
+		meshData.setIndices(toIntBuffer(combinedMesh.indices));
+		meshData.setIndexMode(combinedMesh.indexMode);
+		return meshData;
 	}
 
 	private IntBuffer toIntBuffer(List<Integer> indices) {
@@ -87,41 +87,41 @@ public class Collada2Vbo {
 	}
 
 	private void combinedMeshes(CombinedMesh combinedMesh, Matrix4 matrix4, Node rootNode, AtomicInteger indicesOffset) {
-		for (Mesh mesh : rootNode.getMeshes()) {
+		for (MeshData meshData : rootNode.getMeshes()) {
 			if (combinedMesh.indexMode == null) {
-				combinedMesh.indexMode = mesh.getIndexMode();
+				combinedMesh.indexMode = meshData.getIndexMode();
 			}
 
-			if (combinedMesh.indexMode != mesh.getIndexMode()) {
-				throw new ColladaException("Index mode have to be the same on all submeshes for combining them, offending mesh:" + mesh.getName(), mesh);
+			if (combinedMesh.indexMode != meshData.getIndexMode()) {
+				throw new ColladaException("Index mode have to be the same on all submeshes for combining them, offending mesh:" + meshData.getName(), meshData);
 			}
 
-			rewindMesh(mesh);
+			rewindMesh(meshData);
 
-			for (int i = 0; i < mesh.getVertexBuffer().limit() / 3; i++) {
-				Vector4 vertex = new Vector4(mesh.getVertexBuffer().get(), mesh.getVertexBuffer().get(), mesh.getVertexBuffer().get(), 1);
+			for (int i = 0; i < meshData.getVertexBuffer().limit() / 3; i++) {
+				Vector4 vertex = new Vector4(meshData.getVertexBuffer().get(), meshData.getVertexBuffer().get(), meshData.getVertexBuffer().get(), 1);
 				vertex = matrix4.applyPost(vertex);
 				combinedMesh.vertexBuffer.add((float) vertex.getX());
 				combinedMesh.vertexBuffer.add((float) vertex.getY());
 				combinedMesh.vertexBuffer.add((float) vertex.getZ());
 
-				combinedMesh.normalBuffer.add(mesh.getNormalBuffer().get());
-				combinedMesh.normalBuffer.add(mesh.getNormalBuffer().get());
-				combinedMesh.normalBuffer.add(mesh.getNormalBuffer().get());
+				combinedMesh.normalBuffer.add(meshData.getNormalBuffer().get());
+				combinedMesh.normalBuffer.add(meshData.getNormalBuffer().get());
+				combinedMesh.normalBuffer.add(meshData.getNormalBuffer().get());
 
-				for (Integer texCoordsIndex : mesh.getTextureCoordsMap().keySet()) {
-					FloatBuffer textureBuffer = mesh.getTextureCoordsMap().get(texCoordsIndex);
+				for (Integer texCoordsIndex : meshData.getTextureCoordsMap().keySet()) {
+					FloatBuffer textureBuffer = meshData.getTextureCoordsMap().get(texCoordsIndex);
 					Collection<Float> floats = combinedMesh.textureCoordsMap.get(texCoordsIndex);
 					floats.add(textureBuffer.get());
 					floats.add(textureBuffer.get());
 				}
 			}
 
-			for (int i = 0; i < mesh.getIndices().limit(); i++) {
-				combinedMesh.indices.add(mesh.getIndices().get() + indicesOffset.get());
+			for (int i = 0; i < meshData.getIndices().limit(); i++) {
+				combinedMesh.indices.add(meshData.getIndices().get() + indicesOffset.get());
 			}
 
-			indicesOffset.addAndGet(mesh.getIndices().limit());
+			indicesOffset.addAndGet(meshData.getIndices().limit());
 
 		}
 
@@ -134,13 +134,13 @@ public class Collada2Vbo {
 		}
 	}
 
-	private void rewindMesh(Mesh mesh) {
-		mesh.getVertexBuffer().rewind();
-		mesh.getNormalBuffer().rewind();
-		mesh.getIndices().rewind();
+	private void rewindMesh(MeshData meshData) {
+		meshData.getVertexBuffer().rewind();
+		meshData.getNormalBuffer().rewind();
+		meshData.getIndices().rewind();
 
-		for (Integer integer : mesh.getTextureCoordsMap().keySet()) {
-			mesh.getTextureCoordsMap().get(integer).rewind();
+		for (Integer integer : meshData.getTextureCoordsMap().keySet()) {
+			meshData.getTextureCoordsMap().get(integer).rewind();
 		}
 	}
 

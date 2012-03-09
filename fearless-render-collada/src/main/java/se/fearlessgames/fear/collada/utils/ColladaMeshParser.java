@@ -4,28 +4,33 @@ import org.jdom.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.fearlessgames.fear.BufferUtils;
-import se.fearlessgames.fear.collada.data.*;
+import se.fearlessgames.fear.collada.data.ColladaInputPipe;
+import se.fearlessgames.fear.collada.data.DataCache;
+import se.fearlessgames.fear.collada.data.MeshVertPairs;
+import se.fearlessgames.fear.collada.data.Node;
+import se.fearlessgames.fear.mesh.IndexMode;
+import se.fearlessgames.fear.mesh.MeshData;
 
 import java.nio.IntBuffer;
 import java.util.LinkedList;
 import java.util.List;
 
 
-public class ColladaMeshUtils {
+public class ColladaMeshParser {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
-	private final DataCache _dataCache;
-	private final ColladaDOMUtil _colladaDOMUtil;
+	private final DataCache dataCache;
+	private final ColladaDOMUtil colladaDOMUtil;
 
-	public ColladaMeshUtils(final DataCache dataCache,
-							final ColladaDOMUtil colladaDOMUtil) {
-		_dataCache = dataCache;
-		_colladaDOMUtil = colladaDOMUtil;
+	public ColladaMeshParser(final DataCache dataCache,
+							 final ColladaDOMUtil colladaDOMUtil) {
+		this.dataCache = dataCache;
+		this.colladaDOMUtil = colladaDOMUtil;
 
 	}
 
 	public Node getGeometryMesh(final Element instanceGeometry) {
-		final Element geometry = _colladaDOMUtil.findTargetWithId(instanceGeometry.getAttributeValue("url"));
+		final Element geometry = colladaDOMUtil.findTargetWithId(instanceGeometry.getAttributeValue("url"));
 
 		if (geometry != null) {
 			return buildMesh(geometry);
@@ -33,14 +38,6 @@ public class ColladaMeshUtils {
 		return null;
 	}
 
-	/**
-	 * Builds a mesh from a Collada geometry element. Currently supported mesh types: mesh, polygons, polylist,
-	 * triangles, lines. Not supported yet: linestrips, trifans, tristrips. If no meshtype is found, a pointcloud is
-	 * built.
-	 *
-	 * @param colladaGeometry
-	 * @return a Node containing all of the Ardor3D meshes we've parsed from this geometry element.
-	 */
 	@SuppressWarnings("unchecked")
 	public Node buildMesh(final Element colladaGeometry) {
 		if (colladaGeometry.getChild("mesh") != null) {
@@ -52,7 +49,7 @@ public class ColladaMeshUtils {
 			boolean hasChild = false;
 			if (cMesh.getChild("polygons") != null) {
 				for (final Element p : (List<Element>) cMesh.getChildren("polygons")) {
-					final Mesh child = buildMeshPolygons(colladaGeometry, p);
+					final MeshData child = buildMeshPolygons(colladaGeometry, p);
 					if (child != null) {
 						if (child.getName() == null) {
 							child.setName(meshNode.getName() + "_polygons");
@@ -64,7 +61,7 @@ public class ColladaMeshUtils {
 			}
 			if (cMesh.getChild("polylist") != null) {
 				for (final Element p : (List<Element>) cMesh.getChildren("polylist")) {
-					final Mesh child = buildMeshPolylist(colladaGeometry, p);
+					final MeshData child = buildMeshPolylist(colladaGeometry, p);
 					if (child != null) {
 						if (child.getName() == null) {
 							child.setName(meshNode.getName() + "_polylist");
@@ -76,7 +73,7 @@ public class ColladaMeshUtils {
 			}
 			if (cMesh.getChild("triangles") != null) {
 				for (final Element t : (List<Element>) cMesh.getChildren("triangles")) {
-					final Mesh child = buildMeshTriangles(colladaGeometry, t);
+					final MeshData child = buildMeshTriangles(colladaGeometry, t);
 					if (child != null) {
 						if (child.getName() == null) {
 							child.setName(meshNode.getName() + "_triangles");
@@ -99,12 +96,12 @@ public class ColladaMeshUtils {
 
 
 	@SuppressWarnings("unchecked")
-	public Mesh buildMeshPolygons(final Element colladaGeometry, final Element polys) {
+	public MeshData buildMeshPolygons(final Element colladaGeometry, final Element polys) {
 		if (polys == null || polys.getChild("input") == null) {
 			return null;
 		}
-		final Mesh polyMesh = new Mesh(extractName(colladaGeometry, polys));
-		polyMesh.setIndexMode(IndexMode.Triangles);
+		final MeshData polyMeshData = new MeshData(extractName(colladaGeometry, polys));
+		polyMeshData.setIndexMode(IndexMode.Triangles);
 
 
 		final LinkedList<ColladaInputPipe> pipes = new LinkedList<ColladaInputPipe>();
@@ -115,7 +112,7 @@ public class ColladaMeshUtils {
 		int numEntries = 0;
 		int numIndices = 0;
 		for (final Element vals : (List<Element>) polys.getChildren("p")) {
-			final int length = _colladaDOMUtil.parseIntArray(vals).length;
+			final int length = colladaDOMUtil.parseIntArray(vals).length;
 			numEntries += length;
 			numIndices += (length / interval - 2) * 3;
 		}
@@ -123,25 +120,25 @@ public class ColladaMeshUtils {
 
 		// Construct nio buffers for specified inputs.
 		for (final ColladaInputPipe pipe : pipes) {
-			pipe.setupBuffer(numEntries, polyMesh);
+			pipe.setupBuffer(numEntries, polyMeshData);
 		}
 
 		// Add to vert mapping
 		final int[] indices = new int[numEntries];
-		final MeshVertPairs mvp = new MeshVertPairs(polyMesh, indices);
-		_dataCache.getVertMappings().put(colladaGeometry, mvp);
+		final MeshVertPairs mvp = new MeshVertPairs(polyMeshData, indices);
+		dataCache.getVertMappings().put(colladaGeometry, mvp);
 
 		// Prepare indices buffer
 
-		IntBuffer meshIndices = createIndexBufferData(polyMesh.getVertexCount());
-		polyMesh.setIndices(meshIndices);
+		IntBuffer meshIndices = createIndexBufferData(polyMeshData.getVertexCount());
+		polyMeshData.setIndices(meshIndices);
 
 		// go through the polygon entries
 		int firstIndex = 0, vecIndex;
 		final int[] currentVal = new int[interval];
 		for (final Element dia : (List<Element>) polys.getChildren("p")) {
 			// for each p, iterate using max offset
-			final int[] vals = _colladaDOMUtil.parseIntArray(dia);
+			final int[] vals = colladaDOMUtil.parseIntArray(dia);
 
 			final int first = firstIndex + 0;
 			System.arraycopy(vals, 0, currentVal, 0, interval);
@@ -180,19 +177,19 @@ public class ColladaMeshUtils {
 			firstIndex += vals.length / interval;
 		}
 
-		return polyMesh;
+		return polyMeshData;
 	}
 
 	private IntBuffer createIndexBufferData(int size) {
 		return BufferUtils.createIntBuffer(size);
 	}
 
-	public Mesh buildMeshPolylist(final Element colladaGeometry, final Element polys) {
+	public MeshData buildMeshPolylist(final Element colladaGeometry, final Element polys) {
 		if (polys == null || polys.getChild("input") == null) {
 			return null;
 		}
-		final Mesh polyMesh = new Mesh(extractName(colladaGeometry, polys));
-		polyMesh.setIndexMode(IndexMode.Triangles);
+		final MeshData polyMeshData = new MeshData(extractName(colladaGeometry, polys));
+		polyMeshData.setIndexMode(IndexMode.Triangles);
 
 
 		final LinkedList<ColladaInputPipe> pipes = new LinkedList<ColladaInputPipe>();
@@ -202,30 +199,30 @@ public class ColladaMeshUtils {
 		// use interval & sum of sizes of vcount to determine buffer sizes.
 		int numEntries = 0;
 		int numIndices = 0;
-		for (final int length : _colladaDOMUtil.parseIntArray(polys.getChild("vcount"))) {
+		for (final int length : colladaDOMUtil.parseIntArray(polys.getChild("vcount"))) {
 			numEntries += length;
 			numIndices += (length - 2) * 3;
 		}
 
 		// Construct nio buffers for specified inputs.
 		for (final ColladaInputPipe pipe : pipes) {
-			pipe.setupBuffer(numEntries, polyMesh);
+			pipe.setupBuffer(numEntries, polyMeshData);
 		}
 
 		// Add to vert mapping
 		final int[] indices = new int[numEntries];
-		final MeshVertPairs mvp = new MeshVertPairs(polyMesh, indices);
-		_dataCache.getVertMappings().put(colladaGeometry, mvp);
+		final MeshVertPairs mvp = new MeshVertPairs(polyMeshData, indices);
+		dataCache.getVertMappings().put(colladaGeometry, mvp);
 
 		// Prepare indices buffer
-		IntBuffer meshIndices = createIndexBufferData(polyMesh.getVertexCount());
-		polyMesh.setIndices(meshIndices);
+		IntBuffer meshIndices = createIndexBufferData(polyMeshData.getVertexCount());
+		polyMeshData.setIndices(meshIndices);
 
 		// go through the polygon entries
 		int firstIndex = 0;
 		int vecIndex;
-		final int[] vals = _colladaDOMUtil.parseIntArray(polys.getChild("p"));
-		for (final int length : _colladaDOMUtil.parseIntArray(polys.getChild("vcount"))) {
+		final int[] vals = colladaDOMUtil.parseIntArray(polys.getChild("p"));
+		for (final int length : colladaDOMUtil.parseIntArray(polys.getChild("vcount"))) {
 			final int[] currentVal = new int[interval];
 
 			// first add the first two entries to the buffers.
@@ -265,33 +262,33 @@ public class ColladaMeshUtils {
 		}
 
 		// return
-		return polyMesh;
+		return polyMeshData;
 	}
 
-	public Mesh buildMeshTriangles(final Element colladaGeometry, final Element tris) {
+	public MeshData buildMeshTriangles(final Element colladaGeometry, final Element tris) {
 		if (tris == null || tris.getChild("input") == null || tris.getChild("p") == null) {
 			return null;
 		}
-		final Mesh triMesh = new Mesh(extractName(colladaGeometry, tris));
-		triMesh.setIndexMode(IndexMode.Triangles);
+		final MeshData triMeshData = new MeshData(extractName(colladaGeometry, tris));
+		triMeshData.setIndexMode(IndexMode.Triangles);
 
 		final LinkedList<ColladaInputPipe> pipes = new LinkedList<ColladaInputPipe>();
 		final int maxOffset = extractPipes(tris, pipes);
 		final int interval = maxOffset + 1;
 
 		// use interval & size of p array to determine buffer sizes.
-		final int[] vals = _colladaDOMUtil.parseIntArray(tris.getChild("p"));
+		final int[] vals = colladaDOMUtil.parseIntArray(tris.getChild("p"));
 		final int numEntries = vals.length / interval;
 
 		// Construct nio buffers for specified inputs.
 		for (final ColladaInputPipe pipe : pipes) {
-			pipe.setupBuffer(numEntries, triMesh);
+			pipe.setupBuffer(numEntries, triMeshData);
 		}
 
 		// Add to vert mapping
 		final int[] indices = new int[numEntries];
-		final MeshVertPairs mvp = new MeshVertPairs(triMesh, indices);
-		_dataCache.getVertMappings().put(colladaGeometry, mvp);
+		final MeshVertPairs mvp = new MeshVertPairs(triMeshData, indices);
+		dataCache.getVertMappings().put(colladaGeometry, mvp);
 
 		// go through the p entry
 		// for each p, iterate using max offset
@@ -308,7 +305,7 @@ public class ColladaMeshUtils {
 		}
 
 
-		return triMesh;
+		return triMeshData;
 	}
 
 
@@ -324,18 +321,18 @@ public class ColladaMeshUtils {
 		int maxOffset = 0;
 		int texCount = 0;
 		for (final Element input : (List<Element>) inputsParent.getChildren("input")) {
-			maxOffset = Math.max(maxOffset, _colladaDOMUtil.getAttributeIntValue(input, "offset", 0));
+			maxOffset = Math.max(maxOffset, colladaDOMUtil.getAttributeIntValue(input, "offset", 0));
 			try {
 				final ColladaInputPipe.Type type = ColladaInputPipe.Type.valueOf(input.getAttributeValue("semantic"));
 				if (type == ColladaInputPipe.Type.VERTEX) {
-					final Element vertexElement = _colladaDOMUtil.findTargetWithId(input.getAttributeValue("source"));
+					final Element vertexElement = colladaDOMUtil.findTargetWithId(input.getAttributeValue("source"));
 					for (final Element vertexInput : (List<Element>) vertexElement.getChildren("input")) {
 						vertexInput.setAttribute("offset", input.getAttributeValue("offset"));
 						vertexInput.setAttribute("isVertexDefined", "true");
-						pipesStore.add(new ColladaInputPipe(_colladaDOMUtil, vertexInput));
+						pipesStore.add(new ColladaInputPipe(colladaDOMUtil, vertexInput));
 					}
 				} else {
-					final ColladaInputPipe pipe = new ColladaInputPipe(_colladaDOMUtil, input);
+					final ColladaInputPipe pipe = new ColladaInputPipe(colladaDOMUtil, input);
 					if (pipe.getType() == ColladaInputPipe.Type.TEXCOORD) {
 						pipe.setTexCoord(texCount++);
 					}

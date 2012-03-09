@@ -16,12 +16,12 @@ public class ColladaNodeParser {
 
 	private final DataCache _dataCache;
 	private final ColladaDOMUtil _colladaDOMUtil;
-	private final ColladaMeshUtils colladaMeshUtils;
+	private final ColladaMeshParser colladaMeshParser;
 
-	public ColladaNodeParser(DataCache _dataCache, ColladaDOMUtil _colladaDOMUtil, ColladaMeshUtils _colladaMeshUtil) {
+	public ColladaNodeParser(DataCache _dataCache, ColladaDOMUtil _colladaDOMUtil, ColladaMeshParser _colladaMeshUtil) {
 		this._dataCache = _dataCache;
 		this._colladaDOMUtil = _colladaDOMUtil;
-		this.colladaMeshUtils = _colladaMeshUtil;
+		this.colladaMeshParser = _colladaMeshUtil;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -119,7 +119,7 @@ public class ColladaNodeParser {
 
 		// process any instance geometries
 		for (final Element instance_geometry : (List<Element>) dNode.getChildren("instance_geometry")) {
-			Node mesh = colladaMeshUtils.getGeometryMesh(instance_geometry);
+			Node mesh = colladaMeshParser.getGeometryMesh(instance_geometry);
 			if (mesh != null) {
 				node.attachChild(mesh);
 			}
