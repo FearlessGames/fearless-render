@@ -8,7 +8,7 @@ import se.fearlessgames.fear.collada.data.ColladaInputPipe;
 import se.fearlessgames.fear.collada.data.DataCache;
 import se.fearlessgames.fear.collada.data.MeshVertPairs;
 import se.fearlessgames.fear.collada.data.Node;
-import se.fearlessgames.fear.mesh.IndexMode;
+import se.fearlessgames.fear.gl.VertexIndexMode;
 import se.fearlessgames.fear.mesh.MeshData;
 
 import java.nio.IntBuffer;
@@ -101,7 +101,7 @@ public class ColladaMeshParser {
 			return null;
 		}
 		final MeshData polyMeshData = new MeshData(extractName(colladaGeometry, polys));
-		polyMeshData.setIndexMode(IndexMode.Triangles);
+		polyMeshData.setVertexIndexMode(VertexIndexMode.TRIANGLES);
 
 
 		final LinkedList<ColladaInputPipe> pipes = new LinkedList<ColladaInputPipe>();
@@ -189,7 +189,7 @@ public class ColladaMeshParser {
 			return null;
 		}
 		final MeshData polyMeshData = new MeshData(extractName(colladaGeometry, polys));
-		polyMeshData.setIndexMode(IndexMode.Triangles);
+		polyMeshData.setVertexIndexMode(VertexIndexMode.TRIANGLES);
 
 
 		final LinkedList<ColladaInputPipe> pipes = new LinkedList<ColladaInputPipe>();
@@ -270,7 +270,7 @@ public class ColladaMeshParser {
 			return null;
 		}
 		final MeshData triMeshData = new MeshData(extractName(colladaGeometry, tris));
-		triMeshData.setIndexMode(IndexMode.Triangles);
+		triMeshData.setVertexIndexMode(VertexIndexMode.TRIANGLES);
 
 		final LinkedList<ColladaInputPipe> pipes = new LinkedList<ColladaInputPipe>();
 		final int maxOffset = extractPipes(tris, pipes);

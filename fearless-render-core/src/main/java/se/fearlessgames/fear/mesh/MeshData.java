@@ -1,6 +1,7 @@
 package se.fearlessgames.fear.mesh;
 
 import se.fearlessgames.fear.BufferUtils;
+import se.fearlessgames.fear.gl.VertexIndexMode;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -9,7 +10,7 @@ import java.util.Map;
 
 public class MeshData {
 	private String name;
-	private IndexMode indexMode;
+	private VertexIndexMode vertexIndexMode;
 	private FloatBuffer vertexBuffer;
 	private FloatBuffer normalBuffer;
 	private FloatBuffer colorBuffer;
@@ -24,12 +25,12 @@ public class MeshData {
 		if (vertexBuffer == null) {
 			return 0;
 		}
-		return vertexBuffer.limit() / indexMode.getVertexCount();
+		return vertexBuffer.limit() / vertexIndexMode.getVertexCount();
 	}
 
 	public MeshData duplicate() {
 		MeshData meshData = new MeshData(name);
-		meshData.indexMode = indexMode;
+		meshData.vertexIndexMode = vertexIndexMode;
 		meshData.vertexBuffer = BufferUtils.duplicate(vertexBuffer);
 		meshData.normalBuffer = BufferUtils.duplicate(normalBuffer);
 		meshData.colorBuffer = BufferUtils.duplicate(colorBuffer);
@@ -54,12 +55,12 @@ public class MeshData {
 		this.name = name;
 	}
 
-	public IndexMode getIndexMode() {
-		return indexMode;
+	public VertexIndexMode getVertexIndexMode() {
+		return vertexIndexMode;
 	}
 
-	public void setIndexMode(IndexMode indexMode) {
-		this.indexMode = indexMode;
+	public void setVertexIndexMode(VertexIndexMode vertexIndexMode) {
+		this.vertexIndexMode = vertexIndexMode;
 	}
 
 	public FloatBuffer getVertexBuffer() {

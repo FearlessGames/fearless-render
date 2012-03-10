@@ -37,7 +37,7 @@ public interface FearGl {
 
 	void glBufferData(BufferTarget target, IntBuffer data, BufferUsage usage);
 
-	void glDrawElements(VertexDrawMode drawMode, int count, IndexDataType type, int offset);
+	void glDrawElements(VertexIndexMode indexMode, int count, IndexDataType type, int offset);
 
 	void glViewport(int x, int y, int width, int height);
 

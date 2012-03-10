@@ -2,8 +2,7 @@ package se.fearlessgames.fear.vbo;
 
 import se.fearlessgames.fear.BufferUtils;
 import se.fearlessgames.fear.gl.FearGl;
-import se.fearlessgames.fear.gl.VertexDrawMode;
-import se.fearlessgames.fear.mesh.IndexMode;
+import se.fearlessgames.fear.gl.VertexIndexMode;
 import se.fearlessgames.fear.mesh.MeshData;
 
 import java.nio.FloatBuffer;
@@ -17,7 +16,7 @@ public class VboBuilder {
 	private FloatBuffer textureCoords = FloatBuffer.allocate(0);
 
 	private IntBuffer indices;
-	private VertexDrawMode drawMode = VertexDrawMode.TRIANGLES;
+	private VertexIndexMode indexMode = VertexIndexMode.TRIANGLES;
 
 
 	private VboBuilder(FearGl fearGl, FloatBuffer vertices) {
@@ -78,18 +77,22 @@ public class VboBuilder {
 	}
 
 	public VboBuilder triangles() {
-		drawMode = VertexDrawMode.TRIANGLES;
+		indexMode = VertexIndexMode.TRIANGLES;
 		return this;
 	}
 
 	public VboBuilder quads() {
-		drawMode = VertexDrawMode.QUADS;
+		indexMode = VertexIndexMode.QUADS;
 		return this;
 	}
 
 	public VboBuilder triangleStrips() {
-		drawMode = VertexDrawMode.TRIANGLE_STRIP;
+		indexMode = VertexIndexMode.TRIANGLE_STRIP;
 		return this;
+	}
+
+	private void setVertexIndexMode(VertexIndexMode vertexIndexMode) {
+		this.indexMode = vertexIndexMode;
 	}
 
 	public VertexBufferObject build() {
@@ -146,7 +149,7 @@ public class VboBuilder {
 			indices = createIntBuffer(idx);
 		}
 
-		return new VertexBufferObject(fearGl, interleavedBuffer, indices, drawMode);
+		return new VertexBufferObject(fearGl, interleavedBuffer, indices, indexMode);
 	}
 
 
@@ -180,11 +183,7 @@ public class VboBuilder {
 			vboBuilder.textureCoords(texCoords);
 		}
 
-		if (meshData.getIndexMode() == IndexMode.Triangles) {
-			vboBuilder.triangles();
-		} else if (meshData.getIndexMode() == IndexMode.Quads) {
-			vboBuilder.quads();
-		}
+		vboBuilder.setVertexIndexMode(meshData.getVertexIndexMode());
 
 		return vboBuilder;
 	}

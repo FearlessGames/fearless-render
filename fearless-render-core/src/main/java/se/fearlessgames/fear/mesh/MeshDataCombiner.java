@@ -3,6 +3,7 @@ package se.fearlessgames.fear.mesh;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import se.fearlessgames.fear.BufferUtils;
+import se.fearlessgames.fear.gl.VertexIndexMode;
 import se.fearlessgames.fear.math.Matrix4;
 import se.fearlessgames.fear.math.Vector4;
 
@@ -15,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class MeshDataCombiner {
 	private final String name;
-	private IndexMode currentIndexMode;
+	private VertexIndexMode currentIndexIndexMode;
 	private final CombinedMesh combinedMesh = new CombinedMesh();
 	private final AtomicInteger indicesOffset = new AtomicInteger(0);
 
@@ -25,11 +26,11 @@ public class MeshDataCombiner {
 
 
 	public MeshDataCombiner addMeshData(MeshData meshData, Matrix4 transform) {
-		if (currentIndexMode == null) {
-			currentIndexMode = meshData.getIndexMode();
+		if (currentIndexIndexMode == null) {
+			currentIndexIndexMode = meshData.getVertexIndexMode();
 		}
 
-		if (currentIndexMode != meshData.getIndexMode()) {
+		if (currentIndexIndexMode != meshData.getVertexIndexMode()) {
 			throw new RuntimeException("Index mode have to be the same on all meshes for combining them, offending mesh:" + meshData.getName());
 		}
 
@@ -74,7 +75,7 @@ public class MeshDataCombiner {
 			meshData.setTextureCoords(texCoordsIndex, toFloatBuffer(combinedMesh.textureCoordsMap.get(texCoordsIndex)));
 		}
 
-		meshData.setIndexMode(currentIndexMode);
+		meshData.setVertexIndexMode(currentIndexIndexMode);
 
 		return meshData;
 	}

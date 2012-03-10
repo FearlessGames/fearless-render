@@ -42,7 +42,7 @@ public class Collada2VboTest {
 
 		assertEquals(meshData.getIndices().getClass(), combinedMeshData.getIndices().getClass());
 
-		assertEquals(meshData.getIndexMode(), combinedMeshData.getIndexMode());
+		assertEquals(meshData.getVertexIndexMode(), combinedMeshData.getVertexIndexMode());
 	}
 
 

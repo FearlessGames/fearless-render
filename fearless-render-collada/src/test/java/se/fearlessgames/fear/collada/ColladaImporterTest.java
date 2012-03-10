@@ -4,8 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import se.fearlessgames.fear.collada.data.AssetData;
 import se.fearlessgames.fear.collada.data.Node;
+import se.fearlessgames.fear.gl.VertexIndexMode;
 import se.fearlessgames.fear.math.Vector3;
-import se.fearlessgames.fear.mesh.IndexMode;
 import se.fearlessgames.fear.mesh.MeshData;
 
 import java.io.File;
@@ -57,7 +57,7 @@ public class ColladaImporterTest {
 		assertEquals(8640, meshData.getVertexBuffer().limit());
 		assertEquals(8640, meshData.getNormalBuffer().limit());
 		assertEquals(2880, meshData.getIndices().limit());
-		assertEquals(IndexMode.Triangles, meshData.getIndexMode());
+		assertEquals(VertexIndexMode.TRIANGLES, meshData.getVertexIndexMode());
 	}
 
 	private InputStream getInputData(String fileName) {

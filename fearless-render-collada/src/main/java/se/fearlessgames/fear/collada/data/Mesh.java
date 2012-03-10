@@ -1,5 +1,7 @@
 package se.fearlessgames.fear.collada.data;
 
+import se.fearlessgames.fear.gl.VertexIndexMode;
+
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.HashMap;
@@ -7,7 +9,7 @@ import java.util.HashMap;
 public class Mesh {
 	private String name;
 	private Node parent;
-	private IndexMode indexMode;
+	private VertexIndexMode indexMode;
 	private FloatBuffer vertexBuffer;
 	private FloatBuffer normalBuffer;
 	private HashMap<Integer, FloatBuffer> textureCoordsMap = new HashMap<Integer, FloatBuffer>();
@@ -45,11 +47,11 @@ public class Mesh {
 		this.parent = parent;
 	}
 
-	public IndexMode getIndexMode() {
+	public VertexIndexMode getIndexMode() {
 		return indexMode;
 	}
 
-	public void setIndexMode(IndexMode indexMode) {
+	public void setIndexMode(VertexIndexMode indexMode) {
 		this.indexMode = indexMode;
 	}
 

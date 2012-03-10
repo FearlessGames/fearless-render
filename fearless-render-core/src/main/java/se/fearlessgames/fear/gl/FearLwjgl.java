@@ -95,8 +95,8 @@ public class FearLwjgl implements FearGl {
 	}
 
 	@Override
-	public void glDrawElements(VertexDrawMode drawMode, int count, IndexDataType type, int offset) {
-		GL11.glDrawElements(drawMode.getGlMode(), count, type.getGlType(), offset);
+	public void glDrawElements(VertexIndexMode indexMode, int count, IndexDataType type, int offset) {
+		GL11.glDrawElements(indexMode.getGlMode(), count, type.getGlType(), offset);
 	}
 
 	@Override

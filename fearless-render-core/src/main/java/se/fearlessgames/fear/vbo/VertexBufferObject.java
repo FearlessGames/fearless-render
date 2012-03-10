@@ -3,7 +3,7 @@ package se.fearlessgames.fear.vbo;
 import se.fearlessgames.fear.gl.BufferTarget;
 import se.fearlessgames.fear.gl.BufferUsage;
 import se.fearlessgames.fear.gl.FearGl;
-import se.fearlessgames.fear.gl.VertexDrawMode;
+import se.fearlessgames.fear.gl.VertexIndexMode;
 
 import java.nio.IntBuffer;
 
@@ -14,16 +14,16 @@ public class VertexBufferObject {
 	private final InterleavedBuffer interleavedBuffer;
 
 	private final IntBuffer indices;
-	private final VertexDrawMode drawMode;
+	private final VertexIndexMode indexMode;
 
 	public VertexBufferObject(
 			FearGl fearGl,
 			InterleavedBuffer interleavedBuffer,
 			IntBuffer indices,
-			VertexDrawMode drawMode) {
+			VertexIndexMode indexMode) {
 		this.interleavedBuffer = interleavedBuffer;
 		this.indices = indices;
-		this.drawMode = drawMode;
+		this.indexMode = indexMode;
 
 		vertexBufferId = fearGl.glGenBuffers();
 		fearGl.glBindBuffer(BufferTarget.GL_ARRAY_BUFFER, vertexBufferId);
@@ -51,8 +51,8 @@ public class VertexBufferObject {
 		return indexBufferId;
 	}
 
-	public VertexDrawMode getDrawMode() {
-		return drawMode;
+	public VertexIndexMode getIndexMode() {
+		return indexMode;
 	}
 
 	public int getIndexBufferSize() {

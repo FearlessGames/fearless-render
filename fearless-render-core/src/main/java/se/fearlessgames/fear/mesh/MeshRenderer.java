@@ -1,6 +1,5 @@
 package se.fearlessgames.fear.mesh;
 
-import se.fearlessgames.fear.Renderer;
 import se.fearlessgames.fear.ShaderProgram;
 import se.fearlessgames.fear.TransformedMesh;
 import se.fearlessgames.fear.gl.BufferTarget;
@@ -108,7 +107,7 @@ public class MeshRenderer {
 
 
 	private void drawElements(VertexBufferObject vbo) {
-		fearGl.glDrawElements(vbo.getDrawMode(), vbo.getIndexBufferSize(), IndexDataType.GL_UNSIGNED_INT, 0);
+		fearGl.glDrawElements(vbo.getIndexMode(), vbo.getIndexBufferSize(), IndexDataType.GL_UNSIGNED_INT, 0);
 	}
 
 	private void updateVBOStates(ShaderProgram shader, VertexBufferObject vbo) {
