@@ -26,7 +26,7 @@ public class ColladaImporterTest {
 
 	@Test
 	public void testLoadAssetData() {
-		ColladaStorage colladaStorage = colladaImporter.load(getInputData("fearless-render-collada/src/test/resources/boll.dae"));
+		ColladaStorage colladaStorage = colladaImporter.load(getInputData("src/test/resources/boll.dae"));
 		assertNotNull("Collada storage was null", colladaStorage);
 		AssetData assetdata = colladaStorage.getAssetdata();
 
@@ -44,7 +44,7 @@ public class ColladaImporterTest {
 
 	@Test
 	public void testLoadVertexData() {
-		ColladaStorage colladaStorage = colladaImporter.load(getInputData("fearless-render-collada/src/test/resources/notransform.dae"));
+		ColladaStorage colladaStorage = colladaImporter.load(getInputData("src/test/resources/notransform.dae"));
 		assertNotNull("Collada storage was null", colladaStorage);
 
 		Node scene = colladaStorage.getScene();
@@ -76,8 +76,9 @@ public class ColladaImporterTest {
 		try {
 			return new FileInputStream(new File(fileName));
 		} catch (FileNotFoundException e) {
-
-			fail("Failed to find file " + e.getMessage());
+			File test = new File("test");
+			System.out.println(test.getAbsolutePath());
+			fail("Failed	 to find file " + e.getMessage());
 		}
 		return null;
 
