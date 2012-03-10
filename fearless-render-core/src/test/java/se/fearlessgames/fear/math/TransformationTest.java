@@ -29,7 +29,7 @@ public class TransformationTest {
 	@Test
 	public void testZeroTranform() {
 
-		Vector3 originalVector = new Vector3(1, 2, 3);
+		Vector3 originalVector = new Vector3(3, 4, 5);
 		Vector3 vector = new Transformation(Vector3.ZERO, Quaternion.IDENTITY, Vector3.ONE).transform(originalVector);
 
 		assertEquals(originalVector, vector);
