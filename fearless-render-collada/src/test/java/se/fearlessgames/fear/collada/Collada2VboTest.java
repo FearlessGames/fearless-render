@@ -28,7 +28,7 @@ public class Collada2VboTest {
 	public void testCombineMeshWithJustOneMeshAndNoTransforms() {
 
 		ColladaImporter colladaImporter = new ColladaImporter();
-		ColladaStorage colladaStorage = colladaImporter.load(getInputData("src/test/resources/notransform.dae"));
+		ColladaStorage colladaStorage = colladaImporter.load(getInputData("fearless-render-collada/src/test/resources/notransform.dae"));
 		assertNotNull("Collada storage was null", colladaStorage);
 
 		MeshData meshData = colladaStorage.getScene().getChildren().get(0).getChildren().get(0).getMeshes().get(0);
