@@ -546,6 +546,45 @@ public class Matrix4 {
 		return new Vector4(vX, vY, vZ, vW);
 	}
 
+
+	/**
+	 * <code>multiply</code> multiplies a <code>Vector4f</code> about a rotation
+	 * matrix. The resulting vector is returned.
+	 *
+	 * @param vector vec to multiply against.
+	 * @return the rotated vector.
+	 */
+	public Vector3 multiply(Vector3 vector) {
+		final double x = vector.getX();
+		final double y = vector.getY();
+		final double z = vector.getZ();
+
+		double vX = (data[0][0] * x + data[0][1] * y + data[0][2] * z + data[0][3]);
+		double vY = (data[1][0] * x + data[1][1] * y + data[1][2] * z + data[1][3]);
+		double vZ = (data[2][0] * x + data[2][1] * y + data[2][2] * z + data[2][3]);
+
+		return new Vector3(vX, vY, vZ);
+	}
+
+	/**
+	 * <code>multiplyNormal</code> multiplies a vector about a rotation matrix, but
+	 * does not add translation. The resulting vector is returned.
+	 *
+	 * @param vector vec to multiply against.
+	 * @return the rotated vector.
+	 */
+	public Vector3 multiplyNormal(Vector3 vector) {
+		final double vx = vector.getX();
+		final double vy = vector.getY();
+		final double vz = vector.getZ();
+
+		double x = data[0][0] * vx + data[0][1] * vy + data[0][2] * vz;
+		double y = data[1][0] * vx + data[1][1] * vy + data[1][2] * vz;
+		double z = data[2][0] * vx + data[2][1] * vy + data[2][2] * vz;
+
+		return new Vector3(x, y, z);
+	}
+
 	public static boolean isValid(final Matrix4 matrix) {
 		if (matrix == null) {
 			return false;

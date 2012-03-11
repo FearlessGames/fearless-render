@@ -49,7 +49,7 @@ public class ColladaExample {
 		shaderProgram = createShaderProgram();
 		renderer = new ExampleRenderer(new MeshRenderer(fearGl, perspectiveBuilder));
 		scene = createScene();
-		scene.getRoot().setPosition(new Vector3(0, 0, -4));
+		scene.getRoot().setPosition(new Vector3(0, 0, -100));
 
 
 		long t1 = System.nanoTime();
@@ -107,10 +107,10 @@ public class ColladaExample {
 	private Scene createScene() throws IOException {
 		Node root = new Node("root");
 
-		Texture texture = textureManager.loadTextureFlipped(TextureType.PNG, new FileInputStream("src/main/resources/texture/cityBuildings_1024.png"));
+		Texture texture = textureManager.loadTextureFlipped(TextureType.PNG, new FileInputStream("src/main/resources/texture/bender.png"));
 
 		ColladaImporter colladaImporter = new ColladaImporter();
-		ColladaStorage colladaStorage = colladaImporter.load(new FileInputStream("src/main/resources/dae/chair.dae"));
+		ColladaStorage colladaStorage = colladaImporter.load(new FileInputStream("src/main/resources/dae/bender.dae"));
 		Collada2Vbo collada2Vbo = new Collada2Vbo(fearGl);
 		VertexBufferObject vertexBufferObject = collada2Vbo.create(colladaStorage.getScene());
 
@@ -119,7 +119,8 @@ public class ColladaExample {
 		Mesh chair = new Mesh(vertexBufferObject, chairType);
 
 		Node boxNode = new Node("Chair", chair);
-		//boxNode.setScale(new Vector3(1, 1.4, 0.2));
+		boxNode.setPosition(new Vector3(0, -40, 0));
+		boxNode.setScale(new Vector3(0.1, 0.1, 0.1));
 		root.addChild(boxNode);
 
 		return new Scene(root);
@@ -150,7 +151,7 @@ public class ColladaExample {
 		}
 
 		fearGl.glViewport(0, 0, w, h);
-		perspectiveBuilder = new PerspectiveBuilder(45.0f, ((float) w / (float) h), 0.1f, 200.0f);
+		perspectiveBuilder = new PerspectiveBuilder(45.0f, ((float) w / (float) h), 0.1f, 2000.0f);
 
 		fearGl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		fearGl.glClearDepth(1.0f);

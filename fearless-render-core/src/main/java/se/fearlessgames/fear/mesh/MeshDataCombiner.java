@@ -5,7 +5,7 @@ import com.google.common.collect.Multimap;
 import se.fearlessgames.fear.BufferUtils;
 import se.fearlessgames.fear.gl.VertexIndexMode;
 import se.fearlessgames.fear.math.Matrix4;
-import se.fearlessgames.fear.math.Vector4;
+import se.fearlessgames.fear.math.Vector3;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -37,15 +37,15 @@ public class MeshDataCombiner {
 		meshData = meshData.duplicate();
 
 		for (int i = 0; i < meshData.getVertexBuffer().limit() / 3; i++) {
-			Vector4 vertex = new Vector4(meshData.getVertexBuffer().get(), meshData.getVertexBuffer().get(), meshData.getVertexBuffer().get(), 1);
-			vertex = transform.applyPost(vertex);
+			Vector3 vertex = transform.multiply(new Vector3(meshData.getVertexBuffer().get(), meshData.getVertexBuffer().get(), meshData.getVertexBuffer().get()));
 			combinedMesh.vertexBuffer.add((float) vertex.getX());
 			combinedMesh.vertexBuffer.add((float) vertex.getY());
 			combinedMesh.vertexBuffer.add((float) vertex.getZ());
 
-			combinedMesh.normalBuffer.add(meshData.getNormalBuffer().get());
-			combinedMesh.normalBuffer.add(meshData.getNormalBuffer().get());
-			combinedMesh.normalBuffer.add(meshData.getNormalBuffer().get());
+			Vector3 normal = transform.multiplyNormal(new Vector3(meshData.getNormalBuffer().get(), meshData.getNormalBuffer().get(), meshData.getNormalBuffer().get()));
+			combinedMesh.normalBuffer.add((float) normal.getX());
+			combinedMesh.normalBuffer.add((float) normal.getY());
+			combinedMesh.normalBuffer.add((float) normal.getZ());
 
 			for (Integer texCoordsIndex : meshData.getTextureCoordsMap().keySet()) {
 				FloatBuffer textureBuffer = meshData.getTextureCoordsMap().get(texCoordsIndex);
