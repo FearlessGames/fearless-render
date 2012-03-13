@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import se.fearlessgames.fear.collada.data.AssetData;
 import se.fearlessgames.fear.collada.data.Node;
+import se.fearlessgames.fear.math.Matrix4;
 import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.mesh.MeshData;
 
@@ -54,6 +55,43 @@ public class ColladaImporterTest {
 		assertEqualsData(expectedNormal, meshData.getNormalBuffer());
 		assertEqualsData(expectedTexCoord, meshData.getTextureCoordsMap().get(0));
 		assertEqualsData(expectedIndices, meshData.getIndices());
+	}
+
+	@Test
+	public void testBenderTransformations() {
+		Matrix4 mainTransform = new Matrix4(3.603417, 0.0, 0.0, -0.998503, 0.0, 0.0, 3.603417, 342.593842, 0.0, -3.456769, 0.0, -8.590803, 0.0, 0.0, 0.0, 1.0);
+		Matrix4 mainPivotTransform = new Matrix4(1.0, 0.0, 0.0, -9.458588, 0.0, 1.0, 0.0, 0.523689, 0.0, 0.0, 1.0, 3.60814, 0.0, 0.0, 0.0, 1.0);
+		Matrix4 mainMeshTransform = null;
+
+		ColladaStorage colladaStorage = colladaImporter.load(getInputData("fearless-render-collada/src/test/resources/bender.dae"));
+		assertNotNull("Collada storage was null", colladaStorage);
+
+		Node scene = colladaStorage.getScene();
+		Node main = scene.getChildren().get(0);
+		Node mainPivot = main.getChildren().get(0);
+		Node mainMesh = mainPivot.getChildren().get(0);
+
+		assertEqualsMatrix(mainTransform, main.getTransform());
+		assertEqualsMatrix(mainPivotTransform, mainPivot.getTransform());
+		assertEqualsMatrix(mainMeshTransform, mainMesh.getTransform());
+	}
+
+	private void assertEqualsMatrix(Matrix4 matrix1, Matrix4 matrix2) {
+		if (matrix1 == null && matrix2 == null) {
+			return;
+		}
+
+		if (matrix1 == null || matrix2 == null) {
+			assertEquals(matrix1, matrix2);
+			return;
+		}
+
+		for (int x = 0; x < 4; x++) {
+			for (int y = 0; y < 4; y++) {
+				String fail = "Matrix4[" + x + "][" + y + "]";
+				assertEquals(fail, matrix1.getValue(x, y), matrix2.getValue(x, y), 0.0001);
+			}
+		}
 	}
 
 	private void assertEqualsData(int[] ints, IntBuffer buffer) {

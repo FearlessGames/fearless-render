@@ -73,7 +73,8 @@ public class ColladaMeshParser {
 			}
 			if (cMesh.getChild("triangles") != null) {
 				for (final Element t : (List<Element>) cMesh.getChildren("triangles")) {
-					final MeshData child = buildMeshTriangles(colladaGeometry, t);
+					//triangles behave like polylist, except triangels can only be 3 vertexar
+					final MeshData child = buildMeshPolylist(colladaGeometry, t);
 					if (child != null) {
 						if (child.getName() == null) {
 							child.setName(meshNode.getName() + "_triangles");

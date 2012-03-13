@@ -49,7 +49,7 @@ public class ColladaExample {
 		shaderProgram = createShaderProgram();
 		renderer = new ExampleRenderer(new MeshRenderer(fearGl, perspectiveBuilder));
 		scene = createScene();
-		scene.getRoot().setPosition(new Vector3(0, 0, -60));
+		scene.getRoot().setPosition(new Vector3(0, 0, -130));
 
 
 		long t1 = System.nanoTime();
@@ -107,10 +107,10 @@ public class ColladaExample {
 	private Scene createScene() throws IOException {
 		Node root = new Node("root");
 
-		Texture texture = textureManager.loadTextureFlipped(TextureType.PNG, new FileInputStream("src/main/resources/texture/Atlas.png"));
+		Texture texture = textureManager.loadTextureFlipped(TextureType.PNG, new FileInputStream("src/main/resources/texture/bender.png"));
 
 		ColladaImporter colladaImporter = new ColladaImporter();
-		ColladaStorage colladaStorage = colladaImporter.load(new FileInputStream("src/main/resources/dae/the_fearless_2_hull.DAE"));
+		ColladaStorage colladaStorage = colladaImporter.load(new FileInputStream("src/main/resources/dae/bender.dae"));
 		Collada2Vbo collada2Vbo = new Collada2Vbo(fearGl);
 		VertexBufferObject vertexBufferObject = collada2Vbo.create(colladaStorage.getScene());
 
@@ -120,8 +120,8 @@ public class ColladaExample {
 
 		Node boxNode = new Node("Chair", chair);
 		boxNode.setPosition(new Vector3(0, 0, 0));
-		boxNode.setRotation(Quaternion.fromEulerAngles(90, 0, -90));
-		boxNode.setScale(new Vector3(0.1, 0.1, 0.1));
+		//boxNode.setRotation(Quaternion.fromEulerAngles(90, 0, -90));
+		//boxNode.setScale(new Vector3(0.1, 0.1, 0.1));
 		root.addChild(boxNode);
 
 		return new Scene(root);

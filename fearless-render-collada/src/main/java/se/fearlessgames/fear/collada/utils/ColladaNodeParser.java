@@ -15,12 +15,12 @@ public class ColladaNodeParser {
 	private final Logger logger = LoggerFactory.getLogger(ColladaNodeParser.class);
 
 	private final DataCache _dataCache;
-	private final ColladaDOMUtil _colladaDOMUtil;
+	private final ColladaDOMUtil colladaDOMUtil;
 	private final ColladaMeshParser colladaMeshParser;
 
 	public ColladaNodeParser(DataCache _dataCache, ColladaDOMUtil _colladaDOMUtil, ColladaMeshParser _colladaMeshUtil) {
 		this._dataCache = _dataCache;
-		this._colladaDOMUtil = _colladaDOMUtil;
+		this.colladaDOMUtil = _colladaDOMUtil;
 		this.colladaMeshParser = _colladaMeshUtil;
 	}
 
@@ -37,7 +37,7 @@ public class ColladaNodeParser {
 			return null;
 		}
 
-		final Element visualScene = _colladaDOMUtil.findTargetWithId(instanceVisualScene.getAttributeValue("url"));
+		final Element visualScene = colladaDOMUtil.findTargetWithId(instanceVisualScene.getAttributeValue("url"));
 
 		if (visualScene != null) {
 			final Node sceneRoot = new Node(visualScene.getAttributeValue("name") != null ? visualScene.getAttributeValue("name") : "Collada Root");
@@ -145,7 +145,7 @@ public class ColladaNodeParser {
 	}
 
 	public Node getNode(final Element instanceNode, final JointNode jointNode) {
-		final Element node = _colladaDOMUtil.findTargetWithId(instanceNode.getAttributeValue("url"));
+		final Element node = colladaDOMUtil.findTargetWithId(instanceNode.getAttributeValue("url"));
 
 		if (node == null) {
 			throw new ColladaException("No node with id: " + instanceNode.getAttributeValue("url") + " found", instanceNode);
@@ -172,7 +172,7 @@ public class ColladaNodeParser {
 		Matrix4 finalMat = Matrix4.IDENTITY;
 
 		for (final Element transform : transforms) {
-			final double[] array = _colladaDOMUtil.parseDoubleArray(transform);
+			final double[] array = colladaDOMUtil.parseDoubleArray(transform);
 			if ("translate".equals(transform.getName())) {
 				Matrix4 matrix4 = new Matrix4().setColumn(3, new double[]{array[0], array[1], array[2], 1});
 				finalMat = finalMat.multiply(matrix4);
@@ -185,8 +185,8 @@ public class ColladaNodeParser {
 				}
 
 			} else if ("scale".equals(transform.getName())) {
-				Matrix4 matrix4 = new Matrix4();
-				matrix4.scale(new Vector4(array[0], array[1], array[2], 1));
+				Vector4 scale = new Vector4(array[0], array[1], array[2], 1);
+				Matrix4 matrix4 = new Matrix4().scale(scale);
 				finalMat = finalMat.multiply(matrix4);
 
 			} else if ("matrix".equals(transform.getName())) {
