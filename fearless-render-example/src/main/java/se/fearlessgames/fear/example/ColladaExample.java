@@ -49,7 +49,7 @@ public class ColladaExample {
 		shaderProgram = createShaderProgram();
 		renderer = new ExampleRenderer(new MeshRenderer(fearGl, perspectiveBuilder));
 		scene = createScene();
-		scene.getRoot().setPosition(new Vector3(0, 0, -100));
+		scene.getRoot().setPosition(new Vector3(0, 0, -60));
 
 
 		long t1 = System.nanoTime();
@@ -97,7 +97,7 @@ public class ColladaExample {
 	}
 
 	private void render() {
-		rot += 0.0005d;
+		//rot += 0.0005d;
 		scene.getRoot().setRotation(Quaternion.fromEulerAngles(rot / 2, rot, 0));
 
 		fearGl.glClear(EnumSet.of(ClearBit.GL_COLOR_BUFFER_BIT, ClearBit.GL_DEPTH_BUFFER_BIT));
@@ -107,10 +107,10 @@ public class ColladaExample {
 	private Scene createScene() throws IOException {
 		Node root = new Node("root");
 
-		Texture texture = textureManager.loadTextureFlipped(TextureType.PNG, new FileInputStream("src/main/resources/texture/bender.png"));
+		Texture texture = textureManager.loadTextureFlipped(TextureType.PNG, new FileInputStream("src/main/resources/texture/Atlas.png"));
 
 		ColladaImporter colladaImporter = new ColladaImporter();
-		ColladaStorage colladaStorage = colladaImporter.load(new FileInputStream("src/main/resources/dae/bender.dae"));
+		ColladaStorage colladaStorage = colladaImporter.load(new FileInputStream("src/main/resources/dae/the_fearless_2_hull.DAE"));
 		Collada2Vbo collada2Vbo = new Collada2Vbo(fearGl);
 		VertexBufferObject vertexBufferObject = collada2Vbo.create(colladaStorage.getScene());
 
@@ -119,7 +119,8 @@ public class ColladaExample {
 		Mesh chair = new Mesh(vertexBufferObject, chairType);
 
 		Node boxNode = new Node("Chair", chair);
-		boxNode.setPosition(new Vector3(0, -40, 0));
+		boxNode.setPosition(new Vector3(0, 0, 0));
+		boxNode.setRotation(Quaternion.fromEulerAngles(90, 0, -90));
 		boxNode.setScale(new Vector3(0.1, 0.1, 0.1));
 		root.addChild(boxNode);
 

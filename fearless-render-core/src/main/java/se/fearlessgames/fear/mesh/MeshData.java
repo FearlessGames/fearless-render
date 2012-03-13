@@ -21,6 +21,16 @@ public class MeshData {
 		this.name = name;
 	}
 
+	public MeshData(String name, FloatBuffer vertexBuffer, FloatBuffer normalBuffer, FloatBuffer colorBuffer, FloatBuffer textureCoordinates, IntBuffer indices, VertexIndexMode vertexIndexMode) {
+		this.name = name;
+		this.vertexBuffer = vertexBuffer;
+		this.normalBuffer = normalBuffer;
+		this.colorBuffer = colorBuffer;
+		textureCoordsMap.put(0, textureCoordinates);
+		this.indices = indices;
+		this.vertexIndexMode = vertexIndexMode;
+	}
+
 	public int getVertexCount() {
 		if (vertexBuffer == null) {
 			return 0;

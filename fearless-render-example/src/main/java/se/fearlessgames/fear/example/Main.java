@@ -12,11 +12,13 @@ import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.mesh.Mesh;
+import se.fearlessgames.fear.mesh.MeshData;
 import se.fearlessgames.fear.mesh.MeshRenderer;
 import se.fearlessgames.fear.mesh.MeshType;
 import se.fearlessgames.fear.shape.SphereFactory;
 import se.fearlessgames.fear.texture.*;
 import se.fearlessgames.fear.texture.TextureType;
+import se.fearlessgames.fear.vbo.VboBuilder;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
 import java.io.FileInputStream;
@@ -103,7 +105,8 @@ public class Main {
 	}
 
 	private Scene createScene() throws IOException {
-		VertexBufferObject vertexBufferObject = new SphereFactory(fearGl, 100, 100, 1.5, SphereFactory.TextureMode.PROJECTED).create();
+		MeshData meshData = new SphereFactory(100, 100, 1.5, SphereFactory.TextureMode.PROJECTED).create();
+		VertexBufferObject vertexBufferObject = VboBuilder.fromMeshData(fearGl, meshData).build();
 
 		Node root = new Node("root");
 		Texture texture = textureManager.loadTextureFlipped(TextureType.PNG, new FileInputStream("src/main/resources/texture/earth.png"));

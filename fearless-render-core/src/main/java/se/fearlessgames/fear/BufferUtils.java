@@ -61,4 +61,18 @@ public class BufferUtils {
 		duplicate.rewind();
 		return duplicate;
 	}
+
+	public static FloatBuffer createFloatBuffer(float[] data) {
+		FloatBuffer floatBuffer = createFloatBuffer(data.length);
+		floatBuffer.put(data);
+		floatBuffer.flip();
+		return floatBuffer;
+	}
+
+	public static IntBuffer createIntBuffer(int[] data) {
+		IntBuffer intBuffer = createIntBuffer(data.length);
+		intBuffer.put(data);
+		intBuffer.flip();
+		return intBuffer;
+	}
 }

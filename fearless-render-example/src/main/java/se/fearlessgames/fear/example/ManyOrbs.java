@@ -16,13 +16,14 @@ import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.mesh.Mesh;
+import se.fearlessgames.fear.mesh.MeshData;
 import se.fearlessgames.fear.mesh.MeshRenderer;
 import se.fearlessgames.fear.mesh.MeshType;
 import se.fearlessgames.fear.shape.BoxFactory;
-import se.fearlessgames.fear.shape.ShapeFactory;
 import se.fearlessgames.fear.shape.SphereFactory;
 import se.fearlessgames.fear.texture.*;
 import se.fearlessgames.fear.texture.TextureType;
+import se.fearlessgames.fear.vbo.VboBuilder;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
 import java.io.FileInputStream;
@@ -51,8 +52,9 @@ public class ManyOrbs {
 		int numOrbs = 20;
 		int numTransparent = 10;
 
-		ShapeFactory shapeFactory = new SphereFactory(fearGl, 100, 100, 2, SphereFactory.TextureMode.PROJECTED);
-		VertexBufferObject vbo = shapeFactory.create();
+		MeshData meshData = new SphereFactory(100, 100, 2, SphereFactory.TextureMode.PROJECTED).create();
+
+		VertexBufferObject vbo = VboBuilder.fromMeshData(fearGl, meshData).build();
 
 		renderer = new ExampleRenderer(new MeshRenderer(fearGl, perspectiveBuilder));
 
@@ -120,7 +122,9 @@ public class ManyOrbs {
 		} catch (IOException ignored) {
 		}
 		MeshType meshType = new MeshType(shaderProgram, renderer.opaqueBucket, DirectionalLightRenderState.DEFAULT, new SingleTextureRenderState(texture));
-		Mesh boxMesh = new Mesh(new BoxFactory(fearGl).create(), meshType);
+		MeshData meshData = new BoxFactory(fearGl).create();
+		VertexBufferObject vbo = VboBuilder.fromMeshData(fearGl, meshData).build();
+		Mesh boxMesh = new Mesh(vbo, meshType);
 
 		Node node = new Node("Center Box", boxMesh);
 		node.setScale(new Vector3(4, 4, 4));

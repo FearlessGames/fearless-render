@@ -14,15 +14,16 @@ import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.mesh.Mesh;
+import se.fearlessgames.fear.mesh.MeshData;
 import se.fearlessgames.fear.mesh.MeshRenderer;
 import se.fearlessgames.fear.mesh.MeshType;
 import se.fearlessgames.fear.renderbucket.RenderBucket;
-import se.fearlessgames.fear.shape.ShapeFactory;
 import se.fearlessgames.fear.shape.SphereFactory;
 import se.fearlessgames.fear.texture.SingleTextureRenderState;
 import se.fearlessgames.fear.texture.Texture;
 import se.fearlessgames.fear.texture.TextureLoader;
 import se.fearlessgames.fear.texture.TextureLoaderImpl;
+import se.fearlessgames.fear.vbo.VboBuilder;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
 import java.io.FileInputStream;
@@ -122,8 +123,9 @@ public class Main2 {
 			throw new RuntimeException(e);
 		}
 
-		ShapeFactory shapeFactory = new SphereFactory(fearGl, 100, 100, 100, SphereFactory.TextureMode.PROJECTED);
-		VertexBufferObject vbo = shapeFactory.create();
+
+		MeshData meshData = new SphereFactory(100, 100, 100, SphereFactory.TextureMode.PROJECTED).create();
+		VertexBufferObject vbo = VboBuilder.fromMeshData(fearGl, meshData).build();
 		return new Mesh(vbo, new MeshType(shaderProgram, skyboxBucket, DirectionalLightRenderState.DEFAULT, new SingleTextureRenderState(texture)));
 	}
 
@@ -192,8 +194,8 @@ public class Main2 {
 	}
 
 	private VertexBufferObject createVbo() {
-		ShapeFactory factory = new SphereFactory(fearGl, 40, 40, 1, SphereFactory.TextureMode.PROJECTED);
-		return factory.create();
+		MeshData meshData = new SphereFactory(40, 40, 1, SphereFactory.TextureMode.PROJECTED).create();
+		return VboBuilder.fromMeshData(fearGl, meshData).build();
 	}
 
 }

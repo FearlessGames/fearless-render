@@ -1,7 +1,7 @@
 package se.fearlessgames.fear.shape;
 
-import se.fearlessgames.fear.vbo.VertexBufferObject;
+import se.fearlessgames.fear.mesh.MeshData;
 
 public interface ShapeFactory {
-	VertexBufferObject create();
+	MeshData create();
 }

@@ -1,18 +1,16 @@
 package se.fearlessgames.fear.shape;
 
 import se.fearlessgames.fear.BufferUtils;
-import se.fearlessgames.fear.gl.FearGl;
+import se.fearlessgames.fear.gl.VertexIndexMode;
 import se.fearlessgames.fear.math.MathUtils;
 import se.fearlessgames.fear.math.Vector3;
-import se.fearlessgames.fear.vbo.VboBuilder;
-import se.fearlessgames.fear.vbo.VertexBufferObject;
+import se.fearlessgames.fear.mesh.MeshData;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.Random;
 
 public class SphereFactory implements ShapeFactory {
-	private final FearGl fearGl;
 	private final int zSamples;
 	private final int radialSamples;
 	private final double radius;
@@ -24,8 +22,7 @@ public class SphereFactory implements ShapeFactory {
 	private FloatBuffer textureCoordinates;
 	private final TextureMode textureMode;
 
-	public SphereFactory(FearGl fearGl, int zSamples, int radialSamples, double radius, TextureMode textureMode) {
-		this.fearGl = fearGl;
+	public SphereFactory(int zSamples, int radialSamples, double radius, TextureMode textureMode) {
 		this.zSamples = zSamples;
 		this.radialSamples = radialSamples;
 		this.radius = radius;
@@ -36,7 +33,7 @@ public class SphereFactory implements ShapeFactory {
 	}
 
 	@Override
-	public VertexBufferObject create() {
+	public MeshData create() {
 		int verts = vertexBuffer.limit() / 3;
 		int normals = normalBuffer.limit() / 3;
 		if (verts != normals) {
@@ -50,7 +47,8 @@ public class SphereFactory implements ShapeFactory {
 		if (verts != texCoords) {
 			throw new RuntimeException(String.format("%d vertices but %d texture coordinates", verts, texCoords));
 		}
-		return VboBuilder.fromBuffer(fearGl, vertexBuffer).normals(normalBuffer).indices(indexBuffer).colors(colorBuffer).textureCoords(textureCoordinates).triangles().build();
+
+		return new MeshData("Sphere", vertexBuffer, normalBuffer, colorBuffer, textureCoordinates, indexBuffer, VertexIndexMode.TRIANGLES);
 	}
 
 	private void createGeometryData() {

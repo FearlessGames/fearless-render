@@ -1,8 +1,9 @@
 package se.fearlessgames.fear.shape;
 
+import se.fearlessgames.fear.BufferUtils;
 import se.fearlessgames.fear.gl.FearGl;
-import se.fearlessgames.fear.vbo.VboBuilder;
-import se.fearlessgames.fear.vbo.VertexBufferObject;
+import se.fearlessgames.fear.gl.VertexIndexMode;
+import se.fearlessgames.fear.mesh.MeshData;
 
 public class BoxFactory implements ShapeFactory {
 	private final FearGl fearGl;
@@ -12,7 +13,7 @@ public class BoxFactory implements ShapeFactory {
 	}
 
 	@Override
-	public VertexBufferObject create() {
+	public MeshData create() {
 		float[] data = {
 				// Front face (facing viewer), correct winding order.
 				// Front face
@@ -99,7 +100,13 @@ public class BoxFactory implements ShapeFactory {
 				20, 21, 22, 20, 22, 23  // Left face
 		};
 
+		return new MeshData("Box",
+				BufferUtils.createFloatBuffer(data),
+				null,
+				null,
+				BufferUtils.createFloatBuffer(textureCords),
+				BufferUtils.createIntBuffer(indices),
+				VertexIndexMode.TRIANGLES);
 
-		return VboBuilder.fromArray(fearGl, data).indices(indices).textureCoords(textureCords).triangles().build();
 	}
 }

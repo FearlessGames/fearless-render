@@ -1,5 +1,7 @@
 package se.fearlessgames.fear.math;
 
+import java.nio.FloatBuffer;
+
 public class Vector3 {
 	public static final Vector3 ZERO = new Vector3(0, 0, 0);
 	public static final Vector3 ONE = new Vector3(1, 1, 1);
@@ -24,6 +26,12 @@ public class Vector3 {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+	}
+
+	public Vector3(FloatBuffer floatBuffer) {
+		x = floatBuffer.get();
+		y = floatBuffer.get();
+		z = floatBuffer.get();
 	}
 
 	public double getX() {
