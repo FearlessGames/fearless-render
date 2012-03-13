@@ -197,8 +197,8 @@ public class ColladaNodeParser {
 				final Vector3 pos = new Vector3(array[0], array[1], array[2]);
 				final Vector3 target = new Vector3(array[3], array[4], array[5]);
 				final Vector3 up = new Vector3(array[6], array[7], array[8]);
-				final Matrix3 rot = new Matrix3();
-				rot.lookAt(target.subtract(pos), up);
+				Matrix3 rot = new Matrix3();
+				rot = rot.lookAt(target.subtract(pos), up);
 				Matrix4 matrix4 = new Matrix4(rot).setColumn(3, new double[]{array[0], array[1], array[2], 1});
 				finalMat = finalMat.multiply(matrix4);
 
