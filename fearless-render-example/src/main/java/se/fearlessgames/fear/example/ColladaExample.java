@@ -5,7 +5,6 @@ import org.lwjgl.opengl.Display;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.fearlessgames.fear.*;
-import se.fearlessgames.fear.collada.Collada2Vbo;
 import se.fearlessgames.fear.collada.ColladaImporter;
 import se.fearlessgames.fear.collada.ColladaStorage;
 import se.fearlessgames.fear.gl.*;
@@ -15,10 +14,12 @@ import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.mesh.Mesh;
+import se.fearlessgames.fear.mesh.MeshData;
 import se.fearlessgames.fear.mesh.MeshRenderer;
 import se.fearlessgames.fear.mesh.MeshType;
 import se.fearlessgames.fear.texture.*;
 import se.fearlessgames.fear.texture.TextureType;
+import se.fearlessgames.fear.vbo.VboBuilder;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
 import java.io.FileInputStream;
@@ -111,8 +112,9 @@ public class ColladaExample {
 
 		ColladaImporter colladaImporter = new ColladaImporter();
 		ColladaStorage colladaStorage = colladaImporter.load(new FileInputStream("src/main/resources/dae/bender.dae"));
-		Collada2Vbo collada2Vbo = new Collada2Vbo(fearGl);
-		VertexBufferObject vertexBufferObject = collada2Vbo.create(colladaStorage.getScene());
+		MeshData combinedMeshData = colladaStorage.getCombinedMeshData();
+
+		VertexBufferObject vertexBufferObject = VboBuilder.fromMeshData(fearGl, combinedMeshData).build();
 
 
 		MeshType chairType = new MeshType(shaderProgram, renderer.opaqueBucket, new DirectionalLightRenderState(new SunLight()), new SingleTextureRenderState(texture));

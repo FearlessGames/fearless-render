@@ -2,24 +2,62 @@ package se.fearlessgames.fear.collada;
 
 import se.fearlessgames.fear.collada.data.AssetData;
 import se.fearlessgames.fear.collada.data.Node;
+import se.fearlessgames.fear.math.Matrix4;
+import se.fearlessgames.fear.mesh.MeshData;
+import se.fearlessgames.fear.mesh.MeshDataCombiner;
 
 public class ColladaStorage {
-	private AssetData assetdata;
-	private Node scene;
+	private final AssetData assetdata;
+	private final Node scene;
 
-	public void setAssetData(AssetData assetData) {
-		this.assetdata = assetData;
+	public ColladaStorage(AssetData assetdata, Node scene) {
+		this.assetdata = assetdata;
+		this.scene = scene;
 	}
 
 	public AssetData getAssetdata() {
 		return assetdata;
 	}
 
-	public void setScene(Node scene) {
-		this.scene = scene;
-	}
-
 	public Node getScene() {
 		return scene;
 	}
+
+	public MeshData getFirstMeshData() {
+		return findMesh(scene);
+	}
+
+	public MeshData getCombinedMeshData() {
+		MeshDataCombiner meshDataCombiner = new MeshDataCombiner("CombinedMesh-" + scene.getName());
+		combinedMeshes(meshDataCombiner, new Matrix4(), scene);
+		return meshDataCombiner.build();
+	}
+
+	private void combinedMeshes(MeshDataCombiner meshDataCombiner, Matrix4 matrix4, Node rootNode) {
+		for (MeshData meshData : rootNode.getMeshes()) {
+			meshDataCombiner.addMeshData(meshData, matrix4);
+		}
+
+		for (Node node : rootNode.getChildren()) {
+			Matrix4 transform = matrix4;
+			if (node.getTransform() != null) {
+				transform = matrix4.multiply(node.getTransform());
+			}
+			combinedMeshes(meshDataCombiner, transform, node);
+		}
+	}
+
+	private MeshData findMesh(Node node) {
+		if (!node.getMeshes().isEmpty()) {
+			return node.getMeshes().get(0);
+		}
+
+		for (Node child : node.getChildren()) {
+			return findMesh(child);
+		}
+
+		return null;
+	}
+
+
 }

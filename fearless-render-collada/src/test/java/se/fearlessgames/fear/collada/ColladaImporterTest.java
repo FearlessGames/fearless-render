@@ -76,6 +76,49 @@ public class ColladaImporterTest {
 		assertEqualsMatrix(mainMeshTransform, mainMesh.getTransform());
 	}
 
+	@Test
+	public void testCombineMeshWithJustOneMeshAndNoTransforms() {
+
+		ColladaImporter colladaImporter = new ColladaImporter();
+		ColladaStorage colladaStorage = colladaImporter.load(getInputData("fearless-render-collada/src/test/resources/notransform.dae"));
+		assertNotNull("Collada storage was null", colladaStorage);
+
+		MeshData meshData = colladaStorage.getScene().getChildren().get(0).getChildren().get(0).getMeshes().get(0);
+
+		MeshData combinedMeshData = colladaStorage.getCombinedMeshData();
+
+		assertEqualsBuffer(meshData.getVertexBuffer(), combinedMeshData.getVertexBuffer());
+		assertEqualsBuffer(meshData.getNormalBuffer(), combinedMeshData.getNormalBuffer());
+		assertEqualsBuffer(meshData.getIndices(), combinedMeshData.getIndices());
+		assertEqualsBuffer(meshData.getTextureCoordsMap().get(0), combinedMeshData.getTextureCoordsMap().get(0));
+
+		assertEquals(meshData.getIndices().getClass(), combinedMeshData.getIndices().getClass());
+
+		assertEquals(meshData.getVertexIndexMode(), combinedMeshData.getVertexIndexMode());
+	}
+
+
+	private void assertEqualsBuffer(IntBuffer buffer1, IntBuffer buffer2) {
+		buffer1.rewind();
+		buffer2.rewind();
+		assertEquals(buffer1.limit(), buffer2.limit());
+
+		for (int i = 0; i < buffer1.limit(); i++) {
+			assertEquals(buffer1.get(), buffer2.get());
+		}
+	}
+
+
+	private void assertEqualsBuffer(FloatBuffer buffer1, FloatBuffer buffer2) {
+		buffer1.rewind();
+		buffer2.rewind();
+		assertEquals(buffer1.limit(), buffer2.limit());
+
+		for (int i = 0; i < buffer1.limit(); i++) {
+			assertEquals(buffer1.get(), buffer2.get(), 0.00001);
+		}
+	}
+
 	private void assertEqualsMatrix(Matrix4 matrix1, Matrix4 matrix2) {
 		if (matrix1 == null && matrix2 == null) {
 			return;
