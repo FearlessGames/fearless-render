@@ -83,7 +83,7 @@ public class VaoTest {
 
 
 		//remove the vao binding
-		fearGl.glBindVertexArray(vaoId);
+		fearGl.glBindVertexArray(0);
 	}
 
 
