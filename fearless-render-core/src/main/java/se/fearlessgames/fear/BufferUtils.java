@@ -75,4 +75,11 @@ public class BufferUtils {
 		intBuffer.flip();
 		return intBuffer;
 	}
+
+	public static ByteBuffer createByteBuffer(byte[] data) {
+		ByteBuffer byteBuffer = createByteBuffer(data.length);
+		byteBuffer.put(data);
+		byteBuffer.flip();
+		return byteBuffer;
+	}
 }

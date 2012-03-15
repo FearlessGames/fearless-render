@@ -97,6 +97,19 @@ public class VboBuilder {
 
 	public VertexBufferObject build() {
 
+		if (indices == null) {
+			int[] idx = new int[vertices.limit()];
+			for (int i = 0; i < idx.length; i++) {
+				idx[i] = i;
+			}
+			indices = createIntBuffer(idx);
+		}
+
+		return new VertexBufferObject(fearGl, buildInterleavedBuffer(), indices, indexMode);
+	}
+
+	public InterleavedBuffer buildInterleavedBuffer() {
+
 		int verticsSize = vertices.limit();
 		int normalsSize = normals.limit();
 		int colorsSize = colors.limit();
@@ -141,15 +154,7 @@ public class VboBuilder {
 				colorsSize != 0,
 				texturesSize != 0);
 
-		if (indices == null) {
-			int[] idx = new int[vertices.limit()];
-			for (int i = 0; i < idx.length; i++) {
-				idx[i] = i;
-			}
-			indices = createIntBuffer(idx);
-		}
-
-		return new VertexBufferObject(fearGl, interleavedBuffer, indices, indexMode);
+		return interleavedBuffer;
 	}
 
 

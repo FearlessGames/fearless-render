@@ -122,7 +122,7 @@ public class ManyOrbs {
 		} catch (IOException ignored) {
 		}
 		MeshType meshType = new MeshType(shaderProgram, renderer.opaqueBucket, DirectionalLightRenderState.DEFAULT, new SingleTextureRenderState(texture));
-		MeshData meshData = new BoxFactory(fearGl).create();
+		MeshData meshData = new BoxFactory().create();
 		VertexBufferObject vbo = VboBuilder.fromMeshData(fearGl, meshData).build();
 		Mesh boxMesh = new Mesh(vbo, meshType);
 

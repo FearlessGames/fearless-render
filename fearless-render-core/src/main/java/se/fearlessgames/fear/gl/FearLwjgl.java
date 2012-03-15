@@ -198,5 +198,20 @@ public class FearLwjgl implements FearGl {
 	public void glCullFace(Culling culling) {
 		GL11.glCullFace(culling.getGlValue());
 	}
+
+	@Override
+	public int glGenTextures() {
+		return GL11.glGenTextures();
+	}
+
+	@Override
+	public int glGenVertexArrays() {
+		return GL30.glGenVertexArrays();
+	}
+
+	@Override
+	public void glBindVertexArray(int vaoId) {
+		GL30.glBindVertexArray(vaoId);
+	}
 }
 

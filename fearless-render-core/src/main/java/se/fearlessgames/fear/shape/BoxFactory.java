@@ -1,15 +1,11 @@
 package se.fearlessgames.fear.shape;
 
 import se.fearlessgames.fear.BufferUtils;
-import se.fearlessgames.fear.gl.FearGl;
 import se.fearlessgames.fear.gl.VertexIndexMode;
 import se.fearlessgames.fear.mesh.MeshData;
 
 public class BoxFactory implements ShapeFactory {
-	private final FearGl fearGl;
-
-	public BoxFactory(FearGl fearGl) {
-		this.fearGl = fearGl;
+	public BoxFactory() {
 	}
 
 	@Override

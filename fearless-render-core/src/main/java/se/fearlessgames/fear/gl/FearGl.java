@@ -80,4 +80,9 @@ public interface FearGl {
 	void glCullFace(Culling culling);
 
 
+	int glGenTextures();
+
+	int glGenVertexArrays();
+
+	void glBindVertexArray(int vaoId);
 }
