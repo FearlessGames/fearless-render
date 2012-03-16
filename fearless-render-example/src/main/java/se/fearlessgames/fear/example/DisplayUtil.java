@@ -13,7 +13,7 @@ public class DisplayUtil {
 		Display.setVSyncEnabled(true);
 		Display.setTitle(title);
 		if (LWJGLUtil.getPlatform() == LWJGLUtil.PLATFORM_MACOSX) {
-			Display.create(new PixelFormat(8, 24, 0), new ContextAttribs(3, 2).withProfileCore(true));
+			Display.create(new PixelFormat(), new ContextAttribs(3, 2).withProfileCore(true));
 		} else {
 			Display.create();
 		}
