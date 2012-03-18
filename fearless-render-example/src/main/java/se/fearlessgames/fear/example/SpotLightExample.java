@@ -18,7 +18,6 @@ import se.fearlessgames.fear.mesh.MeshRenderer;
 import se.fearlessgames.fear.mesh.MeshType;
 import se.fearlessgames.fear.shape.SphereFactory;
 import se.fearlessgames.fear.texture.*;
-import se.fearlessgames.fear.texture.TextureType;
 import se.fearlessgames.fear.vbo.VboBuilder;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
@@ -38,13 +37,14 @@ public class SpotLightExample {
 	private final FearGl fearGl;
 	private final Scene scene;
 	private final ExampleRenderer renderer;
-	private final TextureLoader textureManager = new TextureLoaderImpl();
+	private final TextureLoader textureManager;
 	private double rot;
 	private Transformation camera = new Transformation(Vector3.ZERO, Quaternion.IDENTITY, Vector3.ONE);
 	private ShaderProgram shaderProgram;
 
 	public SpotLightExample() throws IOException {
 		fearGl = new FearLwjgl();
+		textureManager = new FearlessTextureLoader(fearGl);
 		init();
 
 		shaderProgram = createShaderProgram();
@@ -120,7 +120,8 @@ public class SpotLightExample {
 		spotLight.setQuadraticAttenuation(0.37f);
 		spotLight.setLightColor(new ColorRGBA(1, 1, 1, 0));
 
-		Texture texture = textureManager.loadTextureFlipped(TextureType.PNG, new FileInputStream("src/main/resources/texture/earth.png"));
+		String textureName = "src/main/resources/texture/earth.png";
+		Texture texture = textureManager.load(textureName, TextureFileType.PNG, new FileInputStream(textureName), TextureType.TEXTURE_2D, true);
 		MeshType meshType = new MeshType(shaderProgram, renderer.opaqueBucket, new SpotLightRenderState(Arrays.asList((SpotLight) spotLight)), new SingleTextureRenderState(texture));
 		Mesh earth = new Mesh(vertexBufferObject, meshType);
 

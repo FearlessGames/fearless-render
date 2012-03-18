@@ -19,10 +19,7 @@ import se.fearlessgames.fear.mesh.MeshRenderer;
 import se.fearlessgames.fear.mesh.MeshType;
 import se.fearlessgames.fear.renderbucket.RenderBucket;
 import se.fearlessgames.fear.shape.SphereFactory;
-import se.fearlessgames.fear.texture.SingleTextureRenderState;
-import se.fearlessgames.fear.texture.Texture;
-import se.fearlessgames.fear.texture.TextureLoader;
-import se.fearlessgames.fear.texture.TextureLoaderImpl;
+import se.fearlessgames.fear.texture.*;
 import se.fearlessgames.fear.vbo.VboBuilder;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
@@ -115,10 +112,11 @@ public class Main2 {
 	}
 
 	private Mesh createSkyboxSphere(FearGl fearGl, ShaderProgram shaderProgram, RenderBucket skyboxBucket) {
-		TextureLoader textureManager = new TextureLoaderImpl();
+		TextureLoader textureManager = new FearlessTextureLoader(fearGl);
 		Texture texture = null;
 		try {
-			texture = textureManager.loadTexture(se.fearlessgames.fear.texture.TextureType.PNG, new FileInputStream("src/main/resources/texture/earth.png"));
+			String resourceName = "src/main/resources/texture/earth.png";
+			texture = textureManager.load(resourceName, TextureFileType.PNG, new FileInputStream(resourceName));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

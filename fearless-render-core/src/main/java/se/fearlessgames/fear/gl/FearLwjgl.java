@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.EnumSet;
@@ -212,6 +213,21 @@ public class FearLwjgl implements FearGl {
 	@Override
 	public void glBindVertexArray(int vaoId) {
 		GL30.glBindVertexArray(vaoId);
+	}
+
+	@Override
+	public void glTexParameteri(TextureType textureType, TextureMagnificationFilter textureMagnificationFilter) {
+		GL11.glTexParameteri(textureType.getGlType(), GL11.GL_TEXTURE_MAG_FILTER, textureMagnificationFilter.getGlType());
+	}
+
+	@Override
+	public void glTexParameteri(TextureType textureType, TextureMinificationFilter textureMinificationFilter) {
+		GL11.glTexParameteri(textureType.getGlType(), GL11.GL_TEXTURE_MIN_FILTER, textureMinificationFilter.getGlType());
+	}
+
+	@Override
+	public void glTexImage2D(TextureType textureType, int level, TexturePixelFormat internalFormat, int width, int height, int border, TexturePixelFormat format, DataType dataType, ByteBuffer buffer) {
+		GL11.glTexImage2D(textureType.getGlType(), level, internalFormat.getGlType(), width, height, border, format.getGlType(), dataType.getGlType(), buffer);
 	}
 }
 

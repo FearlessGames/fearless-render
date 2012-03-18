@@ -22,7 +22,6 @@ import se.fearlessgames.fear.mesh.MeshType;
 import se.fearlessgames.fear.shape.BoxFactory;
 import se.fearlessgames.fear.shape.SphereFactory;
 import se.fearlessgames.fear.texture.*;
-import se.fearlessgames.fear.texture.TextureType;
 import se.fearlessgames.fear.vbo.VboBuilder;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
@@ -68,10 +67,11 @@ public class ManyOrbs {
 		int c = 0;
 
 		Random rand = new Random();
-		TextureLoader textureManager = new TextureLoaderImpl();
+		TextureLoader textureManager = new FearlessTextureLoader(fearGl);
 		Texture texture = null;
 		try {
-			texture = textureManager.loadTexture(se.fearlessgames.fear.texture.TextureType.PNG, new FileInputStream("src/main/resources/texture/earth.png"));
+			String name = "src/main/resources/texture/earth.png";
+			texture = textureManager.load(name, TextureFileType.GUESS, new FileInputStream(name), TextureType.TEXTURE_2D, true);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -118,7 +118,8 @@ public class ManyOrbs {
 	private Node createBoxNode(ShaderProgram shaderProgram, TextureLoader textureManager) {
 		Texture texture = null;
 		try {
-			texture = textureManager.loadTexture(TextureType.PNG, new FileInputStream("src/main/resources/texture/crate.png"));
+			String textureName = "src/main/resources/texture/crate.png";
+			texture = textureManager.load(textureName, TextureFileType.GUESS, new FileInputStream(textureName));
 		} catch (IOException ignored) {
 		}
 		MeshType meshType = new MeshType(shaderProgram, renderer.opaqueBucket, DirectionalLightRenderState.DEFAULT, new SingleTextureRenderState(texture));

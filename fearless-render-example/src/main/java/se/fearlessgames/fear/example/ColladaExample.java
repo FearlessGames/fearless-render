@@ -18,7 +18,6 @@ import se.fearlessgames.fear.mesh.MeshData;
 import se.fearlessgames.fear.mesh.MeshRenderer;
 import se.fearlessgames.fear.mesh.MeshType;
 import se.fearlessgames.fear.texture.*;
-import se.fearlessgames.fear.texture.TextureType;
 import se.fearlessgames.fear.vbo.VboBuilder;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
@@ -37,13 +36,14 @@ public class ColladaExample {
 	private final FearGl fearGl;
 	private final Scene scene;
 	private final ExampleRenderer renderer;
-	private final TextureLoader textureManager = new TextureLoaderImpl();
+	private final TextureLoader textureManager;
 	private double rot;
 	private Transformation camera = new Transformation(Vector3.ZERO, Quaternion.IDENTITY, Vector3.ONE);
 	private ShaderProgram shaderProgram;
 
 	public ColladaExample() throws IOException {
 		fearGl = new FearLwjgl();
+		textureManager = new FearlessTextureLoader(fearGl);
 		init();
 		log.info(org.lwjgl.opengl.GL11.glGetString(org.lwjgl.opengl.GL11.GL_VERSION));
 
@@ -108,7 +108,8 @@ public class ColladaExample {
 	private Scene createScene() throws IOException {
 		Node root = new Node("root");
 
-		Texture texture = textureManager.loadTextureFlipped(TextureType.PNG, new FileInputStream("src/main/resources/texture/bender.png"));
+		String textureName = "src/main/resources/texture/bender.png";
+		Texture texture = textureManager.load(textureName, TextureFileType.GUESS, new FileInputStream(textureName));
 
 		ColladaImporter colladaImporter = new ColladaImporter();
 		ColladaStorage colladaStorage = colladaImporter.load(new FileInputStream("src/main/resources/dae/bender.dae"));

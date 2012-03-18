@@ -1,5 +1,6 @@
 package se.fearlessgames.fear.gl;
 
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.EnumSet;
@@ -79,10 +80,15 @@ public interface FearGl {
 
 	void glCullFace(Culling culling);
 
-
-	int glGenTextures();
-
 	int glGenVertexArrays();
 
 	void glBindVertexArray(int vaoId);
+
+	int glGenTextures();
+
+	void glTexParameteri(TextureType textureType, TextureMagnificationFilter textureMagnificationFilter);
+
+	void glTexParameteri(TextureType textureType, TextureMinificationFilter textureMinificationFilter);
+
+	public void glTexImage2D(TextureType textureType, int level, TexturePixelFormat internalFormat, int width, int height, int border, TexturePixelFormat format, DataType dataType, ByteBuffer buffer);
 }

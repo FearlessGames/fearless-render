@@ -17,7 +17,7 @@
     </asset>
     <library_images>
         <image id="Map__3-image" name="Map__3">
-            <init_from>file://C:\Spaced\newclient\resources\textures\props\buildings\cityBuildings_1024.png</init_from>
+            <init_from>stream://C:\Spaced\newclient\resources\textures\props\buildings\cityBuildings_1024.png</init_from>
         </image>
     </library_images>
     <library_materials>

@@ -12,14 +12,14 @@ import se.fearlessgames.fear.shape.SphereFactory;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
-public class Vbo21Test {
+public class Vbo32Test {
 	private int vboId;
 	private final FloatBuffer vertexBuffer;
 	private final IntBuffer indices;
 	private final int shaderId;
 	private int indicesId;
 
-	public Vbo21Test(FloatBuffer vertexBuffer, IntBuffer indices, int shaderId) {
+	public Vbo32Test(FloatBuffer vertexBuffer, IntBuffer indices, int shaderId) {
 		this.vertexBuffer = vertexBuffer;
 		this.indices = indices;
 		this.shaderId = shaderId;
@@ -52,7 +52,7 @@ public class Vbo21Test {
 	private void render(FloatBuffer projection, FloatBuffer modelView) {
 		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboId);
 		GL20.glUseProgram(shaderId);
-		GL11.glEnableClientState(GL15.GL_ARRAY_BUFFER);
+
 
 		setUniformMatrix4("projectionMatrix", projection);
 		setUniformMatrix4("modelViewMatrix", modelView);
@@ -84,10 +84,9 @@ public class Vbo21Test {
 		Display.setVSyncEnabled(true);
 		Display.setTitle("Vbo Test");
 
-		//ContextAttribs attribs = new ContextAttribs(3, 2).withProfileCore(true);
-		ContextAttribs attribs = new ContextAttribs(2, 1);
+		ContextAttribs attribs = new ContextAttribs(3, 2).withProfileCore(true);
 
-		Display.create(new PixelFormat(8, 24, 0), attribs);
+		Display.create(new PixelFormat(), attribs);
 
 		FearGl fearGl = new FearLwjgl();
 
@@ -105,19 +104,32 @@ public class Vbo21Test {
 		MeshData meshData = new SphereFactory(100, 100, 1d, SphereFactory.TextureMode.PROJECTED).create();
 
 		ShaderProgram shaderProgram = new ShaderProgram(fearGl);
-		shaderProgram.loadAndCompile("src/main/resources/shaders/old.vert", ShaderType.VERTEX_SHADER);
-		shaderProgram.loadAndCompile("src/main/resources/shaders/old.frag", ShaderType.FRAGMENT_SHADER);
+		shaderProgram.loadAndCompile("src/main/resources/shaders/vbo32.vert", ShaderType.VERTEX_SHADER);
+		shaderProgram.loadAndCompile("src/main/resources/shaders/vbo32.frag", ShaderType.FRAGMENT_SHADER);
 		shaderProgram.attachToProgram(ShaderType.VERTEX_SHADER);
 		shaderProgram.attachToProgram(ShaderType.FRAGMENT_SHADER);
 
-		Vbo21Test vaoTest = new Vbo21Test(meshData.getVertexBuffer(), meshData.getIndices(), shaderProgram.getShaderProgram());
+		int error = GL11.glGetError();
+		if (error != 0) {
+			System.out.println("error during context setup: " + error);
+		}
 
+		Vbo32Test vaoTest = new Vbo32Test(meshData.getVertexBuffer(), meshData.getIndices(), shaderProgram.getShaderProgram());
 		vaoTest.setupVbo();
+
+		error = GL11.glGetError();
+		if (error != 0) {
+			System.out.println("error during vbo setup: " + error);
+		}
 
 		while (true) {
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 			vaoTest.render(perspectiveBuilder.getMatrixAsBuffer(), GlMatrixBuilder.convert(modelView));
 			Display.update();
+			error = GL11.glGetError();
+			if (error != 0) {
+				System.out.println("error during rendering: " + error);
+			}
 		}
 
 	}

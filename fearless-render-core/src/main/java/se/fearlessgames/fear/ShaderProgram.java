@@ -38,7 +38,6 @@ public class ShaderProgram {
 
 	public void loadAndCompile(String filename, ShaderType type) {
 		int shader = fearGl.glCreateShader(type);
-
 		if (shader == 0) {
 			throw new RuntimeException("Failed to create " + type.name() + " shader");
 		}
@@ -58,7 +57,6 @@ public class ShaderProgram {
 			fearGl.glAttachShader(shaderProgram, shader);
 			fearGl.glLinkProgram(shaderProgram);
 			fearGl.glValidateProgram(shaderProgram);
-			printLogInfo(shaderProgram);
 		}
 	}
 

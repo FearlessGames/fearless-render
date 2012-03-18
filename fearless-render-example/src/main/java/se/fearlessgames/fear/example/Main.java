@@ -17,7 +17,6 @@ import se.fearlessgames.fear.mesh.MeshRenderer;
 import se.fearlessgames.fear.mesh.MeshType;
 import se.fearlessgames.fear.shape.SphereFactory;
 import se.fearlessgames.fear.texture.*;
-import se.fearlessgames.fear.texture.TextureType;
 import se.fearlessgames.fear.vbo.VboBuilder;
 import se.fearlessgames.fear.vbo.VertexBufferObject;
 
@@ -36,13 +35,15 @@ public class Main {
 	private final FearGl fearGl;
 	private final Scene scene;
 	private final ExampleRenderer renderer;
-	private final TextureLoader textureManager = new TextureLoaderImpl();
+	private final TextureLoader textureManager;
 	private double rot;
 	private Transformation camera = new Transformation(Vector3.ZERO, Quaternion.IDENTITY, Vector3.ONE);
 	private ShaderProgram shaderProgram;
 
 	public Main() throws IOException {
 		fearGl = new FearLwjgl();
+		textureManager = new FearlessTextureLoader(fearGl);
+
 		init();
 		log.info(org.lwjgl.opengl.GL11.glGetString(org.lwjgl.opengl.GL11.GL_VERSION));
 
@@ -109,7 +110,10 @@ public class Main {
 		VertexBufferObject vertexBufferObject = VboBuilder.fromMeshData(fearGl, meshData).build();
 
 		Node root = new Node("root");
-		Texture texture = textureManager.loadTextureFlipped(TextureType.PNG, new FileInputStream("src/main/resources/texture/earth.png"));
+
+		String textureName = "src/main/resources/texture/earth.png";
+		Texture texture = textureManager.load(textureName, TextureFileType.GUESS, new FileInputStream(textureName), TextureType.TEXTURE_2D, true);
+
 		MeshType earthMeshType = new MeshType(shaderProgram, renderer.opaqueBucket, new DirectionalLightRenderState(new SunLight()), new SingleTextureRenderState(texture));
 		Mesh earth = new Mesh(vertexBufferObject, earthMeshType);
 
