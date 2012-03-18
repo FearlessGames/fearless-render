@@ -24,7 +24,9 @@ public class ColladaStorage {
 	}
 
 	public MeshData getFirstMeshData() {
-		return findMesh(scene);
+		MeshData container[] = new MeshData[1];
+		findMesh(container, scene);
+		return container[0];
 	}
 
 	public MeshData getCombinedMeshData() {
@@ -47,16 +49,20 @@ public class ColladaStorage {
 		}
 	}
 
-	private MeshData findMesh(Node node) {
+	private void findMesh(MeshData[] container, Node node) {
+		if (container[0] != null) {
+			return;
+		}
+
 		if (!node.getMeshes().isEmpty()) {
-			return node.getMeshes().get(0);
+			container[0] = node.getMeshes().get(0);
 		}
 
 		for (Node child : node.getChildren()) {
-			return findMesh(child);
+			findMesh(container, child);
 		}
 
-		return null;
+
 	}
 
 

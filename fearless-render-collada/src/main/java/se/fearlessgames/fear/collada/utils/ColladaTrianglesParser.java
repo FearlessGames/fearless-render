@@ -45,29 +45,26 @@ public class ColladaTrianglesParser extends ColladaPrimitiveParser {
 
 		// Add to vert mapping
 		final int[] indices = new int[numEntries];
-		final MeshVertPairs mvp = new MeshVertPairs(triMeshData, vals);
+		final MeshVertPairs mvp = new MeshVertPairs(triMeshData, indices);
 		dataCache.getVertMappings().put(colladaGeometry, mvp);
 
-
+		IntBuffer meshIndices = createIndexBufferData(triMeshData.getVertexCount());
 		// go through the p entry
 		// for each p, iterate using max offset
 		final int[] currentVal = new int[interval];
 
 		// Go through entries and add to buffers.
-		for (int j = 0, max = numEntries; j < max; j++) {
+		for (int j = 0; j < numEntries; j++) {
 			// add entry to buffers
 			System.arraycopy(vals, j * interval, currentVal, 0, interval);
 			final int rVal = processPipes(pipes, currentVal);
 			if (rVal != Integer.MIN_VALUE) {
 				indices[j] = rVal;
+				meshIndices.put(j);
 			}
 		}
-		for (int indice : indices) {
-			System.out.print(indice + " ");
-		}
-		IntBuffer meshIndices = createIndexBufferData(indices.length);
-		meshIndices.put(indices);
-		meshIndices.rewind();
+
+		meshIndices.flip();
 
 		triMeshData.setIndices(meshIndices);
 		return triMeshData;
