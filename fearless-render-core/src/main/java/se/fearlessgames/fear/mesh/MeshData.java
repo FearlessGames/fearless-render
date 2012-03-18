@@ -2,6 +2,7 @@ package se.fearlessgames.fear.mesh;
 
 import se.fearlessgames.fear.BufferUtils;
 import se.fearlessgames.fear.gl.VertexIndexMode;
+import se.fearlessgames.fear.vbo.InterleavedBuffer;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -23,11 +24,11 @@ public class MeshData {
 
 	public MeshData(String name, FloatBuffer vertexBuffer, FloatBuffer normalBuffer, FloatBuffer colorBuffer, FloatBuffer textureCoordinates, IntBuffer indices, VertexIndexMode vertexIndexMode) {
 		this.name = name;
-		this.vertexBuffer = vertexBuffer;
-		this.normalBuffer = normalBuffer;
-		this.colorBuffer = colorBuffer;
-		textureCoordsMap.put(0, textureCoordinates);
-		this.indices = indices;
+		this.vertexBuffer = BufferUtils.duplicate(vertexBuffer);
+		this.normalBuffer = BufferUtils.duplicate(normalBuffer);
+		this.colorBuffer = BufferUtils.duplicate(colorBuffer);
+		textureCoordsMap.put(0, BufferUtils.duplicate(textureCoordinates));
+		this.indices = BufferUtils.duplicate(indices);
 		this.vertexIndexMode = vertexIndexMode;
 	}
 
@@ -50,6 +51,66 @@ public class MeshData {
 		}
 		return meshData;
 
+	}
+
+	public InterleavedBuffer createInterleavedBuffer() {
+		int verticsSize = getSize(vertexBuffer);
+		int normalsSize = getSize(normalBuffer);
+		int colorsSize = getSize(colorBuffer);
+
+
+		int texturesSize = getSize(textureCoordsMap.get(0));
+
+
+		FloatBuffer buffer;
+
+		if (normalsSize == 0 && colorsSize == 0 && texturesSize == 0) {
+			buffer = vertexBuffer.duplicate();
+		} else {
+			FloatBuffer vertexBuffer = BufferUtils.duplicate(this.vertexBuffer);
+			FloatBuffer normalBuffer = BufferUtils.duplicate(this.normalBuffer);
+			FloatBuffer colorBuffer = BufferUtils.duplicate(this.colorBuffer);
+			FloatBuffer textureCoordsBuffer = BufferUtils.duplicate(this.textureCoordsMap.get(0));
+
+			//using V[xyz]N[xyz]C[rgba]T1[st] format for the interleaved buffer
+			buffer = BufferUtils.createFloatBuffer(verticsSize + normalsSize + colorsSize + texturesSize);
+			for (int i = 0; i < verticsSize / 3; i++) {
+				buffer.put(vertexBuffer.get()); //x
+				buffer.put(vertexBuffer.get()); //y
+				buffer.put(vertexBuffer.get()); //z
+
+				if (normalsSize != 0) {
+					buffer.put(normalBuffer.get()); //x
+					buffer.put(normalBuffer.get()); //y
+					buffer.put(normalBuffer.get()); //z
+				}
+
+				if (colorsSize != 0) {
+					buffer.put(colorBuffer.get()); //r
+					buffer.put(colorBuffer.get()); //g
+					buffer.put(colorBuffer.get()); //b
+					buffer.put(colorBuffer.get()); //a
+				}
+
+				if (texturesSize != 0) {
+					buffer.put(textureCoordsBuffer.get()); //s
+					buffer.put(textureCoordsBuffer.get()); //t
+				}
+			}
+			buffer.flip();
+		}
+
+		return new InterleavedBuffer(buffer,
+				normalsSize != 0,
+				colorsSize != 0,
+				texturesSize != 0);
+	}
+
+	private int getSize(FloatBuffer buffer) {
+		if (buffer == null) {
+			return 0;
+		}
+		return buffer.limit();
 	}
 
 

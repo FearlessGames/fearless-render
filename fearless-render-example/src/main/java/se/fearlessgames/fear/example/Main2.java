@@ -20,8 +20,8 @@ import se.fearlessgames.fear.mesh.MeshType;
 import se.fearlessgames.fear.renderbucket.RenderBucket;
 import se.fearlessgames.fear.shape.SphereFactory;
 import se.fearlessgames.fear.texture.*;
-import se.fearlessgames.fear.vbo.VboBuilder;
-import se.fearlessgames.fear.vbo.VertexBufferObject;
+import se.fearlessgames.fear.vbo.VaoBuilder;
+import se.fearlessgames.fear.vbo.VertexArrayObject;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -123,22 +123,24 @@ public class Main2 {
 
 
 		MeshData meshData = new SphereFactory(100, 100, 100, SphereFactory.TextureMode.PROJECTED).create();
-		VertexBufferObject vbo = VboBuilder.fromMeshData(fearGl, meshData).build();
-		return new Mesh(vbo, new MeshType(shaderProgram, skyboxBucket, DirectionalLightRenderState.DEFAULT, new SingleTextureRenderState(texture)));
+		VertexArrayObject vertexArrayObject = VaoBuilder.fromMeshData(fearGl, shaderProgram, meshData).build();
+
+		return new Mesh(vertexArrayObject, new MeshType(shaderProgram, skyboxBucket, DirectionalLightRenderState.DEFAULT, new SingleTextureRenderState(texture)));
 	}
 
 	private Scene createScene() {
-		VertexBufferObject vbo = createVbo();
+		MeshData meshData = new SphereFactory(40, 40, 1, SphereFactory.TextureMode.PROJECTED).create();
+		VertexArrayObject vao = VaoBuilder.fromMeshData(fearGl, shaderProgram, meshData).build();
 		Node root = new Node("root");
 
 
-		Orb sun = new Orb("Sun", vbo, 2.5, 0, 0, new MeshType(shaderProgram, renderer.opaqueBucket));
+		Orb sun = new Orb("Sun", vao, 2.5, 0, 0, new MeshType(shaderProgram, renderer.opaqueBucket));
 
-		Orb planet = new Orb("Planet", vbo, 1, 1e-3, 1e-3, new MeshType(shaderProgram, renderer.opaqueBucket));
+		Orb planet = new Orb("Planet", vao, 1, 1e-3, 1e-3, new MeshType(shaderProgram, renderer.opaqueBucket));
 		planet.setRotationRadius(new Vector3(30, 0, 0));
 		sun.addChild(planet);
 
-		Orb moon = new Orb("Moon", vbo, 0.25, 1e-2, 1e-5, new MeshType(shaderProgram, renderer.opaqueBucket));
+		Orb moon = new Orb("Moon", vao, 0.25, 1e-2, 1e-5, new MeshType(shaderProgram, renderer.opaqueBucket));
 		moon.setRotationRadius(new Vector3(10, 0, 0));
 		planet.addChild(moon);
 
@@ -191,9 +193,5 @@ public class Main2 {
 		new Main2();
 	}
 
-	private VertexBufferObject createVbo() {
-		MeshData meshData = new SphereFactory(40, 40, 1, SphereFactory.TextureMode.PROJECTED).create();
-		return VboBuilder.fromMeshData(fearGl, meshData).build();
-	}
 
 }

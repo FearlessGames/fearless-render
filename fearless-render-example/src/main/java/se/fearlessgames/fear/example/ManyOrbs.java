@@ -22,8 +22,8 @@ import se.fearlessgames.fear.mesh.MeshType;
 import se.fearlessgames.fear.shape.BoxFactory;
 import se.fearlessgames.fear.shape.SphereFactory;
 import se.fearlessgames.fear.texture.*;
-import se.fearlessgames.fear.vbo.VboBuilder;
-import se.fearlessgames.fear.vbo.VertexBufferObject;
+import se.fearlessgames.fear.vbo.VaoBuilder;
+import se.fearlessgames.fear.vbo.VertexArrayObject;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -51,15 +51,17 @@ public class ManyOrbs {
 		int numOrbs = 20;
 		int numTransparent = 10;
 
+		ShaderProgram shaderProgram = createShaderProgram();
+
 		MeshData meshData = new SphereFactory(100, 100, 2, SphereFactory.TextureMode.PROJECTED).create();
 
-		VertexBufferObject vbo = VboBuilder.fromMeshData(fearGl, meshData).build();
+		VertexArrayObject vertexArrayObject = VaoBuilder.fromMeshData(fearGl, shaderProgram, meshData).build();
 
 		renderer = new ExampleRenderer(new MeshRenderer(fearGl, perspectiveBuilder));
 
 		scene = createScene();
 		scene.getRoot().setPosition(new Vector3(0, -15, -80));
-		ShaderProgram shaderProgram = createShaderProgram();
+
 
 		long t1 = System.nanoTime();
 		long t2;
@@ -82,7 +84,7 @@ public class ManyOrbs {
 		List<Orb> orbs = Lists.newArrayList();
 		for (int i = 0; i < numOrbs; i++) {
 			MeshType type = (i < numOrbs - numTransparent) ? orbMeshType : orbMeshType2;
-			Orb orb = new Orb("orb" + i, vbo, 0.5 + 1 * rand.nextDouble(), 1e-3 * rand.nextDouble(), 1e-3 * (rand.nextDouble() - 0.5), type);
+			Orb orb = new Orb("orb" + i, vertexArrayObject, 0.5 + 1 * rand.nextDouble(), 1e-3 * rand.nextDouble(), 1e-3 * (rand.nextDouble() - 0.5), type);
 			orb.setRotationRadius(new Vector3(30 * rand.nextDouble(), 20 * rand.nextDouble(), 0));
 			orbs.add(orb);
 			scene.getRoot().addChild(orb.getRoot());
@@ -124,8 +126,8 @@ public class ManyOrbs {
 		}
 		MeshType meshType = new MeshType(shaderProgram, renderer.opaqueBucket, DirectionalLightRenderState.DEFAULT, new SingleTextureRenderState(texture));
 		MeshData meshData = new BoxFactory().create();
-		VertexBufferObject vbo = VboBuilder.fromMeshData(fearGl, meshData).build();
-		Mesh boxMesh = new Mesh(vbo, meshType);
+		VertexArrayObject vertexArrayObject = VaoBuilder.fromMeshData(fearGl, shaderProgram, meshData).build();
+		Mesh boxMesh = new Mesh(vertexArrayObject, meshType);
 
 		Node node = new Node("Center Box", boxMesh);
 		node.setScale(new Vector3(4, 4, 4));

@@ -15,8 +15,8 @@ import se.fearlessgames.fear.mesh.MeshRenderer;
 import se.fearlessgames.fear.mesh.MeshType;
 import se.fearlessgames.fear.shape.SphereFactory;
 import se.fearlessgames.fear.texture.*;
-import se.fearlessgames.fear.vbo.VboBuilder;
-import se.fearlessgames.fear.vbo.VertexBufferObject;
+import se.fearlessgames.fear.vbo.VaoBuilder;
+import se.fearlessgames.fear.vbo.VertexArrayObject;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -103,13 +103,13 @@ public class DirectionalLightExample {
 
 	private Scene createScene() throws IOException {
 		MeshData meshData = new SphereFactory(100, 100, 1.5, SphereFactory.TextureMode.PROJECTED).create();
-		VertexBufferObject vertexBufferObject = VboBuilder.fromMeshData(fearGl, meshData).build();
+		VertexArrayObject vertexArrayObject = VaoBuilder.fromMeshData(fearGl, shaderProgram, meshData).build();
 
 		Node root = new Node("root");
 		String textureName = "src/main/resources/texture/earth.png";
 		Texture texture = textureManager.load(textureName, TextureFileType.PNG, new FileInputStream(textureName), TextureType.TEXTURE_2D, true);
 		MeshType meshType = new MeshType(shaderProgram, renderer.opaqueBucket, new DirectionalLightRenderState(new SunLight()), new SingleTextureRenderState(texture));
-		Mesh earth = new Mesh(vertexBufferObject, meshType);
+		Mesh earth = new Mesh(vertexArrayObject, meshType);
 
 		Node boxNode = new Node("Box", earth);
 		//boxNode.setScale(new Vector3(1, 1.4, 0.2));

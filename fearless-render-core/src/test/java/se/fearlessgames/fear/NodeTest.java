@@ -3,8 +3,7 @@ package se.fearlessgames.fear;
 import org.junit.Test;
 import se.fearlessgames.fear.mesh.Mesh;
 import se.fearlessgames.fear.mesh.MeshType;
-import se.fearlessgames.fear.renderbucket.RenderBucket;
-import se.fearlessgames.fear.vbo.VertexBufferObject;
+import se.fearlessgames.fear.vbo.VertexArrayObject;
 
 import static org.junit.Assert.assertEquals;
 import static se.mockachino.Mockachino.mock;
@@ -21,8 +20,8 @@ public class NodeTest {
 
 	@Test
 	public void simpleVertexCount() throws Exception {
-		VertexBufferObject vbo = mock(VertexBufferObject.class);
-		when(vbo.getIndexBufferSize()).thenReturn(4);
+		VertexArrayObject vbo = mock(VertexArrayObject.class);
+		when(vbo.getIndicesCount()).thenReturn(4);
 		Mesh mesh = new Mesh(vbo, new MeshType(mock(ShaderProgram.class), null));
 		Node node = new Node("foo", mesh);
 
@@ -31,8 +30,8 @@ public class NodeTest {
 
 	@Test
 	public void compoundNodeVertexCount() throws Exception {
-		VertexBufferObject vbo = mock(VertexBufferObject.class);
-		when(vbo.getIndexBufferSize()).thenReturn(4);
+		VertexArrayObject vbo = mock(VertexArrayObject.class);
+		when(vbo.getIndicesCount()).thenReturn(4);
 		Mesh mesh = new Mesh(vbo, new MeshType(mock(ShaderProgram.class), null));
 
 		Node root = new Node("root");

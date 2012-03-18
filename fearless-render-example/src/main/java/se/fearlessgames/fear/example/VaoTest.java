@@ -9,20 +9,21 @@ import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.math.*;
 import se.fearlessgames.fear.mesh.MeshData;
 import se.fearlessgames.fear.shape.SphereFactory;
-import se.fearlessgames.fear.vbo.InterleavedBuffer;
-import se.fearlessgames.fear.vbo.VboBuilder;
+import se.fearlessgames.fear.vbo.VaoBuilder;
+import se.fearlessgames.fear.vbo.VertexArrayObject;
 
 public class VaoTest {
-	private int vaoId;
 	private final FearGl fearGl;
 	private ShaderProgram shaderProgram;
-	private MeshData meshData;
-	private InterleavedBuffer interleavedBuffer;
+	private final VertexArrayObject vertexArrayObject;
 
 	public VaoTest(FearGl fearGl) {
 		this.fearGl = fearGl;
-		meshData = new SphereFactory(100, 100, 1d, SphereFactory.TextureMode.PROJECTED).create();
-		interleavedBuffer = VboBuilder.fromMeshData(fearGl, meshData).buildInterleavedBuffer();
+		setupShader();
+
+		MeshData meshData = new SphereFactory(100, 100, 1d, SphereFactory.TextureMode.PROJECTED).create();
+		VaoBuilder vaoBuilder = VaoBuilder.fromMeshData(fearGl, shaderProgram, meshData);
+		vertexArrayObject = vaoBuilder.build();
 	}
 
 	private void setupShader() {
@@ -35,58 +36,6 @@ public class VaoTest {
 	}
 
 
-	private void setupVao() {
-
-		//create the vao id
-		vaoId = fearGl.glGenVertexArrays();
-		//then bind it
-		fearGl.glBindVertexArray(vaoId);
-
-
-		//create the vbo binding
-		int vboId = fearGl.glGenBuffers();
-		//then bind it
-		fearGl.glBindBuffer(BufferTarget.GL_ARRAY_BUFFER, vboId);
-
-		//add the data to the vbo
-		fearGl.glBufferData(BufferTarget.GL_ARRAY_BUFFER, interleavedBuffer.getBuffer(), BufferUsage.GL_STATIC_DRAW);
-
-		//setup how to send the vertex data to the shader
-		int stride = interleavedBuffer.getStride();
-		int offset = 0;
-
-		shaderProgram.setVertexAttribute("vertex", 3, stride, offset);
-
-		offset = 3 * 4;
-
-		if (interleavedBuffer.isNormals()) {
-			shaderProgram.setVertexAttribute("normal", 3, stride, offset);
-			offset += (3 * 4);
-		}
-
-		if (interleavedBuffer.isColors()) {
-			shaderProgram.setVertexAttribute("color", 4, stride, offset);
-			offset += (4 * 4);
-		}
-
-		if (interleavedBuffer.isTextureCords()) {
-			shaderProgram.setVertexAttribute("textureCoord", 2, stride, offset);
-		}
-
-
-		//create the indices id
-		int indicesId = fearGl.glGenBuffers();
-		//then bind it
-		fearGl.glBindBuffer(BufferTarget.GL_ELEMENT_ARRAY_BUFFER, indicesId);
-		//and copy data into it
-		fearGl.glBufferData(BufferTarget.GL_ELEMENT_ARRAY_BUFFER, meshData.getIndices(), BufferUsage.GL_STATIC_DRAW);
-
-
-		//remove the vao binding
-		fearGl.glBindVertexArray(0);
-	}
-
-
 	private void render(PerspectiveBuilder perspectiveBuilder, Matrix4 modelView) {
 		//use the shader
 		fearGl.glUseProgram(shaderProgram.getShaderProgram());
@@ -96,10 +45,10 @@ public class VaoTest {
 
 
 		//bind the vao
-		fearGl.glBindVertexArray(vaoId);
+		fearGl.glBindVertexArray(vertexArrayObject.getVaoId());
 
 		//draw the bound vao
-		fearGl.glDrawElements(VertexIndexMode.TRIANGLES, meshData.getIndices().limit(), IndexDataType.GL_UNSIGNED_INT, 0);
+		fearGl.glDrawElements(VertexIndexMode.TRIANGLES, vertexArrayObject.getIndicesCount(), IndexDataType.GL_UNSIGNED_INT, 0);
 	}
 
 	public static void main(String[] args) throws LWJGLException {
@@ -123,7 +72,7 @@ public class VaoTest {
 
 		VaoTest vaoTest = new VaoTest(fearGl);
 		vaoTest.setupShader();
-		vaoTest.setupVao();
+
 
 		while (true) {
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);

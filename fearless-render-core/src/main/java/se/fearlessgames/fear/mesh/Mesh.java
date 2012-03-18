@@ -1,23 +1,23 @@
 package se.fearlessgames.fear.mesh;
 
-import se.fearlessgames.fear.renderbucket.RenderBucket;
 import se.fearlessgames.fear.ShaderProgram;
-import se.fearlessgames.fear.vbo.VertexBufferObject;
+import se.fearlessgames.fear.renderbucket.RenderBucket;
+import se.fearlessgames.fear.vbo.VertexArrayObject;
 
 import java.util.List;
 
 public class Mesh {
-	private final VertexBufferObject vbo;
-    private final MeshType meshType;
+	private final VertexArrayObject vao;
+	private final MeshType meshType;
 
-    public Mesh(VertexBufferObject vbo, MeshType meshType) {
-		this.vbo = vbo;
-        this.meshType = meshType;
+	public Mesh(VertexArrayObject vao, MeshType meshType) {
+		this.vao = vao;
+		this.meshType = meshType;
 	}
 
 
-    public VertexBufferObject getVbo() {
-		return vbo;
+	public VertexArrayObject getVao() {
+		return vao;
 	}
 
 	public ShaderProgram getShaderProgram() {
@@ -28,11 +28,11 @@ public class Mesh {
 		return meshType.getRenderStates();
 	}
 
-    public RenderBucket getBucket() {
+	public RenderBucket getBucket() {
 		return meshType.getBucket();
 	}
 
-    public MeshType getMeshType() {
-        return meshType;
-    }
+	public MeshType getMeshType() {
+		return meshType;
+	}
 }

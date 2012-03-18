@@ -18,8 +18,8 @@ import se.fearlessgames.fear.mesh.MeshData;
 import se.fearlessgames.fear.mesh.MeshRenderer;
 import se.fearlessgames.fear.mesh.MeshType;
 import se.fearlessgames.fear.texture.*;
-import se.fearlessgames.fear.vbo.VboBuilder;
-import se.fearlessgames.fear.vbo.VertexBufferObject;
+import se.fearlessgames.fear.vbo.VaoBuilder;
+import se.fearlessgames.fear.vbo.VertexArrayObject;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -115,11 +115,10 @@ public class ColladaExample {
 		ColladaStorage colladaStorage = colladaImporter.load(new FileInputStream("src/main/resources/dae/bender.dae"));
 		MeshData combinedMeshData = colladaStorage.getCombinedMeshData();
 
-		VertexBufferObject vertexBufferObject = VboBuilder.fromMeshData(fearGl, combinedMeshData).build();
-
+		VertexArrayObject vao = VaoBuilder.fromMeshData(fearGl, shaderProgram, combinedMeshData).build();
 
 		MeshType chairType = new MeshType(shaderProgram, renderer.opaqueBucket, new DirectionalLightRenderState(new SunLight()), new SingleTextureRenderState(texture));
-		Mesh chair = new Mesh(vertexBufferObject, chairType);
+		Mesh chair = new Mesh(vao, chairType);
 
 		Node boxNode = new Node("Chair", chair);
 		boxNode.setPosition(new Vector3(0, 0, 0));

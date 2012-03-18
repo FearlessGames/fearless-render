@@ -90,7 +90,7 @@ public class Node {
 			count += childNode.getVertexCount();
 		}
 		if (mesh != null) {
-			count += mesh.getVbo().getIndexBufferSize();
+			count += mesh.getVao().getIndicesCount();
 		}
 
 		return count;

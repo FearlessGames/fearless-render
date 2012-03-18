@@ -5,7 +5,7 @@ import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.mesh.Mesh;
 import se.fearlessgames.fear.mesh.MeshType;
-import se.fearlessgames.fear.vbo.VertexBufferObject;
+import se.fearlessgames.fear.vbo.VertexArrayObject;
 
 public class Orb {
 	private final Node rotationCenterNode;
@@ -15,10 +15,10 @@ public class Orb {
 	private final double rotationSpeed;
 	private final Node meshNode;
 
-	public Orb(String name, VertexBufferObject vbo, double radius, double orbitSpeed, double rotationSpeed, MeshType meshType) {
+	public Orb(String name, VertexArrayObject vao, double radius, double orbitSpeed, double rotationSpeed, MeshType meshType) {
 		this.orbitSpeed = orbitSpeed;
 		this.rotationSpeed = rotationSpeed;
-		orbMesh = new Mesh(vbo, meshType);
+		orbMesh = new Mesh(vao, meshType);
 
 		rotationCenterNode = new Node(name + "-rotationCenter");
 		meshCenterNode = new Node(name + "-meshCenter");

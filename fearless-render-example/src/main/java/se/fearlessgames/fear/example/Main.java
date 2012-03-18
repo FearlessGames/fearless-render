@@ -17,8 +17,8 @@ import se.fearlessgames.fear.mesh.MeshRenderer;
 import se.fearlessgames.fear.mesh.MeshType;
 import se.fearlessgames.fear.shape.SphereFactory;
 import se.fearlessgames.fear.texture.*;
-import se.fearlessgames.fear.vbo.VboBuilder;
-import se.fearlessgames.fear.vbo.VertexBufferObject;
+import se.fearlessgames.fear.vbo.VaoBuilder;
+import se.fearlessgames.fear.vbo.VertexArrayObject;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -107,7 +107,8 @@ public class Main {
 
 	private Scene createScene() throws IOException {
 		MeshData meshData = new SphereFactory(100, 100, 1.5, SphereFactory.TextureMode.PROJECTED).create();
-		VertexBufferObject vertexBufferObject = VboBuilder.fromMeshData(fearGl, meshData).build();
+
+		VertexArrayObject vertexArrayObject = VaoBuilder.fromMeshData(fearGl, shaderProgram, meshData).build();
 
 		Node root = new Node("root");
 
@@ -115,7 +116,7 @@ public class Main {
 		Texture texture = textureManager.load(textureName, TextureFileType.GUESS, new FileInputStream(textureName), TextureType.TEXTURE_2D, true);
 
 		MeshType earthMeshType = new MeshType(shaderProgram, renderer.opaqueBucket, new DirectionalLightRenderState(new SunLight()), new SingleTextureRenderState(texture));
-		Mesh earth = new Mesh(vertexBufferObject, earthMeshType);
+		Mesh earth = new Mesh(vertexArrayObject, earthMeshType);
 
 		Node boxNode = new Node("Box", earth);
 		//boxNode.setScale(new Vector3(1, 1.4, 0.2));
