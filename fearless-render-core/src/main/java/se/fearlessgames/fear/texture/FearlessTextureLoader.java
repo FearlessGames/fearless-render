@@ -1,6 +1,5 @@
 package se.fearlessgames.fear.texture;
 
-import org.lwjgl.opengl.GL11;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.texture.impl.ImageData;
 import se.fearlessgames.fear.texture.impl.ImageDataLoader;
@@ -54,7 +53,7 @@ public class FearlessTextureLoader implements TextureLoader {
 	}
 
 	public Texture load(String resourceName, TextureFileType textureFileType, InputStream is, TextureType textureType, boolean flipped, boolean forceAlpha, int[] transparent) throws IOException {
-		System.out.println("error:" + GL11.glGetError());
+
 		if (textureFileType == TextureFileType.GUESS) {
 			textureFileType = guessFromResourceName(resourceName);
 		}
