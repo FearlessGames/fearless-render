@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="fearless-render-twl-local-lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/fearless-render-twl/lib/TWL-0.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

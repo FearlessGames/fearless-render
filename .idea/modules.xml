@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/fearless-render-collada/fearless-render-collada.iml" filepath="$PROJECT_DIR$/fearless-render-collada/fearless-render-collada.iml" />
       <module fileurl="file://$PROJECT_DIR$/fearless-render-core/fearless-render-core.iml" filepath="$PROJECT_DIR$/fearless-render-core/fearless-render-core.iml" />
       <module fileurl="file://$PROJECT_DIR$/fearless-render-example/fearless-render-example.iml" filepath="$PROJECT_DIR$/fearless-render-example/fearless-render-example.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fearless-render-twl/fearless-render-twl.iml" filepath="$PROJECT_DIR$/fearless-render-twl/fearless-render-twl.iml" />
     </modules>
   </component>
 </project>

@@ -1,13 +1,15 @@
 lwjglVersion = '2.8.3'
 
 coreLibDir = new File("fearless-render-core/lib")
+twlLibDir = new File("fearless-render-twl/lib")
 
 subprojects {
     apply plugin: 'java'
     group = "se.fearlessgames.fear"
 
     repositories {
-        flatDir name: 'projectLibs', dirs: coreLibDir.absolutePath
+        flatDir name: 'coreLibs', dirs: coreLibDir.absolutePath
+        flatDir name: 'twlLibs', dirs: twlLibDir.absolutePath
         mavenCentral()
     }
 

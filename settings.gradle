@@ -1,3 +1,4 @@
 include 'fearless-render-core'
 include 'fearless-render-collada'
+include 'fearless-render-twl'
 include 'fearless-render-example'

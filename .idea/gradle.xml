@@ -1,3 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project version="4" />
+<project version="4">
+  <component name="GradleSettings">
+    <option name="expandStates">
+      <map>
+        <entry key="dependencies/fearless-render-collada/fearless-render" value="false" />
+        <entry key="dependencies/fearless-render-core/fearless-render" value="false" />
+        <entry key="dependencies/fearless-render-example/fearless-render" value="false" />
+        <entry key="dependencies/fearless-render-twl/fearless-render" value="false" />
+        <entry key="fearless-render" value="true" />
+        <entry key="fearless-render-collada/fearless-render" value="true" />
+        <entry key="fearless-render-core/fearless-render" value="true" />
+        <entry key="fearless-render-example/fearless-render" value="true" />
+        <entry key="fearless-render-twl/fearless-render" value="true" />
+        <entry key="fearless-render/fearless-render" value="false" />
+      </map>
+    </option>
+    <option name="linkedProjectPath" value="$PROJECT_DIR$/build.gradle" />
+  </component>
+</project>
 
