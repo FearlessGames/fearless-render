@@ -12,7 +12,6 @@ Git globals setup
 * git config --global core.autocrlf true # (if on Windows)
 * git config --global core.autocrlf input # (elsewhere)
 * git config --global core.safecrlf true
-* så kör vi på jobbet
 * git config --global branch.autosetuprebase always
 
 
