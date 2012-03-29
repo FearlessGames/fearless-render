@@ -229,5 +229,10 @@ public class FearLwjgl implements FearGl {
 	public void glTexImage2D(TextureType textureType, int level, TexturePixelFormat internalFormat, int width, int height, int border, TexturePixelFormat format, DataType dataType, ByteBuffer buffer) {
 		GL11.glTexImage2D(textureType.getGlType(), level, internalFormat.getGlType(), width, height, border, format.getGlType(), dataType.getGlType(), buffer);
 	}
+
+	@Override
+	public int glGetError() {
+		return GL11.glGetError();
+	}
 }
 

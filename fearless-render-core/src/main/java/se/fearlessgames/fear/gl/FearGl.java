@@ -91,4 +91,6 @@ public interface FearGl {
 	void glTexParameteri(TextureType textureType, TextureMinificationFilter textureMinificationFilter);
 
 	public void glTexImage2D(TextureType textureType, int level, TexturePixelFormat internalFormat, int width, int height, int border, TexturePixelFormat format, DataType dataType, ByteBuffer buffer);
+
+	int glGetError();
 }
