@@ -113,8 +113,10 @@ public class ShaderProgram {
 		}
 		pointer = attribPointerCache.get(name);
 
-		fearGl.glEnableVertexAttribArray(pointer);
-		fearGl.glVertexAttribPointer(pointer, size, DataType.GL_FLOAT, true, stride, offset);
+		if (pointer != -1) {
+			fearGl.glEnableVertexAttribArray(pointer);
+			fearGl.glVertexAttribPointer(pointer, size, DataType.GL_FLOAT, true, stride, offset);
+		}
 
 	}
 
