@@ -57,7 +57,7 @@ public class VaoTest {
 
 
 		DisplayUtil.create(w, h, "Shader Setup");
-		FearGl fearGl = new FearLwjgl();
+		FearGl fearGl = DebuggingFearLwjgl.create();
 
 		fearGl.glViewport(0, 0, w, h);
 		PerspectiveBuilder perspectiveBuilder = new PerspectiveBuilder(45.0f, ((float) w / (float) h), 0.1f, 200.0f);

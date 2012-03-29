@@ -39,7 +39,7 @@ public class DirectionalLightExample {
 	private ShaderProgram shaderProgram;
 
 	public DirectionalLightExample() throws IOException {
-		fearGl = new FearLwjgl();
+		fearGl = DebuggingFearLwjgl.create();
 		textureManager = new FearlessTextureLoader(fearGl);
 		init();
 

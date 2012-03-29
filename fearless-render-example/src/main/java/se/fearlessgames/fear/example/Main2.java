@@ -44,7 +44,7 @@ public class Main2 {
 	private ShaderProgram shaderProgram;
 
 	public Main2() {
-		fearGl = new FearLwjgl();
+		fearGl = DebuggingFearLwjgl.create();
 		init();
 
 		shaderProgram = createShaderProgram();

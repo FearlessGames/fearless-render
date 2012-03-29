@@ -42,7 +42,7 @@ public class ColladaExample {
 	private ShaderProgram shaderProgram;
 
 	public ColladaExample() throws IOException {
-		fearGl = new FearLwjgl();
+		fearGl = DebuggingFearLwjgl.create();
 		textureManager = new FearlessTextureLoader(fearGl);
 		init();
 		log.info(org.lwjgl.opengl.GL11.glGetString(org.lwjgl.opengl.GL11.GL_VERSION));

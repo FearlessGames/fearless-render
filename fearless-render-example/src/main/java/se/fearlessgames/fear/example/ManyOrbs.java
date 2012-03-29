@@ -45,7 +45,7 @@ public class ManyOrbs {
 	private final ExampleRenderer renderer;
 
 	public ManyOrbs() {
-		fearGl = new FearLwjgl();
+		fearGl = DebuggingFearLwjgl.create();
 		init();
 
 		int numOrbs = 20;

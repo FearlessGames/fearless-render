@@ -41,7 +41,7 @@ public class Main {
 	private ShaderProgram shaderProgram;
 
 	public Main() throws IOException {
-		fearGl = new FearLwjgl();
+		fearGl = DebuggingFearLwjgl.create();
 		textureManager = new FearlessTextureLoader(fearGl);
 
 		init();
