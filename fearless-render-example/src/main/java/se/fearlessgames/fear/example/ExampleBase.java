@@ -119,7 +119,7 @@ public abstract class ExampleBase {
 		Display.destroy();
 	}
 
-	private void render() {
+	protected void render() {
 		fearGl.glClear(EnumSet.of(ClearBit.GL_COLOR_BUFFER_BIT, ClearBit.GL_DEPTH_BUFFER_BIT));
 		scene.render(renderer, camera);
 	}
