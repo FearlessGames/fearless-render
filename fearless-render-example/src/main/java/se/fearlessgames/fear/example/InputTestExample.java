@@ -38,30 +38,15 @@ public class InputTestExample extends ExampleBase {
 				new InputTrigger(new TriggerAction() {
 					@Override
 					public void perform(InputState inputState) {
-						if (!inputState.getKeyboardState().getKeysDown().isEmpty()) {
-							System.out.print("Key down: ");
-							for (Key key : inputState.getKeyboardState().getKeysDown()) {
-								System.out.print(key + " ");
-							}
-							System.out.println();
-						}
-
-
-						if (!inputState.getKeyboardState().getKeysUp().isEmpty()) {
-							System.out.print("Key up: ");
-							for (Key key : inputState.getKeyboardState().getKeysUp()) {
-								System.out.print(key + " ");
-							}
-							System.out.println();
-						}
+						MouseState mouseState = inputState.getMouseState();
+						System.out.println("x:" + mouseState.getX() + " y: " + mouseState.getY());
 
 
 					}
 				}, new Predicate<InputState>() {
 					@Override
 					public boolean apply(InputState input) {
-						KeyboardState keyboardState = input.getKeyboardState();
-						return !(keyboardState.getKeysDown().isEmpty() && keyboardState.getKeysUp().isEmpty());
+						return true;
 					}
 				}
 				));

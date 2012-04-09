@@ -9,6 +9,7 @@ public class InputController {
 	private final MouseController mouseController;
 
 	private final EnumSet<Key> currentKeysDown = EnumSet.noneOf(Key.class);
+	private MouseState mouseState = MouseState.NOTHING;
 
 	public InputController(KeyboardController keyboardController, MouseController mouseController) {
 		this.keyboardController = keyboardController;
@@ -43,10 +44,11 @@ public class InputController {
 	}
 
 	private MouseState readMouseState() {
-		if (mouseController.getEvents().hasNext()) {
-			return mouseController.getEvents().next();
+		PeekingIterator<MouseState> events = mouseController.getEvents();
+		if (events.hasNext()) {
+			mouseState = events.next();
 		}
 
-		return MouseState.NOTHING;
+		return mouseState;
 	}
 }

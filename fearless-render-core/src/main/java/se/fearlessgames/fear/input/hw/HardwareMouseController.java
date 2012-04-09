@@ -11,7 +11,13 @@ import java.util.EnumMap;
 import java.util.EnumSet;
 
 public class HardwareMouseController implements MouseController {
-	private final static PeekingIterator<MouseState> mouseIterator = new MouseIterator();
+	private static long CLICK_TIME_MS = 500;
+	private final EnumMap<MouseButton, Long> lastClickTime = Maps.newEnumMap(MouseButton.class);
+	private final Multiset<MouseButton> clicks = EnumMultiset.create(MouseButton.class);
+	private final EnumSet<MouseButton> clickArmed = EnumSet.noneOf(MouseButton.class);
+
+	private boolean sendClickState = false;
+	private MouseState nextState;
 
 	public HardwareMouseController() {
 		if (!Mouse.isCreated()) {
@@ -25,23 +31,17 @@ public class HardwareMouseController implements MouseController {
 
 	@Override
 	public PeekingIterator<MouseState> getEvents() {
-		return mouseIterator;
+		return new MouseIterator();
 	}
 
-	private static class MouseIterator extends AbstractIterator<MouseState> implements PeekingIterator<MouseState> {
-		private static long CLICK_TIME_MS = 500;
-		private final EnumMap<MouseButton, Long> lastClickTime = Maps.newEnumMap(MouseButton.class);
-		private final Multiset<MouseButton> clicks = EnumMultiset.create(MouseButton.class);
-		private final EnumSet<MouseButton> clickArmed = EnumSet.noneOf(MouseButton.class);
+	private class MouseIterator extends AbstractIterator<MouseState> implements PeekingIterator<MouseState> {
 
-		private boolean sendClickState = false;
-		private MouseState nextState;
 
 		@Override
 		protected MouseState computeNext() {
 			if (nextState != null) {
-				MouseState nextState = this.nextState;
-				this.nextState = null;
+				MouseState ns = nextState;
+				nextState = null;
 				return nextState;
 			}
 
@@ -59,7 +59,7 @@ public class HardwareMouseController implements MouseController {
 			}
 
 
-			final MouseState nextState = new MouseState(
+			final MouseState ns = new MouseState(
 					Mouse.getEventX(),
 					Mouse.getEventY(),
 					Mouse.getEventDX(),
@@ -68,25 +68,25 @@ public class HardwareMouseController implements MouseController {
 					buttons,
 					null);
 
-			if (nextState.getDx() != 0.0 || nextState.getDy() != 0.0) {
+			if (ns.getDx() != 0.0 || ns.getDy() != 0.0) {
 				clickArmed.clear();
 				clicks.clear();
 				sendClickState = false;
 			}
 
 			if (sendClickState) {
-				this.nextState = nextState;
+				nextState = ns;
 				sendClickState = false;
 				return new MouseState(
-						nextState.getX(),
-						nextState.getY(),
-						nextState.getDx(),
-						nextState.getDy(),
-						nextState.getDwheel(),
+						ns.getX(),
+						ns.getY(),
+						ns.getDx(),
+						ns.getDy(),
+						ns.getDwheel(),
 						buttons,
 						EnumMultiset.create(clicks));
 			} else {
-				return nextState;
+				return ns;
 			}
 
 		}
