@@ -11,7 +11,6 @@ import se.fearlessgames.fear.*;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.light.DirectionalLightRenderState;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
-import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.mesh.Mesh;
 import se.fearlessgames.fear.mesh.MeshData;
@@ -40,7 +39,7 @@ public class Main2 {
 	private final Scene scene;
 	private final ExampleRenderer renderer;
 	private final List<Orb> orbs = Lists.newArrayList();
-	private Transformation camera = new Transformation(Vector3.ZERO, Quaternion.IDENTITY, Vector3.ONE);
+	private Camera camera = new Camera();
 	private ShaderProgram shaderProgram;
 
 	public Main2() {
@@ -50,8 +49,6 @@ public class Main2 {
 		shaderProgram = createShaderProgram();
 		renderer = new ExampleRenderer(new MeshRenderer(fearGl, perspectiveBuilder));
 		scene = createScene();
-		scene.getRoot().setPosition(new Vector3(0, -15, -80));
-
 		Skybox skybox = new Skybox();
 		skybox.getRoot().addChild(new Node("skybox-sphere", createSkyboxSphere(fearGl, shaderProgram, renderer.skyboxBucket)));
 		scene.getRoot().addChild(skybox.getRoot());
@@ -96,8 +93,12 @@ public class Main2 {
 			if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
 				angle++;
 			}
-			camera = new Transformation(new Vector3(x, y, z), Quaternion.fromAngleAxis(angle * 0.01, Vector3.UNIT_Y), Vector3.ONE);
+
+			camera.setPosition(new Vector3(x, y, z));
+
 			skybox.moveToCamera(camera);
+
+
 			render();
 			Display.update();
 			t2 = System.nanoTime();

@@ -6,10 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.fearlessgames.common.util.SystemTimeProvider;
 import se.fearlessgames.common.util.TimeProvider;
+import se.fearlessgames.fear.Camera;
 import se.fearlessgames.fear.Node;
 import se.fearlessgames.fear.Scene;
 import se.fearlessgames.fear.ShaderProgram;
-import se.fearlessgames.fear.Transformation;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.light.DirectionalLightRenderState;
 import se.fearlessgames.fear.math.PerspectiveBuilder;
@@ -37,7 +37,7 @@ loop.
 */
 public class ManyOrbs {
 	private final Logger log = LoggerFactory.getLogger(getClass());
-	public static final Transformation DEFAULT_CAMERA = new Transformation(Vector3.ZERO, Quaternion.IDENTITY, Vector3.ONE);
+	public static final Camera DEFAULT_CAMERA = new Camera();
 	private boolean done = false; //game runs until done is set to true
 	private PerspectiveBuilder perspectiveBuilder;
 	private final FearGl fearGl;

@@ -16,12 +16,12 @@ public class Scene {
 		return root;
 	}
 
-	public void render(Renderer renderer, Transformation camera) {
+	public void render(Renderer renderer, Camera camera) {
 		addNode(renderer, root, camera.asMatrix());
 		renderer.render();
 	}
 
-	private void renderObjects(Renderer renderer, Transformation camera) {
+	private void renderObjects(Renderer renderer, Camera camera) {
 		addNode(renderer, root, camera.asMatrix());
 
 		renderer.render();

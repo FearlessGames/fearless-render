@@ -38,7 +38,9 @@ public class ColladaExample {
 	private final ExampleRenderer renderer;
 	private final TextureLoader textureManager;
 	private double rot;
-	private Transformation camera = new Transformation(Vector3.ZERO, Quaternion.IDENTITY, Vector3.ONE);
+
+	private Camera camera = new Camera();
+
 	private ShaderProgram shaderProgram;
 
 	public ColladaExample() throws IOException {
@@ -81,7 +83,8 @@ public class ColladaExample {
 			if (Keyboard.isKeyDown(Keyboard.KEY_Z)) {
 				z++;
 			}
-			camera = new Transformation(new Vector3(x, y, z), Quaternion.IDENTITY, Vector3.ONE);
+
+			camera.setPosition(new Vector3(x, y, z));
 
 			render();
 

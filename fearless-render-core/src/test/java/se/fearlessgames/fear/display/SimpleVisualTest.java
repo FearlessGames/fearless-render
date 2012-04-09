@@ -26,7 +26,7 @@ public class SimpleVisualTest {
 				break;
 			}
 
-			scene.render(renderer, mock(Transformation.class));
+			scene.render(renderer, mock(Camera.class));
 			renderUI(output);
 			output.flush();
 
