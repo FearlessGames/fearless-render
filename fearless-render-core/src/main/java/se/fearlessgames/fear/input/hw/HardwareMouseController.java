@@ -34,6 +34,16 @@ public class HardwareMouseController implements MouseController {
 		return new MouseIterator();
 	}
 
+	@Override
+	public void setGrabbed(boolean grabbed) {
+		Mouse.setGrabbed(grabbed);
+	}
+
+	@Override
+	public boolean isGrabbed() {
+		return Mouse.isGrabbed();
+	}
+
 	private class MouseIterator extends AbstractIterator<MouseState> implements PeekingIterator<MouseState> {
 
 
@@ -42,7 +52,7 @@ public class HardwareMouseController implements MouseController {
 			if (nextState != null) {
 				MouseState ns = nextState;
 				nextState = null;
-				return nextState;
+				return ns;
 			}
 
 			if (!Mouse.next()) {

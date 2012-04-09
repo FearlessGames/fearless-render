@@ -32,8 +32,13 @@ public abstract class ExampleBase {
 	protected final ShaderProgram shaderProgram;
 	protected final InputHandler inputHandler;
 
+	protected final MouseController mouseController;
+	protected final KeyboardController keyboardController;
+
 	private final String vertexShaderFile;
 	private final String fragmentShaderFile;
+
+	protected boolean done;
 
 
 	public ExampleBase(int width, int height, String vertexShaderFile, String fragmentShaderFile) throws Exception {
@@ -54,15 +59,20 @@ public abstract class ExampleBase {
 		renderer = new ExampleRenderer(new MeshRenderer(fearGl));
 		scene = createScene();
 
-		inputHandler = createInputHandler();
+		mouseController = new HardwareMouseController();
+		keyboardController = new HardwareKeyboardController();
+
+		inputHandler = new InputHandler(new InputController(keyboardController, mouseController));
+		inputHandler.addTrigger(new InputTrigger(new QuitAction(), KeyboardPredicates.singleKey(Key.ESCAPE)));
+
+		setupCameraControl();
 	}
 
-	private InputHandler createInputHandler() {
-		InputHandler inputHandler = new InputHandler(new InputController(new HardwareKeyboardController(), new HardwareMouseController()));
-
-		inputHandler.addTrigger(new InputTrigger(new KeyboardAction(camera), Predicates.ANY_KEY_DOWN));
-
-		return inputHandler;
+	public void setupCameraControl() {
+		FirstPersonController firstPersonController = new FirstPersonController(inputHandler, camera);
+		firstPersonController.setupKeyboard();
+		firstPersonController.setupMouseTriggers();
+		mouseController.setGrabbed(true);
 	}
 
 	private void createDisplay() {
@@ -91,7 +101,7 @@ public abstract class ExampleBase {
 		long t2;
 		int c = 0;
 
-		boolean done = false;
+		done = false;
 		while (!done) {
 			if (Display.isCloseRequested()) {
 				done = true;
@@ -161,46 +171,10 @@ public abstract class ExampleBase {
 		}
 	}
 
-	private static class KeyboardAction implements TriggerAction {
-		int x = 0;
-		int y = 0;
-		int z = 0;
-		private Camera camera;
-
-		private KeyboardAction(Camera camera) {
-			this.camera = camera;
-		}
-
+	private class QuitAction implements TriggerAction {
 		@Override
 		public void perform(InputState inputState) {
-			KeyboardState keyboardState = inputState.getKeyboardState();
-			if (keyboardState.isDown(Key.RIGHT)) {
-				x++;
-			}
-
-			if (keyboardState.isDown(Key.LEFT)) {
-				x--;
-			}
-
-			if (keyboardState.isDown(Key.DOWN)) {
-				y--;
-			}
-
-			if (keyboardState.isDown(Key.UP)) {
-				y++;
-			}
-
-			if (keyboardState.isDown(Key.A)) {
-				z--;
-			}
-
-			if (keyboardState.isDown(Key.Z)) {
-				z++;
-			}
-
-			camera.setPosition(new Vector3(x, y, z));
+			done = true;
 		}
 	}
-
-
 }

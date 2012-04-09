@@ -47,6 +47,8 @@ public class InputController {
 		PeekingIterator<MouseState> events = mouseController.getEvents();
 		if (events.hasNext()) {
 			mouseState = events.next();
+		} else {
+			mouseState = new MouseState(mouseState.getX(), mouseState.getY(), 0, 0, 0, mouseState.getButtonStates(), mouseState.getClickCounts());
 		}
 
 		return mouseState;

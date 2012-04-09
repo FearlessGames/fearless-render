@@ -1,7 +1,5 @@
 package se.fearlessgames.fear.input;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableMultiset;
 import com.google.common.collect.Multiset;
 
 import java.util.EnumMap;
@@ -14,29 +12,19 @@ public class MouseState {
 	private final int dx;
 	private final int dy;
 	private final int dwheel;
-	private final ImmutableMap<MouseButton, MouseButtonState> buttonStates;
-	private final ImmutableMultiset<MouseButton> clickCounts;
+	private final EnumMap<MouseButton, MouseButtonState> buttonStates;
+	private final Multiset<MouseButton> clickCounts;
 
 	public MouseState(final int x, final int y, final int dx, final int dy, final int dwheel,
-					  final EnumMap<MouseButton, MouseButtonState> buttonStates, final Multiset<MouseButton> clicks) {
+					  final EnumMap<MouseButton, MouseButtonState> buttonStates, final Multiset<MouseButton> clickCounts) {
 		this.x = x;
 		this.y = y;
 		this.dx = dx;
 		this.dy = dy;
 		this.dwheel = dwheel;
-		if (buttonStates != null) {
-			final com.google.common.collect.ImmutableMap.Builder<MouseButton, MouseButtonState> builder = ImmutableMap
-					.builder();
-			this.buttonStates = builder.putAll(buttonStates).build();
-		} else {
-			this.buttonStates = ImmutableMap.of();
-		}
-		if (clicks != null) {
-			final ImmutableMultiset.Builder<MouseButton> builder = ImmutableMultiset.builder();
-			clickCounts = builder.addAll(clicks).build();
-		} else {
-			clickCounts = ImmutableMultiset.of();
-		}
+
+		this.buttonStates = buttonStates;
+		this.clickCounts = clickCounts;
 	}
 
 	public int getX() {
@@ -59,11 +47,11 @@ public class MouseState {
 		return dwheel;
 	}
 
-	public ImmutableMap<MouseButton, MouseButtonState> getButtonStates() {
+	public EnumMap<MouseButton, MouseButtonState> getButtonStates() {
 		return buttonStates;
 	}
 
-	public ImmutableMultiset<MouseButton> getClickCounts() {
+	public Multiset<MouseButton> getClickCounts() {
 		return clickCounts;
 	}
 }
