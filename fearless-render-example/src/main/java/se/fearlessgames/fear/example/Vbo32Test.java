@@ -4,8 +4,12 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.*;
 import se.fearlessgames.fear.ShaderProgram;
 import se.fearlessgames.fear.Transformation;
+import se.fearlessgames.fear.camera.CameraPerspective;
 import se.fearlessgames.fear.gl.*;
-import se.fearlessgames.fear.math.*;
+import se.fearlessgames.fear.math.GlMatrixBuilder;
+import se.fearlessgames.fear.math.Matrix4;
+import se.fearlessgames.fear.math.Quaternion;
+import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.mesh.MeshData;
 import se.fearlessgames.fear.shape.SphereFactory;
 

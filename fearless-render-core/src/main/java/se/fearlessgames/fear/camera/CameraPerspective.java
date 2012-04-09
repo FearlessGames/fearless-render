@@ -1,7 +1,8 @@
-package se.fearlessgames.fear.math;
+package se.fearlessgames.fear.camera;
 
 
 import se.fearlessgames.fear.BufferUtils;
+import se.fearlessgames.fear.math.MathUtils;
 
 import java.nio.FloatBuffer;
 

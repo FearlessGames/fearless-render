@@ -2,7 +2,11 @@ package se.fearlessgames.fear.display;
 
 import org.junit.Test;
 import org.lwjgl.input.Keyboard;
-import se.fearlessgames.fear.*;
+import se.fearlessgames.fear.FearOutput;
+import se.fearlessgames.fear.Node;
+import se.fearlessgames.fear.Renderer;
+import se.fearlessgames.fear.Scene;
+import se.fearlessgames.fear.camera.Camera;
 import se.fearlessgames.fear.gl.FearLwjgl;
 import se.fearlessgames.fear.mesh.MeshRenderer;
 

@@ -1,6 +1,6 @@
-package se.fearlessgames.fear;
+package se.fearlessgames.fear.camera;
 
-import se.fearlessgames.fear.math.CameraPerspective;
+import se.fearlessgames.fear.Transformation;
 import se.fearlessgames.fear.math.Matrix4;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;

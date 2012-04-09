@@ -1,5 +1,7 @@
 package se.fearlessgames.fear;
 
+import se.fearlessgames.fear.camera.Camera;
+
 public class Skybox {
 	private final Node root;
 

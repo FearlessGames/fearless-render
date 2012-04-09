@@ -2,10 +2,10 @@ package se.fearlessgames.fear.mesh;
 
 import se.fearlessgames.fear.ShaderProgram;
 import se.fearlessgames.fear.TransformedMesh;
+import se.fearlessgames.fear.camera.CameraPerspective;
 import se.fearlessgames.fear.gl.Culling;
 import se.fearlessgames.fear.gl.FearGl;
 import se.fearlessgames.fear.gl.IndexDataType;
-import se.fearlessgames.fear.math.CameraPerspective;
 import se.fearlessgames.fear.math.GlMatrixBuilder;
 import se.fearlessgames.fear.math.Matrix3;
 import se.fearlessgames.fear.math.Matrix4;

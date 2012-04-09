@@ -2,11 +2,15 @@ package se.fearlessgames.fear.example;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
-import se.fearlessgames.fear.*;
+import se.fearlessgames.fear.ColorRGBA;
+import se.fearlessgames.fear.Node;
+import se.fearlessgames.fear.Scene;
+import se.fearlessgames.fear.ShaderProgram;
+import se.fearlessgames.fear.camera.Camera;
+import se.fearlessgames.fear.camera.CameraPerspective;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.light.DirectionalLight;
 import se.fearlessgames.fear.light.DirectionalLightRenderState;
-import se.fearlessgames.fear.math.CameraPerspective;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.mesh.Mesh;

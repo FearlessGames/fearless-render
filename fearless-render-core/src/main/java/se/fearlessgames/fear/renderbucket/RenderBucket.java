@@ -1,6 +1,6 @@
 package se.fearlessgames.fear.renderbucket;
 
-import se.fearlessgames.fear.math.CameraPerspective;
+import se.fearlessgames.fear.camera.CameraPerspective;
 import se.fearlessgames.fear.math.Matrix4;
 import se.fearlessgames.fear.mesh.Mesh;
 import se.fearlessgames.fear.mesh.MeshRenderer;

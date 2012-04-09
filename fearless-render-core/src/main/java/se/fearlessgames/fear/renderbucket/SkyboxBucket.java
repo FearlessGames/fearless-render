@@ -1,7 +1,7 @@
 package se.fearlessgames.fear.renderbucket;
 
+import se.fearlessgames.fear.camera.CameraPerspective;
 import se.fearlessgames.fear.gl.ClearBit;
-import se.fearlessgames.fear.math.CameraPerspective;
 import se.fearlessgames.fear.mesh.MeshRenderer;
 
 import java.util.EnumSet;

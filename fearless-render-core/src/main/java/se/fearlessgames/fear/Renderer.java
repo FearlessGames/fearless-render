@@ -1,6 +1,6 @@
 package se.fearlessgames.fear;
 
-import se.fearlessgames.fear.math.CameraPerspective;
+import se.fearlessgames.fear.camera.CameraPerspective;
 import se.fearlessgames.fear.mesh.MeshRenderer;
 import se.fearlessgames.fear.renderbucket.RenderBucket;
 
