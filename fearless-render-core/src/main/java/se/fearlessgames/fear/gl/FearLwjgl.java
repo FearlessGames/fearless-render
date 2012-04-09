@@ -234,5 +234,10 @@ public class FearLwjgl implements FearGl {
 	public int glGetError() {
 		return GL11.glGetError();
 	}
+
+	@Override
+	public String glGetString(StringName name) {
+		return GL11.glGetString(name.getName());
+	}
 }
 

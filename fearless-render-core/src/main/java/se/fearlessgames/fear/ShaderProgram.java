@@ -1,5 +1,7 @@
 package se.fearlessgames.fear;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import se.fearlessgames.fear.gl.DataType;
 import se.fearlessgames.fear.gl.FearGl;
 import se.fearlessgames.fear.gl.ShaderType;
@@ -14,6 +16,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ShaderProgram {
+	private final Logger log = LoggerFactory.getLogger(getClass());
+
 	private final FearGl fearGl;
 	private final int shaderProgram;
 	private final EnumMap<ShaderType, Integer> shaderMap;
@@ -140,7 +144,18 @@ public class ShaderProgram {
 
 	private void printLogInfo(int obj) {
 		String out = fearGl.glGetShaderInfoLog(obj, 1024);
-		System.out.println("Info log: " + out);
+		log.info("Shader compile result: " + stripLineBreak(out));
+	}
+
+	private String stripLineBreak(String out) {
+		if (out == null) {
+			return null;
+		}
+		out = out.trim();
+		if (out.endsWith("\n")) {
+			return out.substring(0, out.indexOf('\n'));
+		}
+		return out;
 	}
 
 

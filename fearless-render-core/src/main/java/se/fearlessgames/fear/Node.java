@@ -21,7 +21,6 @@ public class Node {
 		this("");
 	}
 
-
 	public Node(String root) {
 		this(root, null);
 	}

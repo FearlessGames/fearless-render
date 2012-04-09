@@ -93,4 +93,6 @@ public interface FearGl {
 	public void glTexImage2D(TextureType textureType, int level, TexturePixelFormat internalFormat, int width, int height, int border, TexturePixelFormat format, DataType dataType, ByteBuffer buffer);
 
 	int glGetError();
+
+	String glGetString(StringName name);
 }

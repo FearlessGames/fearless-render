@@ -11,7 +11,6 @@ public class Skybox {
 
 	public void moveToCamera(Camera camera) {
 		root.setPosition(camera.getPosition());
-		System.out.println("root position: " + root.getPosition() + " , camera position: " + camera.getPosition());
 	}
 
 	public Node getRoot() {
