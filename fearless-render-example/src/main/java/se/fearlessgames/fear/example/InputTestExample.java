@@ -1,12 +1,7 @@
 package se.fearlessgames.fear.example;
 
-import com.google.common.base.Predicate;
-import org.lwjgl.opengl.Display;
 import se.fearlessgames.fear.Node;
 import se.fearlessgames.fear.Scene;
-import se.fearlessgames.fear.input.*;
-import se.fearlessgames.fear.input.hw.HardwareKeyboardController;
-import se.fearlessgames.fear.input.hw.HardwareMouseController;
 import se.fearlessgames.fear.light.DirectionalLightRenderState;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
@@ -25,48 +20,16 @@ import java.io.IOException;
 
 public class InputTestExample extends ExampleBase {
 
-	private InputHandler inputHandler;
 
 	public InputTestExample() throws Exception {
 		super(800, 600,
 				"src/main/resources/shaders/textured.vert",
 				"src/main/resources/shaders/textured.frag");
-
-
-		inputHandler = new InputHandler(new InputController(new HardwareKeyboardController(), new HardwareMouseController()));
-		inputHandler.addTrigger(
-				new InputTrigger(new TriggerAction() {
-					@Override
-					public void perform(InputState inputState) {
-						MouseState mouseState = inputState.getMouseState();
-						System.out.println("x:" + mouseState.getX() + " y: " + mouseState.getY());
-
-
-					}
-				}, new Predicate<InputState>() {
-					@Override
-					public boolean apply(InputState input) {
-						return true;
-					}
-				}
-				));
 	}
-
 
 	@Override
 	public void beforeRender() {
-		inputHandler.poll();
-	}
 
-	@Override
-	public void startRenderLoop() {
-		while (true) {
-			beforeRender();
-			render();
-			afterRender();
-
-			Display.update();
-		}
 	}
 
 	@Override
