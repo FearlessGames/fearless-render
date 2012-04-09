@@ -8,6 +8,7 @@ public class MathUtils {
 	public static final double TWO_PI = 2.0 * PI;
 	public static final double INV_PI = 1.0 / PI;
 	public static final double DEG_TO_RAD = PI / 180.0;
+	public static final double PI_OVER_360 = (PI / 360.0d);
 
 	public static double inverseSqrt(double a) {
 		return 1 / Math.sqrt(a);
@@ -27,5 +28,9 @@ public class MathUtils {
 
 	public static double acos(double a) {
 		return Math.acos(a);
+	}
+
+	public static double tan(double v) {
+		return Math.tan(v);
 	}
 }

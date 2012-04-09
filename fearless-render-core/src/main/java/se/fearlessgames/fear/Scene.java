@@ -18,13 +18,13 @@ public class Scene {
 
 	public void render(Renderer renderer, Camera camera) {
 		addNode(renderer, root, camera.asMatrix());
-		renderer.render();
+		renderer.render(camera.getPerspective());
 	}
 
 	private void renderObjects(Renderer renderer, Camera camera) {
 		addNode(renderer, root, camera.asMatrix());
 
-		renderer.render();
+		renderer.render(camera.getPerspective());
 	}
 
 	private void addNode(Renderer renderer, Node node, Matrix4 parentTransform) {

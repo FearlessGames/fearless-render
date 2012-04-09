@@ -10,7 +10,7 @@ import se.fearlessgames.common.util.TimeProvider;
 import se.fearlessgames.fear.*;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.light.DirectionalLightRenderState;
-import se.fearlessgames.fear.math.PerspectiveBuilder;
+import se.fearlessgames.fear.math.CameraPerspective;
 import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.mesh.Mesh;
 import se.fearlessgames.fear.mesh.MeshData;
@@ -34,12 +34,11 @@ loop.
 public class Main2 {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	private boolean done = false; //game runs until done is set to true
-	private PerspectiveBuilder perspectiveBuilder;
 	private final FearGl fearGl;
 	private final Scene scene;
 	private final ExampleRenderer renderer;
 	private final List<Orb> orbs = Lists.newArrayList();
-	private Camera camera = new Camera();
+	private Camera camera;
 	private ShaderProgram shaderProgram;
 
 	public Main2() {
@@ -47,7 +46,7 @@ public class Main2 {
 		init();
 
 		shaderProgram = createShaderProgram();
-		renderer = new ExampleRenderer(new MeshRenderer(fearGl, perspectiveBuilder));
+		renderer = new ExampleRenderer(new MeshRenderer(fearGl));
 		scene = createScene();
 		Skybox skybox = new Skybox();
 		skybox.getRoot().addChild(new Node("skybox-sphere", createSkyboxSphere(fearGl, shaderProgram, renderer.skyboxBucket)));
@@ -182,7 +181,7 @@ public class Main2 {
 		}
 
 		fearGl.glViewport(0, 0, w, h);
-		perspectiveBuilder = new PerspectiveBuilder(45.0f, ((float) w / (float) h), 0.1f, 200.0f);
+		camera = new Camera(new CameraPerspective(45.0f, ((float) w / (float) h), 0.1f, 200.0f));
 
 		fearGl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		fearGl.glClearDepth(1.0f);

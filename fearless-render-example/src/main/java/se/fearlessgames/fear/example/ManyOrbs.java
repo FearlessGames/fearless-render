@@ -12,7 +12,7 @@ import se.fearlessgames.fear.Scene;
 import se.fearlessgames.fear.ShaderProgram;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.light.DirectionalLightRenderState;
-import se.fearlessgames.fear.math.PerspectiveBuilder;
+import se.fearlessgames.fear.math.CameraPerspective;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.mesh.Mesh;
@@ -37,9 +37,8 @@ loop.
 */
 public class ManyOrbs {
 	private final Logger log = LoggerFactory.getLogger(getClass());
-	public static final Camera DEFAULT_CAMERA = new Camera();
+	private Camera camera;
 	private boolean done = false; //game runs until done is set to true
-	private PerspectiveBuilder perspectiveBuilder;
 	private final FearGl fearGl;
 	private final Scene scene;
 	private final ExampleRenderer renderer;
@@ -57,7 +56,7 @@ public class ManyOrbs {
 
 		VertexArrayObject vertexArrayObject = VaoBuilder.fromMeshData(fearGl, shaderProgram, meshData).build();
 
-		renderer = new ExampleRenderer(new MeshRenderer(fearGl, perspectiveBuilder));
+		renderer = new ExampleRenderer(new MeshRenderer(fearGl));
 
 		scene = createScene();
 		scene.getRoot().setPosition(new Vector3(0, -15, -80));
@@ -154,7 +153,7 @@ public class ManyOrbs {
 
 	private void render() {
 		fearGl.glClear(EnumSet.of(ClearBit.GL_COLOR_BUFFER_BIT, ClearBit.GL_DEPTH_BUFFER_BIT));
-		scene.render(renderer, DEFAULT_CAMERA);
+		scene.render(renderer, camera);
 	}
 
 	private void init() {
@@ -170,7 +169,7 @@ public class ManyOrbs {
 		}
 
 		fearGl.glViewport(0, 0, w, h);
-		perspectiveBuilder = new PerspectiveBuilder(45.0f, ((float) w / (float) h), 0.1f, 400.0f);
+		camera = new Camera(new CameraPerspective(45.0f, ((float) w / (float) h), 0.1f, 400.0f));
 
 		fearGl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		fearGl.glClearDepth(1.0f);

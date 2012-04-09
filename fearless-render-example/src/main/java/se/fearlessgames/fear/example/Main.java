@@ -8,7 +8,7 @@ import se.fearlessgames.fear.*;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.light.DirectionalLight;
 import se.fearlessgames.fear.light.DirectionalLightRenderState;
-import se.fearlessgames.fear.math.PerspectiveBuilder;
+import se.fearlessgames.fear.math.CameraPerspective;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.mesh.Mesh;
@@ -31,13 +31,12 @@ loop.
 public class Main {
 	private final Logger log = LoggerFactory.getLogger(getClass());
 	private boolean done = false; //game runs until done is set to true
-	private PerspectiveBuilder perspectiveBuilder;
 	private final FearGl fearGl;
 	private final Scene scene;
 	private final ExampleRenderer renderer;
 	private final TextureLoader textureManager;
 	private double rot;
-	private Camera camera = new Camera();
+	private Camera camera;
 	private ShaderProgram shaderProgram;
 
 	public Main() throws IOException {
@@ -48,7 +47,7 @@ public class Main {
 		log.info(org.lwjgl.opengl.GL11.glGetString(org.lwjgl.opengl.GL11.GL_VERSION));
 
 		shaderProgram = createShaderProgram();
-		renderer = new ExampleRenderer(new MeshRenderer(fearGl, perspectiveBuilder));
+		renderer = new ExampleRenderer(new MeshRenderer(fearGl));
 		scene = createScene();
 		scene.getRoot().setPosition(new Vector3(0, 0, -4));
 
@@ -150,8 +149,8 @@ public class Main {
 		}
 
 		fearGl.glViewport(0, 0, w, h);
-		perspectiveBuilder = new PerspectiveBuilder(45.0f, ((float) w / (float) h), 0.1f, 200.0f);
 
+		camera = new Camera(new CameraPerspective(45.0f, ((float) w / (float) h), 0.1f, 200.0f));
 		fearGl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		fearGl.glClearDepth(1.0f);
 		fearGl.glEnable(Capability.GL_DEPTH_TEST);

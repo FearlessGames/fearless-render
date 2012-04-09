@@ -5,33 +5,28 @@ import se.fearlessgames.fear.TransformedMesh;
 import se.fearlessgames.fear.gl.Culling;
 import se.fearlessgames.fear.gl.FearGl;
 import se.fearlessgames.fear.gl.IndexDataType;
+import se.fearlessgames.fear.math.CameraPerspective;
 import se.fearlessgames.fear.math.GlMatrixBuilder;
 import se.fearlessgames.fear.math.Matrix3;
 import se.fearlessgames.fear.math.Matrix4;
-import se.fearlessgames.fear.math.PerspectiveBuilder;
 import se.fearlessgames.fear.vbo.VertexArrayObject;
 
 import java.util.Collection;
 import java.util.List;
 
 public class MeshRenderer {
-
-	// TODO: replace this reference with an output to keep rendering and OpenGL calls in different threads
 	public final FearGl fearGl;
-	// TODO: probably move this
-	private final PerspectiveBuilder perspectiveBuilder;
 
-	public MeshRenderer(FearGl fearGl, PerspectiveBuilder perspectiveBuilder) {
+	public MeshRenderer(FearGl fearGl) {
 		this.fearGl = fearGl;
-		this.perspectiveBuilder = perspectiveBuilder;
 	}
 
-	public void render(Mesh mesh, Matrix4 modelView) {
+	public void render(Mesh mesh, Matrix4 modelView, CameraPerspective cameraPerspective) {
 		MeshType meshType = mesh.getMeshType();
 		ShaderProgram shader = meshType.getShaderProgram();
 		List<RenderState> renderStates = meshType.getRenderStates();
 
-		pushTransforms(modelView, shader);
+		pushTransforms(modelView, shader, cameraPerspective);
 		useShader(shader);
 		enableStates(shader, renderStates);
 
@@ -40,7 +35,7 @@ public class MeshRenderer {
 		disableStates(shader, renderStates);
 	}
 
-	public void renderMeshes(Collection<TransformedMesh> meshes, boolean renderBackFaces) {
+	public void renderMeshes(Collection<TransformedMesh> meshes, boolean renderBackFaces, CameraPerspective cameraPerspective) {
 		fearGl.glCullFace(Culling.FRONT);
 		MeshType prev = null;
 		ShaderProgram shader = null;
@@ -60,7 +55,7 @@ public class MeshRenderer {
 				prevVao = null;
 			}
 
-			pushTransforms(mesh.transform, shader);
+			pushTransforms(mesh.transform, shader, cameraPerspective);
 
 			VertexArrayObject curVao = mesh.mesh.getVao();
 			if (prevVao != curVao) {
@@ -102,10 +97,10 @@ public class MeshRenderer {
 		fearGl.glUseProgram(shader.getShaderProgram());
 	}
 
-	private void pushTransforms(Matrix4 modelView, ShaderProgram shader) {
+	private void pushTransforms(Matrix4 modelView, ShaderProgram shader, CameraPerspective cameraPerspective) {
 		Matrix3 normalMatrix = new Matrix3(modelView).invert().transpose();
 
-		shader.setUniformMatrix4("projectionMatrix", perspectiveBuilder.getMatrixAsBuffer());
+		shader.setUniformMatrix4("projectionMatrix", cameraPerspective.getMatrixAsBuffer());
 		shader.setUniformMatrix4("modelViewMatrix", GlMatrixBuilder.convert(modelView));
 		shader.setUniformMatrix3("normalMatrix", GlMatrixBuilder.convert(normalMatrix));
 	}

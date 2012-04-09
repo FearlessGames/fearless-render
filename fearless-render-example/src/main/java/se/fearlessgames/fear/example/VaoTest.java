@@ -36,11 +36,11 @@ public class VaoTest {
 	}
 
 
-	private void render(PerspectiveBuilder perspectiveBuilder, Matrix4 modelView) {
+	private void render(CameraPerspective cameraPerspective, Matrix4 modelView) {
 		//use the shader
 		fearGl.glUseProgram(shaderProgram.getShaderProgram());
 
-		shaderProgram.setUniformMatrix4("projectionMatrix", perspectiveBuilder.getMatrixAsBuffer());
+		shaderProgram.setUniformMatrix4("projectionMatrix", cameraPerspective.getMatrixAsBuffer());
 		shaderProgram.setUniformMatrix4("modelViewMatrix", GlMatrixBuilder.convert(modelView));
 
 
@@ -60,7 +60,7 @@ public class VaoTest {
 		FearGl fearGl = DebuggingFearLwjgl.create();
 
 		fearGl.glViewport(0, 0, w, h);
-		PerspectiveBuilder perspectiveBuilder = new PerspectiveBuilder(45.0f, ((float) w / (float) h), 0.1f, 200.0f);
+		CameraPerspective cameraPerspective = new CameraPerspective(45.0f, ((float) w / (float) h), 0.1f, 200.0f);
 
 		fearGl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		fearGl.glClearDepth(1.0f);
@@ -76,7 +76,7 @@ public class VaoTest {
 
 		while (true) {
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-			vaoTest.render(perspectiveBuilder, modelView);
+			vaoTest.render(cameraPerspective, modelView);
 			Display.update();
 		}
 

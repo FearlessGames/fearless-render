@@ -91,7 +91,7 @@ public class Vbo32Test {
 		FearGl fearGl = new FearLwjgl();
 
 		fearGl.glViewport(0, 0, w, h);
-		PerspectiveBuilder perspectiveBuilder = new PerspectiveBuilder(45.0f, ((float) w / (float) h), 0.1f, 200.0f);
+		CameraPerspective cameraPerspective = new CameraPerspective(45.0f, ((float) w / (float) h), 0.1f, 200.0f);
 
 		fearGl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		fearGl.glClearDepth(1.0f);
@@ -124,7 +124,7 @@ public class Vbo32Test {
 
 		while (true) {
 			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-			vaoTest.render(perspectiveBuilder.getMatrixAsBuffer(), GlMatrixBuilder.convert(modelView));
+			vaoTest.render(cameraPerspective.getMatrixAsBuffer(), GlMatrixBuilder.convert(modelView));
 			Display.update();
 			error = GL11.glGetError();
 			if (error != 0) {

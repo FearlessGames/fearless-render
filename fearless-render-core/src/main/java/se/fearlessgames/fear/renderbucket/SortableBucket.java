@@ -1,6 +1,7 @@
 package se.fearlessgames.fear.renderbucket;
 
 import se.fearlessgames.fear.TransformedMesh;
+import se.fearlessgames.fear.math.CameraPerspective;
 import se.fearlessgames.fear.math.Matrix4;
 import se.fearlessgames.fear.mesh.Mesh;
 import se.fearlessgames.fear.mesh.MeshRenderer;
@@ -12,12 +13,12 @@ public abstract class SortableBucket implements RenderBucket {
 	private List<TransformedMesh> buffered = new ArrayList<TransformedMesh>();
 
 	@Override
-	public void render(MeshRenderer meshRenderer) {
+	public void render(MeshRenderer meshRenderer, CameraPerspective cameraPerspective) {
 		List<TransformedMesh> meshes = buffered;
 		if (!buffered.isEmpty()) {
 			buffered = new ArrayList<TransformedMesh>();
 			sortMeshes(meshes);
-			meshRenderer.renderMeshes(meshes, false);
+			meshRenderer.renderMeshes(meshes, false, cameraPerspective);
 		}
 	}
 

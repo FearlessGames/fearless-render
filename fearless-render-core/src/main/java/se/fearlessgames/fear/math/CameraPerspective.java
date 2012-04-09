@@ -5,22 +5,25 @@ import se.fearlessgames.fear.BufferUtils;
 
 import java.nio.FloatBuffer;
 
-public class PerspectiveBuilder {
-	private static final float PI_OVER_360 = (float) (Math.PI / 360.0f);
-
+public class CameraPerspective {
 	private final FloatBuffer matrix;
+	private final float fovInDegrees;
+	private final float aspect;
+	private final float zNear;
+	private final float zFar;
 
-	public PerspectiveBuilder(float fovInDegrees, float aspect, float znear, float zfar) {
-		matrix = buildPerspectiveMatrix(fovInDegrees, aspect, znear, zfar);
+	public CameraPerspective(float fovInDegrees, float aspect, float zNear, float zFar) {
+		this.fovInDegrees = fovInDegrees;
+		this.aspect = aspect;
+		this.zNear = zNear;
+		this.zFar = zFar;
+		matrix = buildPerspectiveMatrix(fovInDegrees, aspect, zNear, zFar);
 	}
 
-	public FloatBuffer getMatrixAsBuffer() {
-		return matrix;
-	}
 
-	private static FloatBuffer buildPerspectiveMatrix(float fovInDegrees, float aspect, float znear, float zfar) {
+	private FloatBuffer buildPerspectiveMatrix(float fovInDegrees, float aspect, float znear, float zfar) {
 		FloatBuffer matrix = BufferUtils.createFloatBuffer(16);
-		float xymax = (float) (znear * Math.tan(fovInDegrees * PI_OVER_360));
+		float xymax = (float) (znear * MathUtils.tan(fovInDegrees * MathUtils.PI_OVER_360));
 		float ymin = -xymax;
 		float xmin = -xymax;
 
@@ -55,5 +58,25 @@ public class PerspectiveBuilder {
 		matrix.put(14, qn);
 		matrix.put(15, 0);
 		return matrix;
+	}
+
+	public FloatBuffer getMatrixAsBuffer() {
+		return matrix;
+	}
+
+	public float getFovInDegrees() {
+		return fovInDegrees;
+	}
+
+	public float getAspect() {
+		return aspect;
+	}
+
+	public float getzNear() {
+		return zNear;
+	}
+
+	public float getzFar() {
+		return zFar;
 	}
 }

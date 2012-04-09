@@ -6,7 +6,7 @@ import se.fearlessgames.fear.*;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.light.DirectionalLight;
 import se.fearlessgames.fear.light.DirectionalLightRenderState;
-import se.fearlessgames.fear.math.PerspectiveBuilder;
+import se.fearlessgames.fear.math.CameraPerspective;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.mesh.Mesh;
@@ -29,13 +29,13 @@ loop.
 public class DirectionalLightExample {
 
 	private boolean done = false; //game runs until done is set to true
-	private PerspectiveBuilder perspectiveBuilder;
+	private CameraPerspective cameraPerspective;
 	private final FearGl fearGl;
 	private final Scene scene;
 	private final ExampleRenderer renderer;
 	private final TextureLoader textureManager;
 	private double rot;
-	private Camera camera = new Camera();
+	private Camera camera;
 	private ShaderProgram shaderProgram;
 
 	public DirectionalLightExample() throws IOException {
@@ -44,7 +44,7 @@ public class DirectionalLightExample {
 		init();
 
 		shaderProgram = createShaderProgram();
-		renderer = new ExampleRenderer(new MeshRenderer(fearGl, perspectiveBuilder));
+		renderer = new ExampleRenderer(new MeshRenderer(fearGl));
 		scene = createScene();
 		scene.getRoot().setPosition(new Vector3(0, 0, -4));
 
@@ -77,7 +77,7 @@ public class DirectionalLightExample {
 			if (Keyboard.isKeyDown(Keyboard.KEY_Z)) {
 				z++;
 			}
-			camera = new Camera();
+			camera.setPosition(new Vector3(x, y, z));
 
 			render();
 
@@ -140,7 +140,7 @@ public class DirectionalLightExample {
 		}
 
 		fearGl.glViewport(0, 0, w, h);
-		perspectiveBuilder = new PerspectiveBuilder(45.0f, ((float) w / (float) h), 0.1f, 200.0f);
+		camera = new Camera(new CameraPerspective(45.0f, ((float) w / (float) h), 0.1f, 200.0f));
 
 		fearGl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		fearGl.glClearDepth(1.0f);

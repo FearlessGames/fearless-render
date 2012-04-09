@@ -1,5 +1,6 @@
 package se.fearlessgames.fear;
 
+import se.fearlessgames.fear.math.CameraPerspective;
 import se.fearlessgames.fear.mesh.MeshRenderer;
 import se.fearlessgames.fear.renderbucket.RenderBucket;
 
@@ -20,9 +21,9 @@ public class Renderer {
 		this.bucketSet = new HashSet<RenderBucket>(this.buckets);
 	}
 
-	public void render() {
+	public void render(CameraPerspective cameraPerspective) {
 		for (RenderBucket bucket : buckets) {
-			bucket.render(meshRenderer);
+			bucket.render(meshRenderer, cameraPerspective);
 		}
 	}
 
