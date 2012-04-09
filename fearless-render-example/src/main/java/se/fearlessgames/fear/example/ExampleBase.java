@@ -1,6 +1,5 @@
 package se.fearlessgames.fear.example;
 
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +9,9 @@ import se.fearlessgames.fear.ShaderProgram;
 import se.fearlessgames.fear.camera.Camera;
 import se.fearlessgames.fear.camera.CameraPerspective;
 import se.fearlessgames.fear.gl.*;
+import se.fearlessgames.fear.input.*;
+import se.fearlessgames.fear.input.hw.HardwareKeyboardController;
+import se.fearlessgames.fear.input.hw.HardwareMouseController;
 import se.fearlessgames.fear.light.DirectionalLight;
 import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.mesh.MeshRenderer;
@@ -28,6 +30,7 @@ public abstract class ExampleBase {
 	protected final int height;
 	protected final int width;
 	protected final ShaderProgram shaderProgram;
+	protected final InputHandler inputHandler;
 
 	private final String vertexShaderFile;
 	private final String fragmentShaderFile;
@@ -45,10 +48,21 @@ public abstract class ExampleBase {
 
 		shaderProgram = createShaderProgram();
 
+
 		textureManager = new FearlessTextureLoader(fearGl);
 		camera = new Camera(new CameraPerspective(45.0f, ((float) width / (float) height), 0.1f, 10000.0f));
 		renderer = new ExampleRenderer(new MeshRenderer(fearGl));
 		scene = createScene();
+
+		inputHandler = createInputHandler();
+	}
+
+	private InputHandler createInputHandler() {
+		InputHandler inputHandler = new InputHandler(new InputController(new HardwareKeyboardController(), new HardwareMouseController()));
+
+		inputHandler.addTrigger(new InputTrigger(new KeyboardAction(camera), Predicates.ANY_KEY_DOWN));
+
+		return inputHandler;
 	}
 
 	private void createDisplay() {
@@ -76,33 +90,14 @@ public abstract class ExampleBase {
 		long t1 = System.nanoTime();
 		long t2;
 		int c = 0;
-		int x = 0, y = 0, z = 0;
+
 		boolean done = false;
 		while (!done) {
 			if (Display.isCloseRequested()) {
 				done = true;
 			}
 
-
-			if (Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) {
-				x++;
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_LEFT)) {
-				x--;
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_DOWN)) {
-				y--;
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_UP)) {
-				y++;
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
-				z--;
-			}
-			if (Keyboard.isKeyDown(Keyboard.KEY_Z)) {
-				z++;
-			}
-			camera.setPosition(new Vector3(x, y, z));
+			inputHandler.poll();
 
 			beforeRender();
 			render();
@@ -165,5 +160,47 @@ public abstract class ExampleBase {
 			return specular;
 		}
 	}
+
+	private static class KeyboardAction implements TriggerAction {
+		int x = 0;
+		int y = 0;
+		int z = 0;
+		private Camera camera;
+
+		private KeyboardAction(Camera camera) {
+			this.camera = camera;
+		}
+
+		@Override
+		public void perform(InputState inputState) {
+			KeyboardState keyboardState = inputState.getKeyboardState();
+			if (keyboardState.isDown(Key.RIGHT)) {
+				x++;
+			}
+
+			if (keyboardState.isDown(Key.LEFT)) {
+				x--;
+			}
+
+			if (keyboardState.isDown(Key.DOWN)) {
+				y--;
+			}
+
+			if (keyboardState.isDown(Key.UP)) {
+				y++;
+			}
+
+			if (keyboardState.isDown(Key.A)) {
+				z--;
+			}
+
+			if (keyboardState.isDown(Key.Z)) {
+				z++;
+			}
+
+			camera.setPosition(new Vector3(x, y, z));
+		}
+	}
+
 
 }

@@ -19,4 +19,8 @@ public class KeyboardState {
 	public EnumSet<Key> getKeysUp() {
 		return keysUp;
 	}
+
+	public boolean isDown(Key key) {
+		return keysDown.contains(key);
+	}
 }
