@@ -3,11 +3,12 @@ package se.fearlessgames.fear.camera;
 
 import se.fearlessgames.fear.BufferUtils;
 import se.fearlessgames.fear.math.MathUtils;
+import se.fearlessgames.fear.math.Matrix4;
 
 import java.nio.FloatBuffer;
 
 public class CameraPerspective {
-	private final FloatBuffer matrix;
+	private final Matrix4 matrix;
 	private final float fovInDegrees;
 	private final float aspect;
 	private final float zNear;
@@ -18,7 +19,7 @@ public class CameraPerspective {
 		this.aspect = aspect;
 		this.zNear = zNear;
 		this.zFar = zFar;
-		matrix = buildPerspectiveMatrix(fovInDegrees, aspect, zNear, zFar);
+		matrix = new Matrix4(buildPerspectiveMatrix(fovInDegrees, aspect, zNear, zFar));
 	}
 
 
@@ -58,12 +59,10 @@ public class CameraPerspective {
 		matrix.put(13, 0);
 		matrix.put(14, qn);
 		matrix.put(15, 0);
+		matrix.rewind();
 		return matrix;
 	}
 
-	public FloatBuffer getMatrixAsBuffer() {
-		return matrix;
-	}
 
 	public float getFovInDegrees() {
 		return fovInDegrees;
@@ -79,5 +78,9 @@ public class CameraPerspective {
 
 	public float getzFar() {
 		return zFar;
+	}
+
+	public Matrix4 getMatrix() {
+		return matrix;
 	}
 }

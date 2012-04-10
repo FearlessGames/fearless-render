@@ -291,7 +291,11 @@ public class Matrix4 {
 	}
 
 	public double[][] to2DArray() {
-		return data.clone();
+		double[][] d = new double[4][4];
+		for (int i = 0; i < 4; i++) {
+			System.arraycopy(data[i], 0, d[i], 0, 4);
+		}
+		return d;
 	}
 
 

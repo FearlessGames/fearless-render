@@ -10,7 +10,7 @@ public class VectorCamera implements Camera {
 	private Vector3 direction = new Vector3(0, 0, -1);
 
 	private CameraPerspective perspective;
-	private Matrix4 matrix = Matrix4.IDENTITY;
+	private Matrix4 viewMatrix = Matrix4.IDENTITY;
 
 	public VectorCamera(CameraPerspective perspective) {
 		this.perspective = perspective;
@@ -89,11 +89,16 @@ public class VectorCamera implements Camera {
 		transMatrix[3][1] = -location.getY();
 		transMatrix[3][2] = -location.getZ();
 
-		matrix = new Matrix4(transMatrix).multiply(new Matrix4(rotation));
+		viewMatrix = new Matrix4(transMatrix).multiply(new Matrix4(rotation));
 	}
 
 	@Override
-	public Matrix4 asMatrix() {
-		return matrix;
+	public Matrix4 getViewProjectionMatrix() {
+		return viewMatrix.multiply(perspective.getMatrix());
+	}
+
+	@Override
+	public Matrix4 getViewMatrix() {
+		return viewMatrix;
 	}
 }

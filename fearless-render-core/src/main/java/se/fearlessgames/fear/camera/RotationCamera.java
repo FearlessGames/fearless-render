@@ -43,7 +43,16 @@ public class RotationCamera implements Camera {
 		rotation = Quaternion.lookAt(position, up);
 	}
 
-	public Matrix4 asMatrix() {
+	@Override
+	public Matrix4 getViewProjectionMatrix() {
+		Matrix4 viewMatrix = getViewMatrix();
+		return viewMatrix.multiply(perspective.getMatrix());
+	}
+
+	@Override
+	public Matrix4 getViewMatrix() {
 		return new Transformation(location, rotation, Vector3.ONE).asMatrix();
 	}
+
+
 }

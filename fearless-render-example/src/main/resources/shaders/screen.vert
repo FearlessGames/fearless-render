@@ -1,8 +1,6 @@
 #version 140
 
-uniform mat4 projectionMatrix;
-uniform mat4 modelViewMatrix;
-uniform mat3 normalMatrix;
+uniform mat4 modelMatrix;
 
 in vec3 vertex;
 in vec3 normal;
@@ -12,8 +10,6 @@ in vec2 textureCoord;
 out vec4 vertColor;
 
 void main(){
-	vec4 modelViewPosition = modelViewMatrix * vec4(vertex, 1.0);
-	gl_Position = projectionMatrix * modelViewPosition;
-
+	gl_Position  = modelMatrix * vec4(vertex, 1.0);
     vertColor = vec4(normal.xyz, 1.0);
 }

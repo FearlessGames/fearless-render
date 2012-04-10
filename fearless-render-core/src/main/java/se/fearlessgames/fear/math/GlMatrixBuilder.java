@@ -49,7 +49,7 @@ public class GlMatrixBuilder {
 		buffer.put(6, (float) matrix.getValue(0, 2));
 		buffer.put(7, (float) matrix.getValue(1, 2));
 		buffer.put(8, (float) matrix.getValue(2, 2));
-
+		buffer.rewind();
 		return buffer;
 
 	}

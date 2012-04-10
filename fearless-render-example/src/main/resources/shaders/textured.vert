@@ -1,7 +1,8 @@
 #version 140
 
-uniform mat4 projectionMatrix;
+uniform mat4 modelViewProjectionMatrix;
 uniform mat4 modelViewMatrix;
+uniform mat4 modelMatrix;
 uniform mat3 normalMatrix;
 
 uniform struct DirectionalLight {
@@ -25,9 +26,9 @@ out vec4 directionalLightColor;
 vec4 calcOmniLightColor(vec4 modelViewPosition, vec3 transformedNormal);
 
 void main() {
-	vec4 modelViewPosition = modelViewMatrix * vec4(vertex, 1.0);
+	vec4 modelViewPosition = modelViewProjectionMatrix * vec4(vertex, 1.0);
 
-	gl_Position = projectionMatrix * modelViewPosition;
+	gl_Position = modelViewPosition;
 
 	transformedNormal = normalize(normalMatrix * normal);
 

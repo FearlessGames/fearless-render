@@ -1,8 +1,9 @@
 package se.fearlessgames.fear.shader;
 
 public enum ShaderUniform {
+	MODEL_VIEW_PROJECTION_MATRIX("modelViewProjectionMatrix"),
 	MODEL_VIEW_MATRIX("modelViewMatrix"),
-	PROJECTION_MATRIX("projectionMatrix"),
+	MODEL_MATRIX("modelMatrix"),
 	NORMAL_MATRIX("normalMatrix");
 
 	private final String name;

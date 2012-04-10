@@ -13,7 +13,7 @@ public class FailFirstPersonController {
 
 	private double yaw = 0;
 	private double pitch = 0;
-	private float distance = 1;
+	private float distance = 0.01f;
 
 	public FailFirstPersonController(InputHandler inputHandler, RotationCamera camera) {
 		this.inputHandler = inputHandler;
@@ -67,7 +67,7 @@ public class FailFirstPersonController {
 	}
 
 	private void rotateCamera(int dx, int dy) {
-		double mouseRotateSpeed = .005;
+		double mouseRotateSpeed = .0005;
 
 		if (dx != 0) {
 			yaw += mouseRotateSpeed * dx;
