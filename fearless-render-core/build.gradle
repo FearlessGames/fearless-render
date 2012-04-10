@@ -12,8 +12,8 @@ dependencies {
     compile group: 'org.apache', name: 'commons-math', version: '2.2'
     compile group: 'se.fearlessgames', name: 'fearless-commons', version: '0.1'
     compile group: 'com.google.guava', name: 'guava', version: '11.0.2'
-    compile group: 'org.lwjgl.lwjgl', name: 'lwjgl', version: lwjglVersion
-    compile group: 'org.lwjgl.lwjgl', name: 'lwjgl_util', version: lwjglVersion
+    compile group: 'org.lwjgl.lwjgl', name: 'lwjgl', version: project.ext.lwjglVersion
+    compile group: 'org.lwjgl.lwjgl', name: 'lwjgl_util', version: project.ext.lwjglVersion
     compile group: 'org.newdawn.slick', name: 'slick-util', version: '0.1'
 
 }
