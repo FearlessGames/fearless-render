@@ -88,7 +88,7 @@ public abstract class ExampleBase {
 		log.info("OpenGL Renderer: " + fearGl.glGetString(StringName.RENDERER));
 		log.info("OpenGL Version: " + fearGl.glGetString(StringName.VERSION));
 		log.info("OpenGL GLSL Version: " + fearGl.glGetString(StringName.SHADING_LANGUAGE_VERSION));
-		log.info("OpenGL Extension: " + fearGl.glGetString(StringName.EXTENSIONS));
+		//log.info("OpenGL Extension: " + fearGl.glGetString(StringName.EXTENSIONS));
 
 		fearGl.glViewport(0, 0, width, height);
 		fearGl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
