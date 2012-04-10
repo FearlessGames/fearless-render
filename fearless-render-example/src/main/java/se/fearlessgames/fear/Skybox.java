@@ -10,7 +10,7 @@ public class Skybox {
 	}
 
 	public void moveToCamera(Camera camera) {
-		root.setPosition(camera.getPosition());
+		root.setPosition(camera.getLocation());
 	}
 
 	public Node getRoot() {

@@ -6,8 +6,8 @@ import org.slf4j.LoggerFactory;
 import se.fearlessgames.fear.ColorRGBA;
 import se.fearlessgames.fear.Scene;
 import se.fearlessgames.fear.ShaderProgram;
-import se.fearlessgames.fear.camera.Camera;
 import se.fearlessgames.fear.camera.CameraPerspective;
+import se.fearlessgames.fear.camera.RotationCamera;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.input.*;
 import se.fearlessgames.fear.input.hw.DisplayFocusController;
@@ -23,7 +23,7 @@ import java.util.EnumSet;
 
 public abstract class ExampleBase {
 	protected final Logger log = LoggerFactory.getLogger(getClass());
-	protected final Camera camera;
+	protected final RotationCamera camera;
 	protected final FearGl fearGl;
 	protected final Scene scene;
 	protected final ExampleRenderer renderer;
@@ -56,7 +56,7 @@ public abstract class ExampleBase {
 
 
 		textureManager = new FearlessTextureLoader(fearGl);
-		camera = new Camera(new CameraPerspective(45.0f, ((float) width / (float) height), 0.1f, 10000.0f));
+		camera = new RotationCamera(new CameraPerspective(45.0f, ((float) width / (float) height), 0.1f, 10000.0f));
 		renderer = new ExampleRenderer(new MeshRenderer(fearGl));
 		scene = createScene();
 
@@ -70,7 +70,7 @@ public abstract class ExampleBase {
 	}
 
 	public void setupCameraControl() {
-		FirstPersonController firstPersonController = new FirstPersonController(inputHandler, camera);
+		FailFirstPersonController firstPersonController = new FailFirstPersonController(inputHandler, camera);
 		firstPersonController.setupKeyboard();
 		firstPersonController.setupMouseTriggers();
 		mouseController.setGrabbed(true);

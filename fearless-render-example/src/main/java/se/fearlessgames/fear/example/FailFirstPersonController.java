@@ -1,21 +1,21 @@
 package se.fearlessgames.fear.example;
 
 import com.google.common.base.Predicate;
-import se.fearlessgames.fear.camera.Camera;
+import se.fearlessgames.fear.camera.RotationCamera;
 import se.fearlessgames.fear.input.*;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
 
-public class FirstPersonController {
+public class FailFirstPersonController {
 	private final InputHandler inputHandler;
-	private final Camera camera;
+	private final RotationCamera camera;
 
 
 	private double yaw = 0;
 	private double pitch = 0;
 	private float distance = 1;
 
-	public FirstPersonController(InputHandler inputHandler, Camera camera) {
+	public FailFirstPersonController(InputHandler inputHandler, RotationCamera camera) {
 		this.inputHandler = inputHandler;
 		this.camera = camera;
 	}
@@ -84,9 +84,9 @@ public class FirstPersonController {
 
 
 	private void moveCamera(KeyboardState keyboardState) {
-		double x = camera.getPosition().getX();
-		double y = camera.getPosition().getY();
-		double z = camera.getPosition().getZ();
+		double x = camera.getLocation().getX();
+		double y = camera.getLocation().getY();
+		double z = camera.getLocation().getZ();
 
 		if (keyboardState.isDown(Key.W)) {
 			x -= distance * (float) Math.sin(Math.toRadians(yaw));
@@ -116,13 +116,10 @@ public class FirstPersonController {
 
 		if (keyboardState.isDown(Key.DOWN)) {
 			z--;
-
 		}
 
 
-		camera.setPosition(new Vector3(x, y, z));
+		camera.setLocation(new Vector3(x, y, z));
 
 	}
-
-
 }

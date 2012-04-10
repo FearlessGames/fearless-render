@@ -59,6 +59,12 @@ public class Matrix4 {
 		data[3][3] = source.getValue(3, 3);
 	}
 
+	public Matrix4(double[][] doubles) {
+		for (int i = 0; i < 4; i++) {
+			System.arraycopy(doubles[i], 0, data[i], 0, 4);
+		}
+	}
+
 	public Matrix4(final DoubleBuffer source) {
 		this(source, true);
 	}
@@ -127,6 +133,7 @@ public class Matrix4 {
 			}
 		}
 	}
+
 
 	public static Matrix4 fromAngleAxis(final double angle, final Vector3 axis) {
 		final Vector3 normAxis = axis.normalize();
@@ -259,17 +266,12 @@ public class Matrix4 {
 		return result;
 	}
 
-	public double[] toArray(final double[] store) {
-		return toArray(store, true);
+	public double[] toArray() {
+		return toArray(true);
 	}
 
-	public double[] toArray(final double[] store, final boolean rowMajor) {
-		double[] result = store;
-		if (result == null) {
-			result = new double[16];
-		} else if (result.length < 16) {
-			throw new IllegalArgumentException("store must be at least length 16.");
-		}
+	public double[] toArray(final boolean rowMajor) {
+		double[] result = new double[16];
 
 		if (rowMajor) {
 			for (int i = 0; i < 4; i++) {
@@ -286,6 +288,10 @@ public class Matrix4 {
 		}
 
 		return result;
+	}
+
+	public double[][] to2DArray() {
+		return data.clone();
 	}
 
 
@@ -675,4 +681,6 @@ public class Matrix4 {
 
 		return true;
 	}
+
+
 }
