@@ -23,6 +23,5 @@ public class SingleTextureRenderState implements RenderState {
 
 	@Override
 	public void disable(FearGl fearGl, ShaderProgram shaderProgram) {
-		fearGl.glDisable(Capability.GL_TEXTURE_2D);
 	}
 }
