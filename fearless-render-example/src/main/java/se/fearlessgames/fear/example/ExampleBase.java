@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.fearlessgames.fear.ColorRGBA;
 import se.fearlessgames.fear.Scene;
-import se.fearlessgames.fear.ShaderProgram;
 import se.fearlessgames.fear.camera.CameraPerspective;
 import se.fearlessgames.fear.camera.RotationCamera;
 import se.fearlessgames.fear.gl.*;
@@ -16,6 +15,7 @@ import se.fearlessgames.fear.input.hw.HardwareMouseController;
 import se.fearlessgames.fear.light.DirectionalLight;
 import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.mesh.MeshRenderer;
+import se.fearlessgames.fear.shader.ShaderProgram;
 import se.fearlessgames.fear.texture.FearlessTextureLoader;
 import se.fearlessgames.fear.texture.TextureLoader;
 
@@ -132,10 +132,9 @@ public abstract class ExampleBase {
 
 	private ShaderProgram createShaderProgram() {
 		ShaderProgram shaderProgram = new ShaderProgram(fearGl);
-		shaderProgram.loadAndCompile(vertexShaderFile, ShaderType.VERTEX_SHADER);
-		shaderProgram.loadAndCompile(fragmentShaderFile, ShaderType.FRAGMENT_SHADER);
-		shaderProgram.attachToProgram(ShaderType.VERTEX_SHADER);
-		shaderProgram.attachToProgram(ShaderType.FRAGMENT_SHADER);
+		shaderProgram.load(vertexShaderFile, ShaderType.VERTEX_SHADER);
+		shaderProgram.load(fragmentShaderFile, ShaderType.FRAGMENT_SHADER);
+		shaderProgram.compile();
 		return shaderProgram;
 	}
 

@@ -5,7 +5,6 @@ import se.fearlessgames.common.util.SystemTimeProvider;
 import se.fearlessgames.common.util.TimeProvider;
 import se.fearlessgames.fear.Node;
 import se.fearlessgames.fear.Scene;
-import se.fearlessgames.fear.ShaderProgram;
 import se.fearlessgames.fear.Skybox;
 import se.fearlessgames.fear.gl.FearGl;
 import se.fearlessgames.fear.light.DirectionalLightRenderState;
@@ -39,7 +38,7 @@ public class Main2 extends ExampleBase {
 
 
 		skybox = new Skybox();
-		skybox.getRoot().addChild(new Node("skybox-sphere", createSkyboxSphere(fearGl, shaderProgram, renderer.skyboxBucket)));
+		skybox.getRoot().addChild(new Node("skybox-sphere", createSkyboxSphere(fearGl, renderer.skyboxBucket)));
 		scene.getRoot().addChild(skybox.getRoot());
 	}
 
@@ -56,7 +55,7 @@ public class Main2 extends ExampleBase {
 	public void afterRender() {
 	}
 
-	private Mesh createSkyboxSphere(FearGl fearGl, ShaderProgram shaderProgram, RenderBucket skyboxBucket) {
+	private Mesh createSkyboxSphere(FearGl fearGl, RenderBucket skyboxBucket) {
 		TextureLoader textureManager = new FearlessTextureLoader(fearGl);
 		Texture texture = null;
 		try {

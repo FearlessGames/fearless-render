@@ -1,6 +1,5 @@
 package se.fearlessgames.fear.mesh;
 
-import se.fearlessgames.fear.ShaderProgram;
 import se.fearlessgames.fear.TransformedMesh;
 import se.fearlessgames.fear.camera.CameraPerspective;
 import se.fearlessgames.fear.gl.Culling;
@@ -9,6 +8,8 @@ import se.fearlessgames.fear.gl.IndexDataType;
 import se.fearlessgames.fear.math.GlMatrixBuilder;
 import se.fearlessgames.fear.math.Matrix3;
 import se.fearlessgames.fear.math.Matrix4;
+import se.fearlessgames.fear.shader.ShaderProgram;
+import se.fearlessgames.fear.shader.ShaderUniform;
 import se.fearlessgames.fear.vbo.VertexArrayObject;
 
 import java.util.Collection;
@@ -99,10 +100,9 @@ public class MeshRenderer {
 
 	private void pushTransforms(Matrix4 modelView, ShaderProgram shader, CameraPerspective cameraPerspective) {
 		Matrix3 normalMatrix = new Matrix3(modelView).invert().transpose();
-
-		shader.setUniformMatrix4("projectionMatrix", cameraPerspective.getMatrixAsBuffer());
-		shader.setUniformMatrix4("modelViewMatrix", GlMatrixBuilder.convert(modelView));
-		shader.setUniformMatrix3("normalMatrix", GlMatrixBuilder.convert(normalMatrix));
+		shader.uniform(ShaderUniform.PROJECTION_MATRIX).setMatrix4(cameraPerspective.getMatrixAsBuffer());
+		shader.uniform(ShaderUniform.MODEL_VIEW_MATRIX).setMatrix4(GlMatrixBuilder.convert(modelView));
+		shader.uniform(ShaderUniform.NORMAL_MATRIX).setMatrix3(GlMatrixBuilder.convert(normalMatrix));
 	}
 
 

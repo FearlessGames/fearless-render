@@ -5,7 +5,6 @@ import se.fearlessgames.common.util.SystemTimeProvider;
 import se.fearlessgames.common.util.TimeProvider;
 import se.fearlessgames.fear.Node;
 import se.fearlessgames.fear.Scene;
-import se.fearlessgames.fear.ShaderProgram;
 import se.fearlessgames.fear.gl.TextureType;
 import se.fearlessgames.fear.light.DirectionalLightRenderState;
 import se.fearlessgames.fear.math.Quaternion;
@@ -46,7 +45,7 @@ public class ManyOrbs extends ExampleBase {
 	public void afterRender() {
 	}
 
-	private Node createBoxNode(ShaderProgram shaderProgram, TextureLoader textureManager) {
+	private Node createBoxNode() {
 		Texture texture = null;
 		try {
 			String textureName = "src/main/resources/texture/crate.png";
@@ -98,7 +97,7 @@ public class ManyOrbs extends ExampleBase {
 			scene.getRoot().addChild(orb.getRoot());
 		}
 
-		scene.getRoot().addChild(createBoxNode(shaderProgram, textureManager));
+		scene.getRoot().addChild(createBoxNode());
 		log.info("Scene contains {} vertices", scene.getRoot().getVertexCount());
 		scene.getRoot().setPosition(new Vector3(0, -15, -80));
 		return scene;

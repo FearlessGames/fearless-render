@@ -1,8 +1,8 @@
 package se.fearlessgames.fear.texture;
 
-import se.fearlessgames.fear.ShaderProgram;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.mesh.RenderState;
+import se.fearlessgames.fear.shader.ShaderProgram;
 
 public class TransparentTextureRenderState implements RenderState {
 	private final Texture texture;
@@ -13,7 +13,7 @@ public class TransparentTextureRenderState implements RenderState {
 
 	@Override
 	public void enable(FearGl fearGl, ShaderProgram shaderProgram) {
-		shaderProgram.setUniformFloat("globalAlpha", 0.4f);
+		shaderProgram.uniform("globalAlpha").setFloat(0.4f);
 		fearGl.glDepthFunc(DepthFunction.GL_LEQUAL);
 		fearGl.glDepthMask(false);
 		fearGl.glEnable(Capability.GL_BLEND);

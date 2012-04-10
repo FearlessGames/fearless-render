@@ -1,8 +1,8 @@
 package se.fearlessgames.fear.light;
 
-import se.fearlessgames.fear.ShaderProgram;
 import se.fearlessgames.fear.gl.FearGl;
 import se.fearlessgames.fear.mesh.RenderState;
+import se.fearlessgames.fear.shader.ShaderProgram;
 
 public class DirectionalLightRenderState implements RenderState {
 	public final static DirectionalLightRenderState DEFAULT = new DirectionalLightRenderState(new DefaultAmbientDirectionalLight());
@@ -15,10 +15,10 @@ public class DirectionalLightRenderState implements RenderState {
 
 	@Override
 	public void enable(FearGl fearGl, ShaderProgram shaderProgram) {
-		shaderProgram.setUniformVector3("directionalLight.location", directionalLight.getLocation());
-		shaderProgram.setUniformVector4("directionalLight.diffuse", directionalLight.getDiffuse());
-		shaderProgram.setUniformVector4("directionalLight.ambient", directionalLight.getAmbient());
-		shaderProgram.setUniformVector4("directionalLight.specular", directionalLight.getSpecular());
+		shaderProgram.uniform("directionalLight.location").setVector3(directionalLight.getLocation());
+		shaderProgram.uniform("directionalLight.diffuse").setVector4(directionalLight.getDiffuse());
+		shaderProgram.uniform("directionalLight.ambient").setVector4(directionalLight.getAmbient());
+		shaderProgram.uniform("directionalLight.specular").setVector4(directionalLight.getSpecular());
 	}
 
 	@Override

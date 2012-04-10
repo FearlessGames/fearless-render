@@ -70,26 +70,26 @@ public class VectorCamera implements Camera {
 	}
 
 	private void onChange() {
-		double[][] modelView = Matrix4.IDENTITY.to2DArray();
+		double[][] rotation = Matrix4.IDENTITY.to2DArray();
 
-		modelView[0][0] = -left.getX();
-		modelView[1][0] = -left.getY();
-		modelView[2][0] = -left.getZ();
+		rotation[0][0] = -left.getX();
+		rotation[1][0] = -left.getY();
+		rotation[2][0] = -left.getZ();
 
-		modelView[0][1] = up.getX();
-		modelView[1][1] = up.getY();
-		modelView[2][1] = up.getZ();
+		rotation[0][1] = up.getX();
+		rotation[1][1] = up.getY();
+		rotation[2][1] = up.getZ();
 
-		modelView[0][2] = -direction.getX();
-		modelView[1][2] = -direction.getY();
-		modelView[2][2] = -direction.getZ();
+		rotation[0][2] = -direction.getX();
+		rotation[1][2] = -direction.getY();
+		rotation[2][2] = -direction.getZ();
 
 		double[][] transMatrix = Matrix4.IDENTITY.to2DArray();
 		transMatrix[3][0] = -location.getX();
 		transMatrix[3][1] = -location.getY();
 		transMatrix[3][2] = -location.getZ();
 
-		matrix = new Matrix4(transMatrix).multiply(new Matrix4(modelView));
+		matrix = new Matrix4(transMatrix).multiply(new Matrix4(rotation));
 	}
 
 	@Override

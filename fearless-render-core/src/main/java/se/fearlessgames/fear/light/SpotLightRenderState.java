@@ -1,9 +1,9 @@
 package se.fearlessgames.fear.light;
 
 import org.apache.commons.math.util.FastMath;
-import se.fearlessgames.fear.ShaderProgram;
 import se.fearlessgames.fear.gl.FearGl;
 import se.fearlessgames.fear.mesh.RenderState;
+import se.fearlessgames.fear.shader.ShaderProgram;
 
 import java.util.List;
 
@@ -22,22 +22,22 @@ public class SpotLightRenderState implements RenderState {
 
 		int size = spotLights.size();
 		int index = 0;
-		for (SpotLight spotLight : spotLights) {
-			shaderProgram.setUniformVector3(getVar(index, "location"), spotLight.getLocation());
-			shaderProgram.setUniformVector3(getVar(index, "lightingColor"), spotLight.getLightColor().toVector3());
-			shaderProgram.setUniformVector3(getVar(index, "direction"), spotLight.getDirection());
 
-			shaderProgram.setUniformFloat(getVar(index, "exponent"), spotLight.getExponent());
-			shaderProgram.setUniformFloat(getVar(index, "spotCosCutoff"), (float) FastMath.cos(spotLight.getAngle()));
-			shaderProgram.setUniformFloat(getVar(index, "constantAttenuation"), spotLight.getConstantAttenuation());
-			shaderProgram.setUniformFloat(getVar(index, "linearAttenuation"), spotLight.getLinearAttenuation());
-			shaderProgram.setUniformFloat(getVar(index, "quadraticAttenuation"), spotLight.getQuadraticAttenuation());
+		for (SpotLight spotLight : spotLights) {
+			shaderProgram.uniform(getVar(index, "location")).setVector3(spotLight.getLocation());
+			shaderProgram.uniform(getVar(index, "lightingColor")).setVector3(spotLight.getLightColor().toVector3());
+			shaderProgram.uniform(getVar(index, "direction")).setVector3(spotLight.getDirection());
+
+			shaderProgram.uniform(getVar(index, "exponent")).setFloat(spotLight.getExponent());
+			shaderProgram.uniform(getVar(index, "spotCosCutoff")).setFloat((float) FastMath.cos(spotLight.getAngle()));
+			shaderProgram.uniform(getVar(index, "constantAttenuation")).setFloat(spotLight.getConstantAttenuation());
+			shaderProgram.uniform(getVar(index, "linearAttenuation")).setFloat(spotLight.getLinearAttenuation());
+			shaderProgram.uniform(getVar(index, "quadraticAttenuation")).setFloat(spotLight.getQuadraticAttenuation());
 
 			index++;
 		}
 
-		shaderProgram.setUniformInt("nrOfSpotLights", size);
-
+		shaderProgram.uniform("nrOfSpotLights").setInt(size);
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 package se.fearlessgames.fear.mesh;
 
-import se.fearlessgames.fear.ShaderProgram;
 import se.fearlessgames.fear.renderbucket.RenderBucket;
+import se.fearlessgames.fear.shader.ShaderProgram;
 import se.fearlessgames.fear.vbo.VertexArrayObject;
 
 import java.util.List;

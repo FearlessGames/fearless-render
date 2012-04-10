@@ -3,6 +3,7 @@ package se.fearlessgames.fear;
 import org.junit.Test;
 import se.fearlessgames.fear.mesh.Mesh;
 import se.fearlessgames.fear.mesh.MeshType;
+import se.fearlessgames.fear.shader.ShaderProgram;
 import se.fearlessgames.fear.vbo.VertexArrayObject;
 
 import static org.junit.Assert.assertEquals;

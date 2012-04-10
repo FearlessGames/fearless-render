@@ -1,9 +1,9 @@
 package se.fearlessgames.fear.material;
 
 import se.fearlessgames.fear.ColorRGBA;
-import se.fearlessgames.fear.ShaderProgram;
 import se.fearlessgames.fear.gl.FearGl;
 import se.fearlessgames.fear.mesh.RenderState;
+import se.fearlessgames.fear.shader.ShaderProgram;
 
 public class FrontAndBackMaterialRenderState implements RenderState {
 
@@ -26,11 +26,11 @@ public class FrontAndBackMaterialRenderState implements RenderState {
 		setColor(shaderProgram, name + ".diffuse", material.getDiffuse());
 		setColor(shaderProgram, name + ".emissive", material.getEmissive());
 		setColor(shaderProgram, name + ".specular", material.getSpecular());
-		shaderProgram.setUniformFloat(name + ".shininess", material.getShininess());
+		shaderProgram.uniform(name + ".shininess").setFloat(material.getShininess());
 	}
 
 	private void setColor(ShaderProgram shaderProgram, String name, ColorRGBA color) {
-		shaderProgram.setUniformVector3(name, color.toVector3());
+		shaderProgram.uniform(name).setVector3(color.toVector3());
 	}
 
 	@Override

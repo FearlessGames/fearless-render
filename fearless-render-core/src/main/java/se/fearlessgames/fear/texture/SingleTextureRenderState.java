@@ -1,11 +1,11 @@
 package se.fearlessgames.fear.texture;
 
-import se.fearlessgames.fear.ShaderProgram;
 import se.fearlessgames.fear.gl.Capability;
 import se.fearlessgames.fear.gl.DepthFunction;
 import se.fearlessgames.fear.gl.FearGl;
 import se.fearlessgames.fear.gl.TextureType;
 import se.fearlessgames.fear.mesh.RenderState;
+import se.fearlessgames.fear.shader.ShaderProgram;
 
 public class SingleTextureRenderState implements RenderState {
 	private final Texture texture;

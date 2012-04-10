@@ -1,10 +1,10 @@
 package se.fearlessgames.fear.vbo;
 
 import se.fearlessgames.fear.BufferUtils;
-import se.fearlessgames.fear.ShaderProgram;
 import se.fearlessgames.fear.gl.FearGl;
 import se.fearlessgames.fear.gl.VertexIndexMode;
 import se.fearlessgames.fear.mesh.MeshData;
+import se.fearlessgames.fear.shader.ShaderProgram;
 
 import java.nio.IntBuffer;
 

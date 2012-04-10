@@ -1,10 +1,11 @@
 package se.fearlessgames.fear.vbo;
 
-import se.fearlessgames.fear.ShaderProgram;
 import se.fearlessgames.fear.gl.BufferTarget;
 import se.fearlessgames.fear.gl.BufferUsage;
 import se.fearlessgames.fear.gl.FearGl;
 import se.fearlessgames.fear.gl.VertexIndexMode;
+import se.fearlessgames.fear.shader.ShaderAttribute;
+import se.fearlessgames.fear.shader.ShaderProgram;
 
 import java.nio.IntBuffer;
 
@@ -32,22 +33,22 @@ public class VertexArrayObject {
 		int stride = interleavedBuffer.getStride();
 		int offset = 0;
 
-		shaderProgram.setVertexAttribute("vertex", 3, stride, offset);
+		shaderProgram.attribute(ShaderAttribute.VERTEX).setAttribute(3, stride, offset);
 
 		offset = 3 * 4;
 
 		if (interleavedBuffer.isNormals()) {
-			shaderProgram.setVertexAttribute("normal", 3, stride, offset);
+			shaderProgram.attribute(ShaderAttribute.NORMAL).setAttribute(3, stride, offset);
 			offset += (3 * 4);
 		}
 
 		if (interleavedBuffer.isColors()) {
-			shaderProgram.setVertexAttribute("color", 4, stride, offset);
+			shaderProgram.attribute(ShaderAttribute.COLOR).setAttribute(4, stride, offset);
 			offset += (4 * 4);
 		}
 
 		if (interleavedBuffer.isTextureCords()) {
-			shaderProgram.setVertexAttribute("textureCoord", 2, stride, offset);
+			shaderProgram.attribute(ShaderAttribute.TEXTURE_COORD).setAttribute(2, stride, offset);
 		}
 
 		//create the indices id
