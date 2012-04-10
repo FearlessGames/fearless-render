@@ -1,17 +1,17 @@
-lwjglVersion = '2.8.3'
-
-coreLibDir = new File("fearless-render-core/lib")
-twlLibDir = new File("fearless-render-twl/lib")
-
 subprojects {
     apply plugin: 'java'
     group = "se.fearlessgames.fear"
 
+    project.ext.coreLibDir = new File("fearless-render-core/lib")
+    project.ext.twlLibDir = new File("fearless-render-twl/lib")
+
     repositories {
-        flatDir name: 'coreLibs', dirs: coreLibDir.absolutePath
-        flatDir name: 'twlLibs', dirs: twlLibDir.absolutePath
+        flatDir name: 'coreLibs', dirs: project.ext.coreLibDir.absolutePath
+        flatDir name: 'twlLibs', dirs: project.ext.twlLibDir.absolutePath
         mavenCentral()
     }
+
+
 
     sourceCompatibility = 1.6
 
@@ -23,17 +23,18 @@ subprojects {
 
     buildDir = "build"
 
-    slf4jVersion = '1.6.4'
+    project.ext.slf4jVersion = '1.6.4'
+    project.ext.lwjglVersion = '2.8.3'
 
     dependencies {
         testCompile group: 'junit', name: 'junit', version: '4.10'
         testCompile group: 'se.mockachino', name: 'mockachino', version: '0.6.0'
-        compile group: 'org.slf4j', name: 'slf4j-api', version: slf4jVersion
+        compile group: 'org.slf4j', name: 'slf4j-api', version: project.ext.slf4jVersion
         runtime group: 'ch.qos.logback', name: 'logback-classic', version: "1.0.0"
     }
 }
 
-dependsOnChildren()
+evaluationDependsOnChildren()
 
 // Find any 3rd party libraries which have released new versions
 // to the central Maven repo since we last upgraded.
