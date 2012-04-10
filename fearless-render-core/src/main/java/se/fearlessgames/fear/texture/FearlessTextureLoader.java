@@ -71,7 +71,6 @@ public class FearlessTextureLoader implements TextureLoader {
 
 
 	private FearlessTexture createFearGLTexture(String resourceName, TextureType textureType, ImageData imageData) {
-		fearGl.glEnable(Capability.GL_TEXTURE_2D);
 
 		int textureId = createTextureId();
 

@@ -10,20 +10,19 @@ import se.fearlessgames.fear.mesh.RenderState;
 public class SingleTextureRenderState implements RenderState {
 	private final Texture texture;
 
-    public SingleTextureRenderState(Texture texture) {
+	public SingleTextureRenderState(Texture texture) {
 		this.texture = texture;
 	}
 
 	@Override
 	public void enable(FearGl fearGl, ShaderProgram shaderProgram) {
-        fearGl.glEnable(Capability.GL_DEPTH_TEST);
-        fearGl.glDepthFunc(DepthFunction.GL_LEQUAL);
-		fearGl.glEnable(Capability.GL_TEXTURE_2D);
+		fearGl.glEnable(Capability.GL_DEPTH_TEST);
+		fearGl.glDepthFunc(DepthFunction.GL_LEQUAL);
 		fearGl.glBindTexture(TextureType.TEXTURE_2D, texture.getId());
 	}
 
 	@Override
 	public void disable(FearGl fearGl, ShaderProgram shaderProgram) {
 		fearGl.glDisable(Capability.GL_TEXTURE_2D);
-    }
+	}
 }
