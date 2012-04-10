@@ -10,6 +10,7 @@ import se.fearlessgames.fear.camera.Camera;
 import se.fearlessgames.fear.camera.CameraPerspective;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.input.*;
+import se.fearlessgames.fear.input.hw.DisplayFocusController;
 import se.fearlessgames.fear.input.hw.HardwareKeyboardController;
 import se.fearlessgames.fear.input.hw.HardwareMouseController;
 import se.fearlessgames.fear.light.DirectionalLight;
@@ -62,7 +63,7 @@ public abstract class ExampleBase {
 		mouseController = new HardwareMouseController();
 		keyboardController = new HardwareKeyboardController();
 
-		inputHandler = new InputHandler(new InputController(keyboardController, mouseController));
+		inputHandler = new InputHandler(new InputController(keyboardController, mouseController, new DisplayFocusController()));
 		inputHandler.addTrigger(new InputTrigger(new QuitAction(), KeyboardPredicates.singleKey(Key.ESCAPE)));
 
 		setupCameraControl();

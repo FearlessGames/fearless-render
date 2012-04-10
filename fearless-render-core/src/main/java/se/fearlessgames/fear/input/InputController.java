@@ -4,22 +4,32 @@ import com.google.common.collect.PeekingIterator;
 
 import java.util.EnumSet;
 
-public class InputController {
+public class InputController implements FocusController.FocusListener {
 	private final KeyboardController keyboardController;
 	private final MouseController mouseController;
+	private final FocusController focusController;
 
 	private final EnumSet<Key> currentKeysDown = EnumSet.noneOf(Key.class);
 	private MouseState mouseState = MouseState.NOTHING;
 
-	public InputController(KeyboardController keyboardController, MouseController mouseController) {
+	public InputController(KeyboardController keyboardController, MouseController mouseController, FocusController focusController) {
 		this.keyboardController = keyboardController;
 		this.mouseController = mouseController;
+		this.focusController = focusController;
+		this.focusController.addListener(this);
 	}
 
 	public InputState readInputStates() {
+		focusController.poll();
 		KeyboardState keyboardState = readKeyboardState();
 		MouseState mouseState = readMouseState();
 		return new InputState(keyboardState, mouseState);
+	}
+
+	@Override
+	public void focusChanged(boolean hasFocus) {
+		currentKeysDown.clear();
+		mouseState = MouseState.NOTHING;
 	}
 
 
@@ -53,4 +63,6 @@ public class InputController {
 
 		return mouseState;
 	}
+
+
 }
