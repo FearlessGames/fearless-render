@@ -69,7 +69,6 @@ public class Matrix3 {
 		}
 	}
 
-
 	public static Matrix3 fromAxes(final Vector3 uAxis, final Vector3 vAxis, final Vector3 wAxis) {
 		Matrix3 matrix3 = new Matrix3();
 		matrix3.data[0][0] = uAxis.getX();
@@ -520,7 +519,7 @@ public class Matrix3 {
 	 * Creates a new matrix to equal the rotation required to point the z-axis at 'direction' and the y-axis to 'up'.
 	 *
 	 * @param direction where to 'look' at
-	 * @param up		a vector indicating the local up direction.
+	 * @param up        a vector indicating the local up direction.
 	 * @return the new matrix
 	 */
 	public Matrix3 lookAt(final Vector3 direction, final Vector3 up) {

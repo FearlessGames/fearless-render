@@ -1,21 +1,17 @@
 package se.fearlessgames.fear.example;
 
 import com.google.common.base.Predicate;
-import se.fearlessgames.fear.camera.RotationCamera;
 import se.fearlessgames.fear.input.*;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
 
-public class FailFirstPersonController {
+public class FirstPersonController {
 	private final InputHandler inputHandler;
-	private final RotationCamera camera;
+	private final CameraTest camera;
 
-
-	private double yaw = 0;
-	private double pitch = 0;
 	private float distance = 0.01f;
 
-	public FailFirstPersonController(InputHandler inputHandler, RotationCamera camera) {
+	public FirstPersonController(InputHandler inputHandler, CameraTest camera) {
 		this.inputHandler = inputHandler;
 		this.camera = camera;
 	}
@@ -67,45 +63,30 @@ public class FailFirstPersonController {
 	}
 
 	private void rotateCamera(int dx, int dy) {
-		double mouseRotateSpeed = .0005;
-
-		if (dx != 0) {
-			yaw += mouseRotateSpeed * dx;
-		}
-
-		if (dy != 0) {
-			pitch += mouseRotateSpeed * dy;
-		}
-
-		if (dx != 0 || dy != 0) {
-			camera.setRotation(Quaternion.fromEulerAngles(yaw, 0, pitch).normalize());
-		}
+		double mouseRotateSpeed = .05;
+		Quaternion quaternion = Quaternion.fromAngleAxis(new Vector3(dx * mouseRotateSpeed, dy * mouseRotateSpeed, 0));
+		camera.setOrientation(quaternion);
 	}
 
 
 	private void moveCamera(KeyboardState keyboardState) {
-		double x = camera.getLocation().getX();
-		double y = camera.getLocation().getY();
-		double z = camera.getLocation().getZ();
+		double x = 0;
+		double z = 0;
 
 		if (keyboardState.isDown(Key.W)) {
-			x -= distance * (float) Math.sin(Math.toRadians(yaw));
-			z += distance * (float) Math.cos(Math.toRadians(yaw));
+			z = -0.1;
 		}
 
 		if (keyboardState.isDown(Key.S)) {
-			x += distance * (float) Math.sin(Math.toRadians(yaw));
-			z -= distance * (float) Math.cos(Math.toRadians(yaw));
+			z = +0.1;
 		}
 
 		if (keyboardState.isDown(Key.A)) {
-			x -= distance * (float) Math.sin(Math.toRadians(yaw - 90));
-			z += distance * (float) Math.cos(Math.toRadians(yaw - 90));
+			x = -0.1;
 		}
 
 		if (keyboardState.isDown(Key.D)) {
-			x -= distance * (float) Math.sin(Math.toRadians(yaw + 90));
-			z += distance * (float) Math.cos(Math.toRadians(yaw + 90));
+			x = +0.1;
 		}
 
 
@@ -118,8 +99,7 @@ public class FailFirstPersonController {
 			z--;
 		}
 
-
-		camera.setLocation(new Vector3(x, y, z));
-
+		Vector3 move = camera.getOrientation().applyTo(new Vector3(x, 0, z));
+		camera.translate(move);
 	}
 }

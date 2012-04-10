@@ -106,6 +106,7 @@ public class MeshRenderer {
 
 		shader.uniform(ShaderUniform.MODEL_VIEW_PROJECTION_MATRIX).setMatrix4(GlMatrixBuilder.convert(modelViewProjection));
 		shader.uniform(ShaderUniform.MODEL_VIEW_MATRIX).setMatrix4(GlMatrixBuilder.convert(modelView));
+		shader.uniform(ShaderUniform.PROJECTION_MATRIX).setMatrix4(GlMatrixBuilder.convert(camera.getPerspective().getMatrix()));
 		shader.uniform(ShaderUniform.MODEL_MATRIX).setMatrix4(GlMatrixBuilder.convert(modelTransform));
 		shader.uniform(ShaderUniform.NORMAL_MATRIX).setMatrix3(GlMatrixBuilder.convert(normalMatrix));
 	}

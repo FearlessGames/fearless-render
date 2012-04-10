@@ -6,7 +6,7 @@ import se.fearlessgames.fear.FearOutput;
 import se.fearlessgames.fear.Node;
 import se.fearlessgames.fear.Renderer;
 import se.fearlessgames.fear.Scene;
-import se.fearlessgames.fear.camera.VectorCamera;
+import se.fearlessgames.fear.camera.Camera;
 import se.fearlessgames.fear.gl.FearLwjgl;
 import se.fearlessgames.fear.mesh.MeshRenderer;
 
@@ -29,7 +29,7 @@ public class SimpleVisualTest {
 				break;
 			}
 
-			scene.render(renderer, mock(VectorCamera.class));
+			scene.render(renderer, mock(Camera.class));
 			renderUI(output);
 			output.flush();
 

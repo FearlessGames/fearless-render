@@ -37,6 +37,15 @@ public class Quaternion {
 		return fromAngleNormalAxis(angle, axis.normalize());
 	}
 
+	public static Quaternion fromAngleAxis(Vector3 angels) {
+		Quaternion q1 = fromAngleAxis(angels.getX(), Vector3.UNIT_X);
+		Quaternion q2 = fromAngleAxis(angels.getY(), Vector3.UNIT_Y);
+		Quaternion q3 = fromAngleAxis(angels.getZ(), Vector3.UNIT_Z);
+
+		return q1.multiply(q2).multiply(q3);
+	}
+
+
 	public static Quaternion fromAngleNormalAxis(final double angle, final Vector3 axis) {
 		if (axis.equals(Vector3.ZERO)) {
 			return IDENTITY;
@@ -679,6 +688,15 @@ public class Quaternion {
 
 	}
 
+	@Override
+	public String toString() {
+		return "Quaternion{" +
+				"x=" + x +
+				", y=" + y +
+				", z=" + z +
+				", w=" + w +
+				'}';
+	}
 }
 
 
