@@ -3,10 +3,10 @@
   <component name="GradleSettings">
     <option name="expandStates">
       <map>
-        <entry key="dependencies/fearless-render-collada/fearless-render" value="false" />
-        <entry key="dependencies/fearless-render-core/fearless-render" value="false" />
-        <entry key="dependencies/fearless-render-example/fearless-render" value="false" />
-        <entry key="dependencies/fearless-render-twl/fearless-render" value="false" />
+        <entry key="dependencies/fearless-render-collada/fearless-render" value="true" />
+        <entry key="dependencies/fearless-render-core/fearless-render" value="true" />
+        <entry key="dependencies/fearless-render-example/fearless-render" value="true" />
+        <entry key="dependencies/fearless-render-twl/fearless-render" value="true" />
         <entry key="fearless-render" value="true" />
         <entry key="fearless-render-collada/fearless-render" value="true" />
         <entry key="fearless-render-core/fearless-render" value="true" />
