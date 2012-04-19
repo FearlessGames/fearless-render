@@ -1,6 +1,6 @@
 package se.fearlessgames.fear.light;
 
-import org.apache.commons.math.util.FastMath;
+import org.apache.commons.math3.util.FastMath;
 import se.fearlessgames.fear.gl.FearGl;
 import se.fearlessgames.fear.mesh.RenderState;
 import se.fearlessgames.fear.shader.ShaderProgram;

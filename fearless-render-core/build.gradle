@@ -9,7 +9,7 @@ Gradle version: ${gradle.gradleVersion}
 
 
 dependencies {
-    compile group: 'org.apache', name: 'commons-math', version: '2.2'
+    compile group: 'org.apache.commons', name: 'commons-math3', version: '3.0'
     compile group: 'se.fearlessgames', name: 'fearless-commons', version: '0.1'
     compile group: 'com.google.guava', name: 'guava', version: '11.0.2'
     compile group: 'org.lwjgl.lwjgl', name: 'lwjgl', version: project.ext.lwjglVersion
