@@ -1,4 +1,4 @@
-package se.fearlessgames.fear.example;
+package se.fearlessgames.fear.camera;
 
 import se.fearlessgames.fear.Transformation;
 import se.fearlessgames.fear.camera.Camera;
@@ -8,7 +8,7 @@ import se.fearlessgames.fear.math.Matrix4;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
 
-public class CameraTest implements Camera {
+public class MatrixBasedCamera implements Camera {
 	private final CameraPerspective cameraPerspective;
 
 	private Quaternion orientation = Quaternion.IDENTITY;
@@ -22,7 +22,7 @@ public class CameraTest implements Camera {
 	private boolean recalcView = true;
 
 
-	public CameraTest(CameraPerspective cameraPerspective) {
+	public MatrixBasedCamera(CameraPerspective cameraPerspective) {
 		this.cameraPerspective = cameraPerspective;
 		projection = cameraPerspective.getMatrix();
 	}
@@ -38,7 +38,7 @@ public class CameraTest implements Camera {
 
 	public void translate(Vector3 translate) {
 		Matrix3 matrix3 = orientation.toRotationMatrix3();
-		Vector3 v = matrix3.applyPost(translate);
+		Vector3 v = matrix3.applyPost(translate.negate());
 		position = position.add(v);
 		recalcView = true;
 	}

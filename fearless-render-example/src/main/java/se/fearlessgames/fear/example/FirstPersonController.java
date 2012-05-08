@@ -1,17 +1,18 @@
 package se.fearlessgames.fear.example;
 
 import com.google.common.base.Predicate;
+import se.fearlessgames.fear.camera.MatrixBasedCamera;
 import se.fearlessgames.fear.input.*;
 import se.fearlessgames.fear.math.Quaternion;
 import se.fearlessgames.fear.math.Vector3;
 
 public class FirstPersonController {
 	private final InputHandler inputHandler;
-	private final CameraTest camera;
+	private final MatrixBasedCamera camera;
 
 	private float distance = 0.01f;
 
-	public FirstPersonController(InputHandler inputHandler, CameraTest camera) {
+	public FirstPersonController(InputHandler inputHandler, MatrixBasedCamera camera) {
 		this.inputHandler = inputHandler;
 		this.camera = camera;
 	}
