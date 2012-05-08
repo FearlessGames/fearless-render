@@ -14,6 +14,8 @@ public class MatrixBasedCamera implements Camera {
 	private Quaternion orientation = Quaternion.IDENTITY;
 	private Vector3 position = Vector3.ZERO;
 
+	private Matrix4 translation = Matrix4.IDENTITY;
+	private Matrix4 rotation = Matrix4.IDENTITY;
 	private Matrix4 view;
 	private Matrix4 projection;
 	private Matrix4 viewProjection;
@@ -28,7 +30,8 @@ public class MatrixBasedCamera implements Camera {
 	}
 
 	public void setOrientation(Quaternion orientation) {
-		this.orientation = orientation;
+		this.orientation = orientation.invert();
+		rotation = this.orientation.toRotationMatrix4();
 		recalcView = true;
 	}
 
@@ -37,9 +40,11 @@ public class MatrixBasedCamera implements Camera {
 	}
 
 	public void translate(Vector3 translate) {
-		Matrix3 matrix3 = orientation.toRotationMatrix3();
-		Vector3 v = matrix3.applyPost(translate.negate());
-		position = position.add(v);
+		position = position.subtract(translate);
+		translation = new Matrix4(	1, 0, 0, position.getX(),
+									0, 1, 0, position.getY(),
+									0, 0, 1, position.getZ(),
+									0, 0, 0, 1);
 		recalcView = true;
 	}
 
@@ -68,7 +73,7 @@ public class MatrixBasedCamera implements Camera {
 	@Override
 	public Matrix4 getViewMatrix() {
 		if (recalcView) {
-			view = new Transformation(position, orientation, Vector3.ONE).asMatrix();
+			view = translation.multiply(rotation);
 			recalcViewProjection = true;
 			recalcView = false;
 		}

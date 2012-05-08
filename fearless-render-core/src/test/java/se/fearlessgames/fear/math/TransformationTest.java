@@ -5,6 +5,7 @@ import org.junit.Test;
 import se.fearlessgames.fear.Transformation;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class TransformationTest {
 	@Test
@@ -36,25 +37,10 @@ public class TransformationTest {
 	}
 
 	@Test
-	@Ignore
 	public void testRotateTransform() {
 		Vector3 originalVector = new Vector3(0, 1, 0);
-		Vector3 vector = new Transformation(Vector3.ZERO, Quaternion.fromEulerAngles(0, 90, 0), Vector3.ONE).transform(originalVector);
+		Vector3 vector = new Transformation(Vector3.ZERO, Quaternion.fromAngleAxis(-Math.PI/2, Vector3.UNIT_X), Vector3.ONE).transform(originalVector);
 
-		assertEquals(new Vector3(0, 0, 1), vector);
+		assertTrue(new Vector3(0, 0, 1).distance(vector) < 1e-8);
 	}
-
-
-	/*
-
-
-	 @Test
-	 public void testRotateTransform() {
-
-		 Vector3 originalVertex = new Vector3(0, 0, -1);
-		 Vector3 vector = transform(originalVertex, Quaternion.fromEulerAngles(90, 0, 0));
-
-		 assertEquals(new Vector3(0, 0, 1), vector);
-	 }
- */
 }

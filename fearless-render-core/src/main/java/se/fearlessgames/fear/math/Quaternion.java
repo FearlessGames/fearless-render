@@ -338,7 +338,7 @@ public class Quaternion {
 		double m30 = 0;
 		double m31 = 0;
 		double m32 = 0;
-		double m33 = 0;
+		double m33 = 1;
 
 		return new Matrix4(
 				m00, m01, m02, m03,
