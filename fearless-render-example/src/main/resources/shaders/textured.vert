@@ -26,7 +26,18 @@ out vec4 directionalLightColor;
 vec4 calcOmniLightColor(vec4 modelViewPosition, vec3 transformedNormal);
 
 void main() {
-	vec4 modelViewPosition = modelViewProjectionMatrix * vec4(vertex, 1.0);
+	mat4 modelView = mat4(1, 0, 0, 0,
+				0, 1, 0, 0,
+				0, 0, 1, -9,
+				0, 0, 0, 1);
+	mat4 proj = mat4(	1.67, 0, 0, 0,
+						0, 	1.67, 0, 0,
+						0, 0, -1.08, -2.08,
+						0, 0, -1, 0);
+	//vec4 modelViewPosition = modelViewProjectionMatrix * vec4(vertex, 1.0);
+	//vec4 modelViewPosition = modelViewMatrix * vec4(vertex, 1.0);
+	vec4 modelViewPosition = modelView * vec4(vertex, 1.0);
+	//vec4 modelViewPosition = modelView * proj * vec4(vertex, 1.0);
 
 	gl_Position = modelViewPosition;
 
