@@ -1,13 +1,13 @@
 package se.fearlessgames.fear.camera;
 
 
-import se.fearlessgames.fear.BufferUtils;
 import se.fearlessgames.fear.math.MathUtils;
+import se.fearlessgames.fear.math.Matrix4;
 
 import java.nio.FloatBuffer;
 
 public class CameraPerspective {
-	private final FloatBuffer matrix;
+	private final Matrix4 matrix;
 	private final float fovInDegrees;
 	private final float aspect;
 	private final float zNear;
@@ -22,8 +22,8 @@ public class CameraPerspective {
 	}
 
 
-	private FloatBuffer buildPerspectiveMatrix(float fovInDegrees, float aspect, float znear, float zfar) {
-		FloatBuffer matrix = BufferUtils.createFloatBuffer(16);
+	private Matrix4 buildPerspectiveMatrix(float fovInDegrees, float aspect, float znear, float zfar) {
+		Matrix4 matrix = new Matrix4();
 		float xymax = (float) (znear * MathUtils.tan(fovInDegrees * MathUtils.PI_OVER_360));
 		float ymin = -xymax;
 		float xmin = -xymax;
@@ -39,30 +39,30 @@ public class CameraPerspective {
 		w = w / aspect;
 		float h = 2 * znear / height;
 
-		matrix.put(0, w);
-		matrix.put(1, 0);
-		matrix.put(2, 0);
-		matrix.put(3, 0);
+		matrix.setValue(0, 0,  w);
+		matrix.setValue(0, 1, 0);
+		matrix.setValue(0, 2, 0);
+		matrix.setValue(0, 3, 0);
 
-		matrix.put(4, 0);
-		matrix.put(5, h);
-		matrix.put(6, 0);
-		matrix.put(7, 0);
+		matrix.setValue(1, 0, 0);
+		matrix.setValue(1, 1, h);
+		matrix.setValue(1, 2, 0);
+		matrix.setValue(1, 3, 0);
 
-		matrix.put(8, 0);
-		matrix.put(9, 0);
-		matrix.put(10, q);
-		matrix.put(11, -1);
+		matrix.setValue(2, 0, 0);
+		matrix.setValue(2, 1, 0);
+		matrix.setValue(2, 2, -q);
+		matrix.setValue(2, 3, 1);
 
-		matrix.put(12, 0);
-		matrix.put(13, 0);
-		matrix.put(14, qn);
-		matrix.put(15, 0);
+		matrix.setValue(3, 0, 0);
+		matrix.setValue(3, 1, 0);
+		matrix.setValue(3, 2, qn);
+		matrix.setValue(3, 3, 0);
 		return matrix;
 	}
 
 	public FloatBuffer getMatrixAsBuffer() {
-		return matrix;
+		return matrix.toFloatBuffer();
 	}
 
 	public float getFovInDegrees() {
@@ -79,5 +79,9 @@ public class CameraPerspective {
 
 	public float getzFar() {
 		return zFar;
+	}
+
+	public Matrix4 getMatrix() {
+		return matrix;
 	}
 }

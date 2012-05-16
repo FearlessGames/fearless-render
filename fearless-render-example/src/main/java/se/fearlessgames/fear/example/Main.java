@@ -5,6 +5,7 @@ import se.fearlessgames.fear.Scene;
 import se.fearlessgames.fear.gl.TextureType;
 import se.fearlessgames.fear.light.DirectionalLightRenderState;
 import se.fearlessgames.fear.math.Quaternion;
+import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.mesh.Mesh;
 import se.fearlessgames.fear.mesh.MeshData;
 import se.fearlessgames.fear.mesh.MeshType;
@@ -34,8 +35,8 @@ public class Main extends ExampleBase {
 
 	@Override
 	public void beforeRender() {
-		rot += 0.0005d;
-		scene.getRoot().setRotation(Quaternion.fromEulerAngles(rot / 2, rot, 0));
+//		rot += 0.0005d;
+//		scene.getRoot().setRotation(Quaternion.fromEulerAngles(rot / 2, rot, 0));
 	}
 
 	@Override
@@ -57,6 +58,7 @@ public class Main extends ExampleBase {
 		Mesh earth = new Mesh(vertexArrayObject, earthMeshType);
 
 		Node boxNode = new Node("Box", earth);
+		boxNode.setPosition(new Vector3(0, 0, 10));
 		//boxNode.setScale(new Vector3(1, 1.4, 0.2));
 		root.addChild(boxNode);
 

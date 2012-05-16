@@ -683,4 +683,8 @@ public class Matrix4 {
 	}
 
 
+	public Matrix4 setValue(int row, int column, float value) {
+		data[row][column] = value;
+		return this;
+	}
 }

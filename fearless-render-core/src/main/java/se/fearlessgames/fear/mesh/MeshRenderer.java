@@ -1,5 +1,7 @@
 package se.fearlessgames.fear.mesh;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import se.fearlessgames.fear.TransformedMesh;
 import se.fearlessgames.fear.camera.CameraPerspective;
 import se.fearlessgames.fear.gl.Culling;
@@ -16,6 +18,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class MeshRenderer {
+	private final Logger log = LoggerFactory.getLogger(getClass());
 	public final FearGl fearGl;
 
 	public MeshRenderer(FearGl fearGl) {
@@ -99,9 +102,16 @@ public class MeshRenderer {
 	}
 
 	private void pushTransforms(Matrix4 modelView, ShaderProgram shader, CameraPerspective cameraPerspective) {
+
+		Matrix4 projection = cameraPerspective.getMatrix();
+		Matrix4 modelViewProjection = projection.multiply(modelView);
+		log.info("projection: " + projection);
+		log.info("modelView: " + modelView);
+		log.info("modelViewProjection: " + modelViewProjection);
 		Matrix3 normalMatrix = new Matrix3(modelView).invert().transpose();
 		shader.uniform(ShaderUniform.PROJECTION_MATRIX).setMatrix4(cameraPerspective.getMatrixAsBuffer());
 		shader.uniform(ShaderUniform.MODEL_VIEW_MATRIX).setMatrix4(GlMatrixBuilder.convert(modelView));
+		shader.uniform(ShaderUniform.MODEL_VIEW_PROJECTION_MATRIX).setMatrix4(GlMatrixBuilder.convert(modelViewProjection));
 		shader.uniform(ShaderUniform.NORMAL_MATRIX).setMatrix3(GlMatrixBuilder.convert(normalMatrix));
 	}
 
