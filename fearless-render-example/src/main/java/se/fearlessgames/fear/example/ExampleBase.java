@@ -15,6 +15,7 @@ import se.fearlessgames.fear.input.hw.HardwareMouseController;
 import se.fearlessgames.fear.light.DirectionalLight;
 import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.mesh.MeshRenderer;
+import se.fearlessgames.fear.mesh.ShaderPopulator;
 import se.fearlessgames.fear.shader.ShaderProgram;
 import se.fearlessgames.fear.texture.FearlessTextureLoader;
 import se.fearlessgames.fear.texture.TextureLoader;
@@ -57,7 +58,7 @@ public abstract class ExampleBase {
 
 		textureManager = new FearlessTextureLoader(fearGl);
 		camera = new MatrixBasedCamera(new CameraPerspective(45.0f, ((float) width / (float) height), 0.1f, 10000.0f));
-		renderer = new ExampleRenderer(new MeshRenderer(fearGl));
+		renderer = new ExampleRenderer(new MeshRenderer(fearGl, new ShaderPopulator()));
 		scene = createScene();
 
 		mouseController = new HardwareMouseController();

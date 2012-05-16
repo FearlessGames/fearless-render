@@ -9,6 +9,7 @@ import se.fearlessgames.fear.Scene;
 import se.fearlessgames.fear.camera.Camera;
 import se.fearlessgames.fear.gl.FearLwjgl;
 import se.fearlessgames.fear.mesh.MeshRenderer;
+import se.fearlessgames.fear.mesh.ShaderPopulator;
 
 import static se.mockachino.Mockachino.mock;
 
@@ -22,7 +23,7 @@ public class SimpleVisualTest {
 		supplier.setDimensions(100, 100);
 		Display output = supplier.showDisplay();
 		FearLwjgl fearGl = new FearLwjgl();
-		Renderer renderer = new Renderer(new MeshRenderer(fearGl));
+		Renderer renderer = new Renderer(new MeshRenderer(fearGl, new ShaderPopulator()));
 		Scene scene = new Scene(new Node());
 		while (true) {
 			if (hasHitEscape() || output.isCloseRequested()) {

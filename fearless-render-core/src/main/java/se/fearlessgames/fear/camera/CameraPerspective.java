@@ -52,8 +52,8 @@ public class CameraPerspective {
 
 		matrix.put(8, 0);
 		matrix.put(9, 0);
-		matrix.put(10, q);
-		matrix.put(11, -1);
+		matrix.put(10, -q);
+		matrix.put(11, 1);
 
 		matrix.put(12, 0);
 		matrix.put(13, 0);

@@ -5,11 +5,8 @@ import se.fearlessgames.fear.camera.Camera;
 import se.fearlessgames.fear.gl.Culling;
 import se.fearlessgames.fear.gl.FearGl;
 import se.fearlessgames.fear.gl.IndexDataType;
-import se.fearlessgames.fear.math.GlMatrixBuilder;
-import se.fearlessgames.fear.math.Matrix3;
 import se.fearlessgames.fear.math.Matrix4;
 import se.fearlessgames.fear.shader.ShaderProgram;
-import se.fearlessgames.fear.shader.ShaderUniform;
 import se.fearlessgames.fear.vbo.VertexArrayObject;
 
 import java.util.Collection;
@@ -17,9 +14,11 @@ import java.util.List;
 
 public class MeshRenderer {
 	public final FearGl fearGl;
+	private final ShaderPopulator shaderPopulator;
 
-	public MeshRenderer(FearGl fearGl) {
+	public MeshRenderer(FearGl fearGl, ShaderPopulator shaderPopulator) {
 		this.fearGl = fearGl;
+		this.shaderPopulator = shaderPopulator;
 	}
 
 	public void render(Mesh mesh, Matrix4 transformMatrix, Camera camera) {
@@ -27,7 +26,7 @@ public class MeshRenderer {
 		ShaderProgram shader = meshType.getShaderProgram();
 		List<RenderState> renderStates = meshType.getRenderStates();
 
-		pushTransforms(transformMatrix, shader, camera);
+		shaderPopulator.pushTransforms(transformMatrix, shader, camera);
 		useShader(shader);
 		enableStates(shader, renderStates);
 
@@ -56,7 +55,7 @@ public class MeshRenderer {
 				prevVao = null;
 			}
 
-			pushTransforms(mesh.transform, shader, camera);
+			shaderPopulator.pushTransforms(mesh.transform, shader, camera);
 
 			VertexArrayObject curVao = mesh.mesh.getVao();
 			if (prevVao != curVao) {
@@ -98,18 +97,7 @@ public class MeshRenderer {
 		fearGl.glUseProgram(shader.getShaderProgram());
 	}
 
-	private void pushTransforms(Matrix4 modelTransform, ShaderProgram shader, Camera camera) {
-		Matrix3 normalMatrix = new Matrix3(modelTransform).invert().transpose();
 
-		Matrix4 modelViewProjection = modelTransform.multiply(camera.getViewProjectionMatrix());
-		Matrix4 modelView = modelTransform.multiply(camera.getViewMatrix());
-
-		shader.uniform(ShaderUniform.MODEL_VIEW_PROJECTION_MATRIX).setMatrix4(GlMatrixBuilder.convert(modelViewProjection));
-		shader.uniform(ShaderUniform.MODEL_VIEW_MATRIX).setMatrix4(GlMatrixBuilder.convert(modelView));
-		shader.uniform(ShaderUniform.PROJECTION_MATRIX).setMatrix4(GlMatrixBuilder.convert(camera.getPerspective().getMatrix()));
-		shader.uniform(ShaderUniform.MODEL_MATRIX).setMatrix4(GlMatrixBuilder.convert(modelTransform));
-		shader.uniform(ShaderUniform.NORMAL_MATRIX).setMatrix3(GlMatrixBuilder.convert(normalMatrix));
-	}
 
 
 	private void drawElements(VertexArrayObject vao) {

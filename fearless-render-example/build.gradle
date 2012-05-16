@@ -10,6 +10,7 @@ Gradle version: ${gradle.gradleVersion}
 dependencies {
     compile project(':fearless-render-core')
     compile project(':fearless-render-collada')
+    runtime group: 'org.codehaus.groovy', name: 'groovy', version: "1.8.6"
 }
 
 ['windows', 'linux', 'osx'].each { platform ->

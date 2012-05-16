@@ -46,8 +46,8 @@ public class Main extends ExampleBase {
 	}
 
 	public Scene createScene() throws IOException {
-		//MeshData meshData = new SphereFactory(100, 100, 1.5, SphereFactory.TextureMode.PROJECTED).create();
-		MeshData meshData = new BoxFactory().create();
+		MeshData meshData = new SphereFactory(100, 100, 1.5, SphereFactory.TextureMode.PROJECTED).create();
+		//MeshData meshData = new BoxFactory().create();
 
 		VertexArrayObject vertexArrayObject = VaoBuilder.fromMeshData(fearGl, shaderProgram, meshData).build();
 
@@ -60,7 +60,7 @@ public class Main extends ExampleBase {
 		Mesh earth = new Mesh(vertexArrayObject, earthMeshType);
 
 		Node boxNode = new Node("Box", earth);
-		boxNode.setPosition(new Vector3(0, 0, -10));
+		boxNode.setPosition(new Vector3(0, 0, 10));
 		//boxNode.setScale(new Vector3(1, 1.4, 0.2));
 		root.addChild(boxNode);
 
