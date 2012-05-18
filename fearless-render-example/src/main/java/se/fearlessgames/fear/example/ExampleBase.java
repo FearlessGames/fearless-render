@@ -48,7 +48,7 @@ public abstract class ExampleBase {
 		this.vertexShaderFile = vertexShaderFile;
 		this.fragmentShaderFile = fragmentShaderFile;
 
-		fearGl = DebuggingFearLwjgl.create();
+		fearGl = LoggingFearGl.create(new FearLwjgl());
 
 		createDisplay();
 
