@@ -11,8 +11,8 @@ public class DebuggingFearLwjgl implements InvocationHandler {
 	private final Logger logger = LoggerFactory.getLogger(getClass());
 	private final FearGl fearGl;
 
-	private DebuggingFearLwjgl() {
-		fearGl = new FearLwjgl();
+	private DebuggingFearLwjgl(FearLwjgl fearGl) {
+		this.fearGl = fearGl;
 	}
 
 
@@ -32,7 +32,7 @@ public class DebuggingFearLwjgl implements InvocationHandler {
 		return returnValue;
 	}
 
-	public static FearGl create() {
-		return (FearGl) Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(), new Class<?>[]{FearGl.class}, new DebuggingFearLwjgl());
+	public static FearGl create(FearLwjgl fearGl) {
+		return (FearGl) Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(), new Class<?>[]{FearGl.class}, new DebuggingFearLwjgl(fearGl));
 	}
 }

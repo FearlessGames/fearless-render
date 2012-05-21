@@ -49,7 +49,7 @@ public abstract class ExampleBase {
 		this.vertexShaderFile = vertexShaderFile;
 		this.fragmentShaderFile = fragmentShaderFile;
 
-		fearGl = LoggingFearGl.create(new FearLwjgl());
+		fearGl = LoggingFearGl.create(DebuggingFearLwjgl.create(new FearLwjgl()));
 
 		createDisplay();
 
