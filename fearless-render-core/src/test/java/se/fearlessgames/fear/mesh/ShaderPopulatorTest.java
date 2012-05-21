@@ -58,11 +58,11 @@ public class ShaderPopulatorTest {
 		assertEquals(0f, matrix.get(8), EPSILON);
 		assertEquals(0f, matrix.get(9), EPSILON);
 		assertEquals(1.0020020f, matrix.get(10), EPSILON);
-		assertEquals(1f, matrix.get(11), EPSILON);
+		assertEquals(-2.0020020f, matrix.get(11), EPSILON);
 
 		assertEquals(0f, matrix.get(12), EPSILON);
 		assertEquals(0f, matrix.get(13), EPSILON);
-		assertEquals(-2.0020020f, matrix.get(14), EPSILON);
+		assertEquals(1f, matrix.get(14), EPSILON);
 		assertEquals(0f, matrix.get(15), EPSILON);
 	}
 

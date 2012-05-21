@@ -19,7 +19,7 @@ public class CameraPerspective {
 		this.aspect = aspect;
 		this.zNear = zNear;
 		this.zFar = zFar;
-		matrix = new Matrix4(buildPerspectiveMatrix(fovInDegrees, aspect, zNear, zFar)).transpose();
+		matrix = new Matrix4(buildPerspectiveMatrix(fovInDegrees, aspect, zNear, zFar));
 	}
 
 
@@ -53,11 +53,11 @@ public class CameraPerspective {
 		matrix.put(8, 0);
 		matrix.put(9, 0);
 		matrix.put(10, -q);
-		matrix.put(11, 1);
+		matrix.put(11, qn);
 
 		matrix.put(12, 0);
 		matrix.put(13, 0);
-		matrix.put(14, qn);
+		matrix.put(14, 1);
 		matrix.put(15, 0);
 		matrix.rewind();
 		return matrix;

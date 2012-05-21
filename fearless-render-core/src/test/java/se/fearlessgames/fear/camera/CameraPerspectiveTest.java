@@ -27,11 +27,11 @@ public class CameraPerspectiveTest {
 		assertEquals(0f, matrix.getValue(2, 0), EPSILON);
 		assertEquals(0f, matrix.getValue(2, 1), EPSILON);
 		assertEquals(1.0020020f, matrix.getValue(2, 2), EPSILON);
-		assertEquals(1f, matrix.getValue(2, 3), EPSILON);
+		assertEquals(-2.0020020f, matrix.getValue(2, 3), EPSILON);
 
 		assertEquals(0f, matrix.getValue(3, 0), EPSILON);
 		assertEquals(0f, matrix.getValue(3, 1), EPSILON);
-		assertEquals(-2.0020020f, matrix.getValue(3, 2), EPSILON);
+		assertEquals(1f, matrix.getValue(3, 2), EPSILON);
 		assertEquals(0f, matrix.getValue(3, 3), EPSILON);
 	}
 }
