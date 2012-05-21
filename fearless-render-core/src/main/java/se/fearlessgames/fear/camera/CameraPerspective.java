@@ -19,7 +19,7 @@ public class CameraPerspective {
 		this.aspect = aspect;
 		this.zNear = zNear;
 		this.zFar = zFar;
-		matrix = new Matrix4(buildPerspectiveMatrix(fovInDegrees, aspect, zNear, zFar));
+		matrix = new Matrix4(buildPerspectiveMatrix(fovInDegrees, aspect, zNear, zFar)).transpose();
 	}
 
 
