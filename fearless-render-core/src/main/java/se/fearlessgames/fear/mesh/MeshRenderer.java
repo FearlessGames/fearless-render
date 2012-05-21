@@ -109,9 +109,9 @@ public class MeshRenderer {
 		log.info("modelView: " + modelView);
 		log.info("modelViewProjection: " + modelViewProjection);
 		Matrix3 normalMatrix = new Matrix3(modelView).invert().transpose();
-		shader.uniform(ShaderUniform.PROJECTION_MATRIX).setMatrix4(cameraPerspective.getMatrixAsBuffer());
-		shader.uniform(ShaderUniform.MODEL_VIEW_MATRIX).setMatrix4(GlMatrixBuilder.convert(modelView));
 		shader.uniform(ShaderUniform.MODEL_VIEW_PROJECTION_MATRIX).setMatrix4(GlMatrixBuilder.convert(modelViewProjection));
+		shader.uniform(ShaderUniform.MODEL_VIEW_MATRIX).setMatrix4(GlMatrixBuilder.convert(modelView));
+		shader.uniform(ShaderUniform.PROJECTION_MATRIX).setMatrix4(cameraPerspective.getMatrixAsBuffer());
 		shader.uniform(ShaderUniform.NORMAL_MATRIX).setMatrix3(GlMatrixBuilder.convert(normalMatrix));
 	}
 
