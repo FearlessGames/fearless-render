@@ -8,6 +8,8 @@ import se.fearlessgames.fear.ColorRGBA;
 import se.fearlessgames.fear.Scene;
 import se.fearlessgames.fear.camera.CameraPerspective;
 import se.fearlessgames.fear.camera.RotationCamera;
+import se.fearlessgames.fear.display.DisplayBuilder;
+import se.fearlessgames.fear.display.LwjglDisplayBuilder;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.input.*;
 import se.fearlessgames.fear.input.hw.DisplayFocusController;
@@ -27,6 +29,7 @@ import java.util.EnumSet;
 
 public abstract class ExampleBase {
 	protected final Logger log = LoggerFactory.getLogger(getClass());
+	private final DisplayBuilder displayBuilder = new LwjglDisplayBuilder();
 	protected final RotationCamera camera;
 	protected final FearGl fearGl;
 	protected final Scene scene;
@@ -82,7 +85,7 @@ public abstract class ExampleBase {
 
 	private void createDisplay() {
 		try {
-			DisplayUtil.create(width, height, "Fearless-render example");
+			displayBuilder.createBuilder().setDimensions(width, height).setTitle("Fearless-render example").build();
 		} catch (Exception e) {
 			log.error("Error setting up display", e);
 			throw new RuntimeException("Error setting up display", e);

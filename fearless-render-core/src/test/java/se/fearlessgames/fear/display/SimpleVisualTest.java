@@ -2,7 +2,6 @@ package se.fearlessgames.fear.display;
 
 import org.junit.Test;
 import org.lwjgl.input.Keyboard;
-import se.fearlessgames.fear.FearOutput;
 import se.fearlessgames.fear.Node;
 import se.fearlessgames.fear.Renderer;
 import se.fearlessgames.fear.Scene;
@@ -18,20 +17,19 @@ public class SimpleVisualTest {
 	}
 
 	public void testSimple() throws Exception {
-		DisplaySupplier supplier = new DisplaySupplier();
-		supplier.setDimensions(100, 100);
-		Display output = supplier.showDisplay();
-		FearLwjgl fearGl = new FearLwjgl();
-		Renderer renderer = new Renderer(new MeshRenderer(fearGl));
-		Scene scene = new Scene(new Node());
+		final DisplayBuilder displayBuilder = new LwjglDisplayBuilder();
+		final Display display = displayBuilder.createBuilder().setDimensions(100, 100).build();
+		final FearLwjgl fearGl = new FearLwjgl();
+		final Renderer renderer = new Renderer(new MeshRenderer(fearGl));
+
+		final Scene scene = new Scene(new Node());
 		while (true) {
-			if (hasHitEscape() || output.isCloseRequested()) {
+			if (hasHitEscape() || display.isCloseRequested()) {
 				break;
 			}
 
 			scene.render(renderer, mock(VectorCamera.class));
-			renderUI(output);
-			output.flush();
+			display.update();
 
 			Thread.sleep(100);
 		}
@@ -44,8 +42,5 @@ public class SimpleVisualTest {
 			}
 		}
 		return false;
-	}
-
-	private void renderUI(FearOutput output) {
 	}
 }
