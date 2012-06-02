@@ -41,8 +41,8 @@ public class InputController implements FocusController.FocusListener {
 
 		while (events.hasNext()) {
 			KeyEvent keyEvent = events.next();
-			Key key = keyEvent.getKey();
-			if (keyEvent.getKeyState() == KeyState.DOWN) {
+			Key key = keyEvent.key();
+			if (keyEvent.keyState() == KeyState.DOWN) {
 				currentKeysDown.add(key);
 			} else {
 				keysUp.add(key);
@@ -54,7 +54,7 @@ public class InputController implements FocusController.FocusListener {
 	}
 
 	private MouseState readMouseState() {
-		PeekingIterator<MouseState> events = mouseController.getEvents();
+		PeekingIterator<MouseState> events = mouseController.events();
 		if (events.hasNext()) {
 			mouseState = events.next();
 		} else {

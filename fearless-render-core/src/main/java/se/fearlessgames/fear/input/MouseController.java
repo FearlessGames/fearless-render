@@ -3,9 +3,9 @@ package se.fearlessgames.fear.input;
 import com.google.common.collect.PeekingIterator;
 
 public interface MouseController {
-	PeekingIterator<MouseState> getEvents();
+	PeekingIterator<MouseState> events();
 
-	void setGrabbed(boolean grabbed);
+	void grabbed(boolean grabbed);
 
-	boolean isGrabbed();
+	boolean grabbed();
 }

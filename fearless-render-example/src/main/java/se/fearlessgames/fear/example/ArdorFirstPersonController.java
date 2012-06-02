@@ -53,9 +53,9 @@ public class ArdorFirstPersonController {
 			@Override
 			public void perform(InputState inputState) {
 				final MouseState mouse = inputState.getMouseState();
-				if (mouse.getDx() != 0 || mouse.getDy() != 0) {
+				if (mouse.getDX() != 0 || mouse.getDY() != 0) {
 					if (!firstPing) {
-						rotateCamera(-mouse.getDx(), -mouse.getDy());
+						rotateCamera(-mouse.getDX(), -mouse.getDY());
 					} else {
 						firstPing = false;
 					}

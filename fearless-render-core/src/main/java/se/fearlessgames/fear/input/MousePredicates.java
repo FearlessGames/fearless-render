@@ -14,7 +14,7 @@ public class MousePredicates {
 
 	private static class MouseMovedCondition implements Predicate<InputState> {
 		public boolean apply(final InputState state) {
-			return state.getMouseState().getDx() != 0 || state.getMouseState().getDy() != 0;
+			return state.getMouseState().getDX() != 0 || state.getMouseState().getDY() != 0;
 		}
 	}
 

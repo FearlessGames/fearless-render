@@ -35,15 +35,15 @@ public class MouseState {
 		return y;
 	}
 
-	public int getDx() {
+	public int getDX() {
 		return dx;
 	}
 
-	public int getDy() {
+	public int getDY() {
 		return dy;
 	}
 
-	public int getDwheel() {
+	public int getDWheel() {
 		return dwheel;
 	}
 

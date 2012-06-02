@@ -11,15 +11,15 @@ public class KeyEvent {
 		this.keyChar = keyChar;
 	}
 
-	public Key getKey() {
+	public Key key() {
 		return key;
 	}
 
-	public KeyState getKeyState() {
+	public KeyState keyState() {
 		return keyState;
 	}
 
-	public char getKeyChar() {
+	public char keyChar() {
 		return keyChar;
 	}
 }

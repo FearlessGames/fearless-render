@@ -1,127 +1,125 @@
 package se.fearlessgames.fear.input.hw;
 
 import com.google.common.collect.*;
-import org.lwjgl.input.Mouse;
-import se.fearlessgames.fear.input.MouseButton;
-import se.fearlessgames.fear.input.MouseButtonState;
-import se.fearlessgames.fear.input.MouseController;
-import se.fearlessgames.fear.input.MouseState;
+import se.fearlessgames.common.util.TimeProvider;
+import se.fearlessgames.fear.input.*;
 
 import java.util.EnumMap;
 import java.util.EnumSet;
 
 public class HardwareMouseController implements MouseController {
-	private static long CLICK_TIME_MS = 500;
+	private final EnumMultiset<MouseButton> EMPTY_MOUSE_BUTTON_MULTISET = EnumMultiset.create(MouseButton.class);
+
 	private final EnumMap<MouseButton, Long> lastClickTime = Maps.newEnumMap(MouseButton.class);
 	private final Multiset<MouseButton> clicks = EnumMultiset.create(MouseButton.class);
-	private final EnumSet<MouseButton> clickArmed = EnumSet.noneOf(MouseButton.class);
+	private final EnumSet<MouseButton> activeClickButtons = EnumSet.noneOf(MouseButton.class);
+	private final TimeProvider timeProvider;
 
+	private final HardwareMouse hardwareMouse;
+	private final MouseConfig mouseConfig;
 	private boolean sendClickState = false;
 	private MouseState nextState;
 
-	public HardwareMouseController() {
-		if (!Mouse.isCreated()) {
-			try {
-				Mouse.create();
-			} catch (final Exception e) {
-				throw new RuntimeException(e);
-			}
-		}
+	public HardwareMouseController(TimeProvider timeProvider, HardwareMouse hardwareMouse, MouseConfig mouseConfig) {
+		this.timeProvider = timeProvider;
+		this.hardwareMouse = hardwareMouse;
+		this.mouseConfig = mouseConfig;
 	}
 
 	@Override
-	public PeekingIterator<MouseState> getEvents() {
+	public PeekingIterator<MouseState> events() {
 		return new MouseIterator();
 	}
 
 	@Override
-	public void setGrabbed(boolean grabbed) {
-		Mouse.setGrabbed(grabbed);
+	public void grabbed(boolean grabbed) {
+		hardwareMouse.grabbed(grabbed);
 	}
 
 	@Override
-	public boolean isGrabbed() {
-		return Mouse.isGrabbed();
+	public boolean grabbed() {
+		return hardwareMouse.grabbed();
 	}
 
 	private class MouseIterator extends AbstractIterator<MouseState> implements PeekingIterator<MouseState> {
 
-
 		@Override
 		protected MouseState computeNext() {
 			if (nextState != null) {
-				MouseState ns = nextState;
+				MouseState mouseState = nextState;
 				nextState = null;
-				return ns;
+				return mouseState;
 			}
 
-			if (!Mouse.next()) {
+			if (!hardwareMouse.next()) {
 				return endOfData();
 			}
 
 			final EnumMap<MouseButton, MouseButtonState> buttons = Maps.newEnumMap(MouseButton.class);
+			final MouseButton[] mouseButtonValues = MouseButton.values();
 
-			for (int buttonNr = 0; buttonNr < Mouse.getButtonCount(); buttonNr++) {
-				MouseButton mouseButton = MouseButton.values()[buttonNr];
-				boolean pressed = Mouse.isButtonDown(buttonNr);
-				processButtonForClick(mouseButton, pressed);
-				buttons.put(mouseButton, pressed ? MouseButtonState.DOWN : MouseButtonState.UP);
+			for (MouseButton mouseButton : mouseButtonValues) {
+				final MouseButtonState mouseButtonState = hardwareMouse.isButtonDown(mouseButton) ? MouseButtonState.DOWN : MouseButtonState.UP;
+				processButtonForClick(mouseButton, mouseButtonState);
+				buttons.put(mouseButton, mouseButtonState);
 			}
 
-
-			final MouseState ns = new MouseState(
-					Mouse.getEventX(),
-					Mouse.getEventY(),
-					Mouse.getEventDX(),
-					Mouse.getEventDY(),
-					Mouse.getEventDWheel(),
+			final MouseState nextMouseState = new MouseState(
+					hardwareMouse.eventX(),
+					hardwareMouse.eventY(),
+					hardwareMouse.eventDX(),
+					hardwareMouse.eventDY(),
+					hardwareMouse.eventDWheel(),
 					buttons,
-					null);
+					EMPTY_MOUSE_BUTTON_MULTISET);
 
-			if (ns.getDx() != 0.0 || ns.getDy() != 0.0) {
-				clickArmed.clear();
+			if (nextMouseState.getDX() != 0.0 || nextMouseState.getDY() != 0.0) {
+				activeClickButtons.clear();
 				clicks.clear();
 				sendClickState = false;
 			}
 
 			if (sendClickState) {
-				nextState = ns;
+				nextState = nextMouseState;
 				sendClickState = false;
 				return new MouseState(
-						ns.getX(),
-						ns.getY(),
-						ns.getDx(),
-						ns.getDy(),
-						ns.getDwheel(),
+						nextMouseState.getX(),
+						nextMouseState.getY(),
+						nextMouseState.getDX(),
+						nextMouseState.getDY(),
+						nextMouseState.getDWheel(),
 						buttons,
 						EnumMultiset.create(clicks));
 			} else {
-				return ns;
+				return nextMouseState;
 			}
 
 		}
 
-		private void processButtonForClick(MouseButton b, boolean down) {
+		private void processButtonForClick(MouseButton mouseButton, MouseButtonState mouseButtonState) {
+			final long currentTime = timeProvider.now();
 			boolean expired = false;
-			long currentTime = System.currentTimeMillis();
-			if (lastClickTime.containsKey(b) && (currentTime - lastClickTime.get(b) > CLICK_TIME_MS)) {
-				clicks.setCount(b, 0);
+
+			if (lastClickTime.containsKey(mouseButton) && (currentTime - lastClickTime.get(mouseButton) > mouseConfig.clickTimeMs())) {
+				clicks.setCount(mouseButton, 0);
 				expired = true;
 			}
-			if (down) {
-				if (clickArmed.contains(b)) {
-					clicks.setCount(b, 0);
+
+			if (mouseButtonState == MouseButtonState.DOWN) {
+				if (activeClickButtons.contains(mouseButton)) {
+					clicks.setCount(mouseButton, 0);
 				}
-				clickArmed.add(b);
-				lastClickTime.put(b, currentTime);
+
+				activeClickButtons.add(mouseButton);
+				lastClickTime.put(mouseButton, currentTime);
 			} else {
-				if (!expired && clickArmed.contains(b)) {
-					clicks.add(b);
+				if (!expired && activeClickButtons.contains(mouseButton)) {
+					clicks.add(mouseButton);
 					sendClickState = true;
 				} else {
-					clicks.setCount(b, 0); // clear click count for button b.
+					clicks.setCount(mouseButton, 0); // clear click count for button mouseButton.
 				}
-				clickArmed.remove(b);
+				activeClickButtons.remove(mouseButton);
 			}
 		}
 	}

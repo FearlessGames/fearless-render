@@ -1,21 +1,23 @@
 package se.fearlessgames.fear.input.hw;
 
-import org.lwjgl.opengl.Display;
 import se.fearlessgames.fear.input.FocusController;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class DisplayFocusController implements FocusController {
+	private final DisplayFocus displayFocus;
 	private List<FocusListener> listeners = new CopyOnWriteArrayList<FocusListener>();
 	private boolean hasFocus;
 
-	public DisplayFocusController() {
+	public DisplayFocusController(DisplayFocus displayFocus) {
+		this.displayFocus = displayFocus;
+
 		hasFocus = checkFocus();
 	}
 
 	private boolean checkFocus() {
-		return !(Display.isActive() && Display.isVisible());
+		return displayFocus.hasFocus();
 	}
 
 	@Override

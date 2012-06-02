@@ -3,6 +3,7 @@ package se.fearlessgames.fear.example;
 import org.lwjgl.opengl.Display;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import se.fearlessgames.common.util.SystemTimeProvider;
 import se.fearlessgames.fear.ColorRGBA;
 import se.fearlessgames.fear.Scene;
 import se.fearlessgames.fear.camera.CameraPerspective;
@@ -12,6 +13,9 @@ import se.fearlessgames.fear.input.*;
 import se.fearlessgames.fear.input.hw.DisplayFocusController;
 import se.fearlessgames.fear.input.hw.HardwareKeyboardController;
 import se.fearlessgames.fear.input.hw.HardwareMouseController;
+import se.fearlessgames.fear.input.hw.lwjgl.LwjglDisplayFocus;
+import se.fearlessgames.fear.input.hw.lwjgl.LwjglHardwareKeyboard;
+import se.fearlessgames.fear.input.hw.lwjgl.LwjglHardwareMouse;
 import se.fearlessgames.fear.light.DirectionalLight;
 import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.mesh.MeshRenderer;
@@ -60,10 +64,10 @@ public abstract class ExampleBase {
 		renderer = new ExampleRenderer(new MeshRenderer(fearGl));
 		scene = createScene();
 
-		mouseController = new HardwareMouseController();
-		keyboardController = new HardwareKeyboardController();
+		mouseController = new HardwareMouseController(new SystemTimeProvider(), new LwjglHardwareMouse(), new MouseConfig(500));
+		keyboardController = new HardwareKeyboardController(new LwjglHardwareKeyboard());
 
-		inputHandler = new InputHandler(new InputController(keyboardController, mouseController, new DisplayFocusController()));
+		inputHandler = new InputHandler(new InputController(keyboardController, mouseController, new DisplayFocusController(new LwjglDisplayFocus())));
 		inputHandler.addTrigger(new InputTrigger(new QuitAction(), KeyboardPredicates.singleKey(Key.ESCAPE)));
 
 		setupCameraControl();
@@ -73,7 +77,7 @@ public abstract class ExampleBase {
 		FailFirstPersonController firstPersonController = new FailFirstPersonController(inputHandler, camera);
 		firstPersonController.setupKeyboard();
 		firstPersonController.setupMouseTriggers();
-		mouseController.setGrabbed(true);
+		mouseController.grabbed(true);
 	}
 
 	private void createDisplay() {
