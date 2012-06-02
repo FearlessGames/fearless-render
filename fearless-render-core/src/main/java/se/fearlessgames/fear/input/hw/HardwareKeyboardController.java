@@ -33,11 +33,9 @@ public class HardwareKeyboardController implements KeyboardController {
 				return endOfData();
 			}
 
-			final int keyCode = hardwareKeyboard.eventKey();
+			final Key key = hardwareKeyboard.eventKey();
 			final boolean pressed = hardwareKeyboard.eventKeyState();
 			final char keyChar = hardwareKeyboard.eventCharacter();
-
-			final Key key = Key.findByKeyEventCode(keyCode);
 
 			return new KeyEvent(key, pressed ? KeyState.DOWN : KeyState.UP, keyChar);
 		}

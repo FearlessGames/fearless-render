@@ -1,9 +1,11 @@
 package se.fearlessgames.fear.input.hw;
 
+import se.fearlessgames.fear.input.Key;
+
 public interface HardwareKeyboard {
 	boolean next();
 
-	int eventKey();
+	Key eventKey();
 
 	boolean eventKeyState();
 

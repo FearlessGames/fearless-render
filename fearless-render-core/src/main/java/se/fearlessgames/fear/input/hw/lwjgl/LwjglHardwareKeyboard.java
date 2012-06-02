@@ -2,6 +2,8 @@ package se.fearlessgames.fear.input.hw.lwjgl;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
+import se.fearlessgames.fear.input.Key;
+import se.fearlessgames.fear.input.LwjglKey;
 import se.fearlessgames.fear.input.hw.HardwareKeyboard;
 
 public class LwjglHardwareKeyboard implements HardwareKeyboard {
@@ -22,8 +24,8 @@ public class LwjglHardwareKeyboard implements HardwareKeyboard {
 	}
 
 	@Override
-	public int eventKey() {
-		return Keyboard.getEventKey();
+	public Key eventKey() {
+		return LwjglKey.findByKeyEventCode(Keyboard.getEventKey());
 	}
 
 	@Override
