@@ -1,7 +1,8 @@
-package se.fearlessgames.fear.display;
+package se.fearlessgames.fear.display.lwjgl;
 
 import se.fearlessgames.fear.FearError;
 import se.fearlessgames.fear.GlCommand;
+import se.fearlessgames.fear.display.Display;
 
 public class LwjglDisplay implements Display {
 	private static volatile boolean ACTIVE = false;
@@ -17,20 +18,30 @@ public class LwjglDisplay implements Display {
 	@Override
 	public boolean isCloseRequested() {
 		assertValid();
-		return org.lwjgl.opengl.Display.isCloseRequested();
+		return LwjglDisplayProxy.isCloseRequested();
+	}
+
+	@Override
+	public boolean getFullscreen() {
+		return LwjglDisplayProxy.isFullscreen();
+	}
+
+	@Override
+	public void setFullscreen(boolean fullscreen) {
+		LwjglDisplayProxy.setFullscreen(fullscreen);
 	}
 
 	@Override
 	public void destroy() {
 		if (ACTIVE) {
-			org.lwjgl.opengl.Display.destroy();
+			LwjglDisplayProxy.destroy();
 		}
 	}
 
 	@Override
 	public void update() {
 		assertValid();
-		org.lwjgl.opengl.Display.update();
+		LwjglDisplayProxy.update();
 	}
 
 	@Override

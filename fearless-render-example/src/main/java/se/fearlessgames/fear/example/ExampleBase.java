@@ -1,6 +1,5 @@
 package se.fearlessgames.fear.example;
 
-import org.lwjgl.opengl.Display;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.fearlessgames.common.util.SystemTimeProvider;
@@ -8,8 +7,9 @@ import se.fearlessgames.fear.ColorRGBA;
 import se.fearlessgames.fear.Scene;
 import se.fearlessgames.fear.camera.CameraPerspective;
 import se.fearlessgames.fear.camera.RotationCamera;
+import se.fearlessgames.fear.display.Display;
 import se.fearlessgames.fear.display.DisplayBuilder;
-import se.fearlessgames.fear.display.LwjglDisplayBuilder;
+import se.fearlessgames.fear.display.lwjgl.LwjglDisplayBuilder;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.input.*;
 import se.fearlessgames.fear.input.hw.DisplayFocusController;
@@ -29,7 +29,7 @@ import java.util.EnumSet;
 
 public abstract class ExampleBase {
 	protected final Logger log = LoggerFactory.getLogger(getClass());
-	private final DisplayBuilder displayBuilder = new LwjglDisplayBuilder();
+	protected final DisplayBuilder displayBuilder = new LwjglDisplayBuilder();
 	protected final RotationCamera camera;
 	protected final FearGl fearGl;
 	protected final Scene scene;
@@ -47,6 +47,7 @@ public abstract class ExampleBase {
 	private final String fragmentShaderFile;
 
 	protected boolean done;
+	protected Display display;
 
 
 	public ExampleBase(int width, int height, String vertexShaderFile, String fragmentShaderFile) throws Exception {
@@ -61,7 +62,6 @@ public abstract class ExampleBase {
 
 		shaderProgram = createShaderProgram();
 
-
 		textureManager = new FearlessTextureLoader(fearGl);
 		camera = new RotationCamera(new CameraPerspective(45.0f, ((float) width / (float) height), 0.1f, 10000.0f));
 		renderer = new ExampleRenderer(new MeshRenderer(fearGl));
@@ -72,6 +72,7 @@ public abstract class ExampleBase {
 
 		inputHandler = new InputHandler(new InputController(keyboardController, mouseController, new DisplayFocusController(new LwjglDisplayFocus())));
 		inputHandler.addTrigger(new InputTrigger(new QuitAction(), KeyboardPredicates.singleKey(Key.ESCAPE)));
+		inputHandler.addTrigger(new InputTrigger(new FullscreenAction(), KeyboardPredicates.singleKey(Key.F11)));
 
 		setupCameraControl();
 	}
@@ -85,7 +86,7 @@ public abstract class ExampleBase {
 
 	private void createDisplay() {
 		try {
-			displayBuilder.createBuilder().setDimensions(width, height).setTitle("Fearless-render example").build();
+			display = displayBuilder.createBuilder().setDimensions(width, height).setTitle("Fearless-render example").build();
 		} catch (Exception e) {
 			log.error("Error setting up display", e);
 			throw new RuntimeException("Error setting up display", e);
@@ -111,7 +112,7 @@ public abstract class ExampleBase {
 
 		done = false;
 		while (!done) {
-			if (Display.isCloseRequested()) {
+			if (display.isCloseRequested()) {
 				done = true;
 			}
 
@@ -121,7 +122,7 @@ public abstract class ExampleBase {
 			render();
 			afterRender();
 
-			Display.update();
+			display.update();
 			t2 = System.nanoTime();
 			if ((c++ & 127) == 0) {
 				log.info("FPS: {}", 1000000000.0d / (t2 - t1));
@@ -129,7 +130,7 @@ public abstract class ExampleBase {
 			t1 = t2;
 		}
 
-		Display.destroy();
+		display.destroy();
 	}
 
 	protected void render() {
@@ -182,6 +183,13 @@ public abstract class ExampleBase {
 		@Override
 		public void perform(InputState inputState) {
 			done = true;
+		}
+	}
+
+	private class FullscreenAction implements TriggerAction {
+		@Override
+		public void perform(InputState inputState) {
+			display.setFullscreen(!display.getFullscreen());
 		}
 	}
 }

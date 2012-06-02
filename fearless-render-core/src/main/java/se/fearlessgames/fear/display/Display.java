@@ -10,4 +10,8 @@ public interface Display {
 	void add(GlCommand command);
 
 	boolean isCloseRequested();
+
+	boolean getFullscreen();
+
+	void setFullscreen(boolean fullscreen);
 }

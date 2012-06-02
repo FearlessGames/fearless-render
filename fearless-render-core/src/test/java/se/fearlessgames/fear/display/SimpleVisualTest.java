@@ -6,6 +6,7 @@ import se.fearlessgames.fear.Node;
 import se.fearlessgames.fear.Renderer;
 import se.fearlessgames.fear.Scene;
 import se.fearlessgames.fear.camera.VectorCamera;
+import se.fearlessgames.fear.display.lwjgl.LwjglDisplayBuilder;
 import se.fearlessgames.fear.gl.FearLwjgl;
 import se.fearlessgames.fear.mesh.MeshRenderer;
 
