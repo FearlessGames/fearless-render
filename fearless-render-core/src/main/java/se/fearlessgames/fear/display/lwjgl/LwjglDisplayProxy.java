@@ -18,8 +18,21 @@ public class LwjglDisplayProxy {
 		}
 	}
 
+	public static void setDisplayMode(DisplayMode displayMode) {
+		try {
+			Display.setDisplayMode(displayMode);
+		} catch (LWJGLException e) {
+			throw new FearError(e);
+		}
+	}
+
 	public static void setFullscreen(boolean fullscreen) {
 		try {
+			if (fullscreen) {
+				if (!Display.getDisplayMode().isFullscreenCapable()) {
+					throw new FearError("Attempting to set fullscreen on a display mode that is not fullscreen capable.");
+				}
+			}
 			Display.setFullscreen(fullscreen);
 		} catch (LWJGLException e) {
 			throw new FearError(e);
@@ -60,5 +73,13 @@ public class LwjglDisplayProxy {
 
 	public static boolean isCloseRequested() {
 		return Display.isCloseRequested();
+	}
+
+	public static DisplayMode[] getAvailableDisplayModes() {
+		try {
+			return Display.getAvailableDisplayModes();
+		} catch (LWJGLException e) {
+			throw new FearError(e);
+		}
 	}
 }

@@ -4,11 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import se.fearlessgames.common.util.SystemTimeProvider;
 import se.fearlessgames.fear.ColorRGBA;
+import se.fearlessgames.fear.FearError;
 import se.fearlessgames.fear.Scene;
 import se.fearlessgames.fear.camera.CameraPerspective;
 import se.fearlessgames.fear.camera.RotationCamera;
 import se.fearlessgames.fear.display.Display;
 import se.fearlessgames.fear.display.DisplayBuilder;
+import se.fearlessgames.fear.display.DisplayConfig;
 import se.fearlessgames.fear.display.lwjgl.LwjglDisplayBuilder;
 import se.fearlessgames.fear.gl.*;
 import se.fearlessgames.fear.input.*;
@@ -26,6 +28,7 @@ import se.fearlessgames.fear.texture.FearlessTextureLoader;
 import se.fearlessgames.fear.texture.TextureLoader;
 
 import java.util.EnumSet;
+import java.util.List;
 
 public abstract class ExampleBase {
 	protected final Logger log = LoggerFactory.getLogger(getClass());
@@ -71,8 +74,8 @@ public abstract class ExampleBase {
 		keyboardController = new HardwareKeyboardController(new LwjglHardwareKeyboard());
 
 		inputHandler = new InputHandler(new InputController(keyboardController, mouseController, new DisplayFocusController(new LwjglDisplayFocus())));
-		inputHandler.addTrigger(new InputTrigger(new QuitAction(), KeyboardPredicates.singleKey(Key.ESCAPE)));
-		inputHandler.addTrigger(new InputTrigger(new FullscreenAction(), KeyboardPredicates.singleKey(Key.F11)));
+		inputHandler.addTrigger(new InputTrigger(new QuitAction(), KeyboardPredicates.singleKeyDown(Key.ESCAPE)));
+		inputHandler.addTrigger(new InputTrigger(new FullscreenAction(), KeyboardPredicates.singleKeyUp(Key.F11)));
 
 		setupCameraControl();
 	}
@@ -86,7 +89,11 @@ public abstract class ExampleBase {
 
 	private void createDisplay() {
 		try {
-			display = displayBuilder.createBuilder().setDimensions(width, height).setTitle("Fearless-render example").build();
+			display = displayBuilder.createBuilder()
+					.setDimensions(width, height)
+					.setTitle("Fearless-render example")
+					.build();
+
 		} catch (Exception e) {
 			log.error("Error setting up display", e);
 			throw new RuntimeException("Error setting up display", e);
@@ -189,7 +196,29 @@ public abstract class ExampleBase {
 	private class FullscreenAction implements TriggerAction {
 		@Override
 		public void perform(InputState inputState) {
-			display.setFullscreen(!display.getFullscreen());
+			final boolean isFullscreen = display.isFullscreen();
+
+			if (!isFullscreen) {
+				final List<DisplayConfig> availableFullscreenModes = display.getAvailableFullscreenModes();
+				DisplayConfig largest = null;
+				for (DisplayConfig availableFullscreenMode : availableFullscreenModes) {
+					if (largest == null || largest.width() < availableFullscreenMode.width()) {
+						largest = availableFullscreenMode;
+					}
+				}
+
+				if (largest != null) {
+					display.setDisplayConfig(largest);
+					display.setFullscreen(true);
+				} else {
+					throw new FearError("No fullscreen mode found.");
+				}
+			} else {
+				display.setDimensions(width, height);
+				display.setFullscreen(false);
+			}
+
+			display.setVSyncEnabled(!isFullscreen);
 		}
 	}
 }

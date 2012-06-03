@@ -34,10 +34,8 @@ public class InputController implements FocusController.FocusListener {
 
 
 	private KeyboardState readKeyboardState() {
-
-		PeekingIterator<KeyEvent> events = keyboardController.getEvents();
-
-		EnumSet<Key> keysUp = EnumSet.noneOf(Key.class);
+		final PeekingIterator<KeyEvent> events = keyboardController.getEvents();
+		final EnumSet<Key> keysUp = EnumSet.noneOf(Key.class);
 
 		while (events.hasNext()) {
 			KeyEvent keyEvent = events.next();

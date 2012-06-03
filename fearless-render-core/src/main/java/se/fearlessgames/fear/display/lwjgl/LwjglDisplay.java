@@ -1,8 +1,13 @@
 package se.fearlessgames.fear.display.lwjgl;
 
+import com.google.common.collect.Lists;
+import org.lwjgl.opengl.DisplayMode;
 import se.fearlessgames.fear.FearError;
 import se.fearlessgames.fear.GlCommand;
 import se.fearlessgames.fear.display.Display;
+import se.fearlessgames.fear.display.DisplayConfig;
+
+import java.util.List;
 
 public class LwjglDisplay implements Display {
 	private static volatile boolean ACTIVE = false;
@@ -22,7 +27,7 @@ public class LwjglDisplay implements Display {
 	}
 
 	@Override
-	public boolean getFullscreen() {
+	public boolean isFullscreen() {
 		return LwjglDisplayProxy.isFullscreen();
 	}
 
@@ -32,10 +37,39 @@ public class LwjglDisplay implements Display {
 	}
 
 	@Override
-	public void destroy() {
-		if (ACTIVE) {
-			LwjglDisplayProxy.destroy();
+	public void setVSyncEnabled(boolean enabled) {
+		LwjglDisplayProxy.setVSyncEnabled(enabled);
+	}
+
+	@Override
+	public List<DisplayConfig> getAvailableFullscreenModes() {
+		final List<DisplayConfig> displayConfigs = Lists.newArrayList();
+		final DisplayMode[] availableDisplayModes = LwjglDisplayProxy.getAvailableDisplayModes();
+
+		for (DisplayMode displayMode : availableDisplayModes) {
+			if (displayMode.isFullscreenCapable()) {
+				displayConfigs.add(new LwjglDisplayConfig(displayMode));
+			}
 		}
+
+		return displayConfigs;
+	}
+
+	@Override
+	public void setDisplayConfig(DisplayConfig displayConfig) {
+		LwjglDisplayProxy.setDisplayMode(((LwjglDisplayConfig) displayConfig).displayMode());
+	}
+
+	@Override
+	public void setDimensions(int width, int height) {
+		LwjglDisplayProxy.setDimensions(width, height);
+	}
+
+	@Override
+	public void destroy() {
+		assertValid();
+		LwjglDisplayProxy.destroy();
+		ACTIVE = false;
 	}
 
 	@Override

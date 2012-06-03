@@ -23,4 +23,8 @@ public class KeyboardState {
 	public boolean isDown(Key key) {
 		return keysDown.contains(key);
 	}
+
+	public boolean isUp(Key key) {
+		return keysUp.contains(key);
+	}
 }
