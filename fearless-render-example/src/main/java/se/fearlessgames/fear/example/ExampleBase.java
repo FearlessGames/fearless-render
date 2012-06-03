@@ -210,12 +210,15 @@ public abstract class ExampleBase {
 				if (largest != null) {
 					display.setDisplayConfig(largest);
 					display.setFullscreen(true);
+
+					fearGl.glViewport(0, 0, largest.width(), largest.height());
 				} else {
 					throw new FearError("No fullscreen mode found.");
 				}
 			} else {
 				display.setDimensions(width, height);
 				display.setFullscreen(false);
+				fearGl.glViewport(0, 0, width, height);
 			}
 
 			display.setVSyncEnabled(!isFullscreen);
