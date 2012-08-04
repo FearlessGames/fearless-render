@@ -2,13 +2,14 @@ package se.fearlessgames.fear.display;
 
 import org.junit.Test;
 import org.lwjgl.input.Keyboard;
+import se.fearlessgames.fear.FearOutput;
 import se.fearlessgames.fear.Node;
 import se.fearlessgames.fear.Renderer;
 import se.fearlessgames.fear.Scene;
-import se.fearlessgames.fear.camera.VectorCamera;
-import se.fearlessgames.fear.display.lwjgl.LwjglDisplayBuilder;
+import se.fearlessgames.fear.camera.Camera;
 import se.fearlessgames.fear.gl.FearLwjgl;
 import se.fearlessgames.fear.mesh.MeshRenderer;
+import se.fearlessgames.fear.mesh.ShaderPopulator;
 
 import static se.mockachino.Mockachino.mock;
 
@@ -18,19 +19,20 @@ public class SimpleVisualTest {
 	}
 
 	public void testSimple() throws Exception {
-		final DisplayBuilder displayBuilder = new LwjglDisplayBuilder();
-		final Display display = displayBuilder.createBuilder().setDimensions(100, 100).build();
-		final FearLwjgl fearGl = new FearLwjgl();
-		final Renderer renderer = new Renderer(new MeshRenderer(fearGl));
-
-		final Scene scene = new Scene(new Node());
+		DisplaySupplier supplier = new DisplaySupplier();
+		supplier.setDimensions(100, 100);
+		Display output = supplier.showDisplay();
+		FearLwjgl fearGl = new FearLwjgl();
+		Renderer renderer = new Renderer(new MeshRenderer(fearGl, new ShaderPopulator()));
+		Scene scene = new Scene(new Node());
 		while (true) {
-			if (hasHitEscape() || display.isCloseRequested()) {
+			if (hasHitEscape() || output.isCloseRequested()) {
 				break;
 			}
 
-			scene.render(renderer, mock(VectorCamera.class));
-			display.update();
+			scene.render(renderer, mock(Camera.class));
+			renderUI(output);
+			output.flush();
 
 			Thread.sleep(100);
 		}
@@ -43,5 +45,8 @@ public class SimpleVisualTest {
 			}
 		}
 		return false;
+	}
+
+	private void renderUI(FearOutput output) {
 	}
 }

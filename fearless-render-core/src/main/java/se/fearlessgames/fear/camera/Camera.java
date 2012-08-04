@@ -8,5 +8,7 @@ public interface Camera {
 
 	Vector3 getLocation();
 
-	Matrix4 asMatrix();
+	Matrix4 getViewProjectionMatrix();
+
+	Matrix4 getViewMatrix();
 }

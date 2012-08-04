@@ -1,36 +1,32 @@
 package se.fearlessgames.fear.mesh;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import se.fearlessgames.fear.TransformedMesh;
-import se.fearlessgames.fear.camera.CameraPerspective;
+import se.fearlessgames.fear.camera.Camera;
 import se.fearlessgames.fear.gl.Culling;
 import se.fearlessgames.fear.gl.FearGl;
 import se.fearlessgames.fear.gl.IndexDataType;
-import se.fearlessgames.fear.math.GlMatrixBuilder;
-import se.fearlessgames.fear.math.Matrix3;
 import se.fearlessgames.fear.math.Matrix4;
 import se.fearlessgames.fear.shader.ShaderProgram;
-import se.fearlessgames.fear.shader.ShaderUniform;
 import se.fearlessgames.fear.vbo.VertexArrayObject;
 
 import java.util.Collection;
 import java.util.List;
 
 public class MeshRenderer {
-	private final Logger log = LoggerFactory.getLogger(getClass());
 	public final FearGl fearGl;
+	private final ShaderPopulator shaderPopulator;
 
-	public MeshRenderer(FearGl fearGl) {
+	public MeshRenderer(FearGl fearGl, ShaderPopulator shaderPopulator) {
 		this.fearGl = fearGl;
+		this.shaderPopulator = shaderPopulator;
 	}
 
-	public void render(Mesh mesh, Matrix4 modelView, CameraPerspective cameraPerspective) {
+	public void render(Mesh mesh, Matrix4 transformMatrix, Camera camera) {
 		MeshType meshType = mesh.getMeshType();
 		ShaderProgram shader = meshType.getShaderProgram();
 		List<RenderState> renderStates = meshType.getRenderStates();
 
-		pushTransforms(modelView, shader, cameraPerspective);
+		shaderPopulator.pushTransforms(transformMatrix, shader, camera);
 		useShader(shader);
 		enableStates(shader, renderStates);
 
@@ -39,7 +35,7 @@ public class MeshRenderer {
 		disableStates(shader, renderStates);
 	}
 
-	public void renderMeshes(Collection<TransformedMesh> meshes, boolean renderBackFaces, CameraPerspective cameraPerspective) {
+	public void renderMeshes(Collection<TransformedMesh> meshes, boolean renderBackFaces, Camera camera) {
 		fearGl.glCullFace(Culling.FRONT);
 		MeshType prev = null;
 		ShaderProgram shader = null;
@@ -59,7 +55,7 @@ public class MeshRenderer {
 				prevVao = null;
 			}
 
-			pushTransforms(mesh.transform, shader, cameraPerspective);
+			shaderPopulator.pushTransforms(mesh.transform, shader, camera);
 
 			VertexArrayObject curVao = mesh.mesh.getVao();
 			if (prevVao != curVao) {
@@ -101,19 +97,7 @@ public class MeshRenderer {
 		fearGl.glUseProgram(shader.getShaderProgram());
 	}
 
-	private void pushTransforms(Matrix4 modelView, ShaderProgram shader, CameraPerspective cameraPerspective) {
 
-		Matrix4 projection = cameraPerspective.getMatrix();
-		Matrix4 modelViewProjection = projection.multiply(modelView);
-		log.info("projection: " + projection);
-		log.info("modelView: " + modelView);
-		log.info("modelViewProjection: " + modelViewProjection);
-		Matrix3 normalMatrix = new Matrix3(modelView).invert().transpose();
-		shader.uniform(ShaderUniform.MODEL_VIEW_PROJECTION_MATRIX).setMatrix4(GlMatrixBuilder.convert(modelViewProjection));
-		shader.uniform(ShaderUniform.MODEL_VIEW_MATRIX).setMatrix4(GlMatrixBuilder.convert(modelView));
-		shader.uniform(ShaderUniform.PROJECTION_MATRIX).setMatrix4(cameraPerspective.getMatrixAsBuffer());
-		shader.uniform(ShaderUniform.NORMAL_MATRIX).setMatrix3(GlMatrixBuilder.convert(normalMatrix));
-	}
 
 
 	private void drawElements(VertexArrayObject vao) {

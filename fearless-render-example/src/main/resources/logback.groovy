@@ -11,6 +11,7 @@ appender("FILE", FileAppender) {
     }
 }
 
+
 appender("GL", FileAppender) {
     file = "gl.log"
     append = false
@@ -18,6 +19,7 @@ appender("GL", FileAppender) {
         pattern = "%level %logger - %msg%n"
     }
 }
+
 
 logger("se.fearlessgames.fear.gl.LoggingFearGl", DEBUG, ["GL"])
 root(DEBUG, ["FILE"])

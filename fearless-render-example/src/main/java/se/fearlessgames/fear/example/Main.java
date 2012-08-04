@@ -9,6 +9,7 @@ import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.mesh.Mesh;
 import se.fearlessgames.fear.mesh.MeshData;
 import se.fearlessgames.fear.mesh.MeshType;
+import se.fearlessgames.fear.shape.BoxFactory;
 import se.fearlessgames.fear.shape.SphereFactory;
 import se.fearlessgames.fear.texture.SingleTextureRenderState;
 import se.fearlessgames.fear.texture.Texture;
@@ -46,6 +47,7 @@ public class Main extends ExampleBase {
 
 	public Scene createScene() throws IOException {
 		MeshData meshData = new SphereFactory(100, 100, 1.5, SphereFactory.TextureMode.PROJECTED).create();
+		//MeshData meshData = new BoxFactory().create();
 
 		VertexArrayObject vertexArrayObject = VaoBuilder.fromMeshData(fearGl, shaderProgram, meshData).build();
 
@@ -57,12 +59,22 @@ public class Main extends ExampleBase {
 		MeshType earthMeshType = new MeshType(shaderProgram, renderer.opaqueBucket, new DirectionalLightRenderState(new SunLight()), new SingleTextureRenderState(texture));
 		Mesh earth = new Mesh(vertexArrayObject, earthMeshType);
 
-		Node boxNode = new Node("Box", earth);
-		boxNode.setPosition(new Vector3(0, 0, 10));
-		//boxNode.setScale(new Vector3(1, 1.4, 0.2));
-		root.addChild(boxNode);
+		dodo(root, earth, new Vector3(0, 0, 0));
+		dodo(root, earth, new Vector3(0, 0, 10));
+		dodo(root, earth, new Vector3(10, 0, 0));
+		dodo(root, earth, new Vector3(-10, 0, 0));
+		dodo(root, earth, new Vector3(0, 10, 0));
+		dodo(root, earth, new Vector3(0, -10, 0));
+
+
 
 		return new Scene(root);
+	}
+
+	private void dodo(Node root, Mesh earth, Vector3 position1) {
+		Node node = new Node("Box", earth);
+		node.setPosition(position1);
+		root.addChild(node);
 	}
 
 

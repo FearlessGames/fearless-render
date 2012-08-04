@@ -18,12 +18,12 @@ class UniformPointer implements Uniform {
 
 	@Override
 	public void setMatrix4(FloatBuffer matrix) {
-		fearGl.glUniformMatrix4(pointer, false, matrix);
+		fearGl.glUniformMatrix4(pointer, true, matrix);
 	}
 
 	@Override
 	public void setMatrix3(FloatBuffer matrix) {
-		fearGl.glUniformMatrix3(pointer, false, matrix);
+		fearGl.glUniformMatrix3(pointer, true, matrix);
 	}
 
 	@Override

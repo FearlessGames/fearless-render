@@ -7,7 +7,7 @@ import se.fearlessgames.fear.ColorRGBA;
 import se.fearlessgames.fear.FearError;
 import se.fearlessgames.fear.Scene;
 import se.fearlessgames.fear.camera.CameraPerspective;
-import se.fearlessgames.fear.camera.RotationCamera;
+import se.fearlessgames.fear.camera.MatrixBasedCamera;
 import se.fearlessgames.fear.display.Display;
 import se.fearlessgames.fear.display.DisplayBuilder;
 import se.fearlessgames.fear.display.DisplayConfig;
@@ -23,6 +23,7 @@ import se.fearlessgames.fear.input.hw.lwjgl.LwjglHardwareMouse;
 import se.fearlessgames.fear.light.DirectionalLight;
 import se.fearlessgames.fear.math.Vector3;
 import se.fearlessgames.fear.mesh.MeshRenderer;
+import se.fearlessgames.fear.mesh.ShaderPopulator;
 import se.fearlessgames.fear.shader.ShaderProgram;
 import se.fearlessgames.fear.texture.FearlessTextureLoader;
 import se.fearlessgames.fear.texture.TextureLoader;
@@ -33,7 +34,7 @@ import java.util.List;
 public abstract class ExampleBase {
 	protected final Logger log = LoggerFactory.getLogger(getClass());
 	protected final DisplayBuilder displayBuilder = new LwjglDisplayBuilder();
-	protected final RotationCamera camera;
+	protected final MatrixBasedCamera camera;
 	protected final FearGl fearGl;
 	protected final Scene scene;
 	protected final ExampleRenderer renderer;
@@ -59,15 +60,16 @@ public abstract class ExampleBase {
 		this.vertexShaderFile = vertexShaderFile;
 		this.fragmentShaderFile = fragmentShaderFile;
 
-		fearGl = LoggingFearGl.create(new FearLwjgl());
+		fearGl = LoggingFearGl.create(DebuggingFearLwjgl.create(new FearLwjgl()));
 
 		createDisplay();
 
 		shaderProgram = createShaderProgram();
 
+
 		textureManager = new FearlessTextureLoader(fearGl);
-		camera = new RotationCamera(new CameraPerspective(45.0f, ((float) width / (float) height), 0.1f, 10000.0f));
-		renderer = new ExampleRenderer(new MeshRenderer(fearGl));
+		camera = new MatrixBasedCamera(new CameraPerspective(45.0f, ((float) width / (float) height), 0.1f, 10000.0f));
+		renderer = new ExampleRenderer(new MeshRenderer(fearGl, new ShaderPopulator()));
 		scene = createScene();
 
 		mouseController = new HardwareMouseController(new SystemTimeProvider(), new LwjglHardwareMouse(), new MouseConfig(500));
@@ -81,7 +83,7 @@ public abstract class ExampleBase {
 	}
 
 	public void setupCameraControl() {
-		FailFirstPersonController firstPersonController = new FailFirstPersonController(inputHandler, camera);
+		FirstPersonController firstPersonController = new FirstPersonController(inputHandler, camera);
 		firstPersonController.setupKeyboard();
 		firstPersonController.setupMouseTriggers();
 		mouseController.grabbed(true);
