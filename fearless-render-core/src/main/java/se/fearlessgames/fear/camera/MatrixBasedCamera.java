@@ -30,7 +30,7 @@ public class MatrixBasedCamera implements Camera {
 	}
 
 	public void setOrientation(Quaternion orientation) {
-		this.orientation = orientation.invert();
+		this.orientation = orientation;
 		rotation = this.orientation.toRotationMatrix4();
 		recalcView = true;
 	}
@@ -73,7 +73,7 @@ public class MatrixBasedCamera implements Camera {
 	@Override
 	public Matrix4 getViewMatrix() {
 		if (recalcView) {
-			view = translation.multiply(rotation);
+			view = rotation.multiply(translation);
 			recalcViewProjection = true;
 			recalcView = false;
 		}

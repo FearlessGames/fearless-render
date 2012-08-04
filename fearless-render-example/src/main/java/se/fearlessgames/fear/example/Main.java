@@ -59,12 +59,22 @@ public class Main extends ExampleBase {
 		MeshType earthMeshType = new MeshType(shaderProgram, renderer.opaqueBucket, new DirectionalLightRenderState(new SunLight()), new SingleTextureRenderState(texture));
 		Mesh earth = new Mesh(vertexArrayObject, earthMeshType);
 
-		Node boxNode = new Node("Box", earth);
-		boxNode.setPosition(new Vector3(0, 0, 10));
-		//boxNode.setScale(new Vector3(1, 1.4, 0.2));
-		root.addChild(boxNode);
+		dodo(root, earth, new Vector3(0, 0, 0));
+		dodo(root, earth, new Vector3(0, 0, 10));
+		dodo(root, earth, new Vector3(10, 0, 0));
+		dodo(root, earth, new Vector3(-10, 0, 0));
+		dodo(root, earth, new Vector3(0, 10, 0));
+		dodo(root, earth, new Vector3(0, -10, 0));
+
+
 
 		return new Scene(root);
+	}
+
+	private void dodo(Node root, Mesh earth, Vector3 position1) {
+		Node node = new Node("Box", earth);
+		node.setPosition(position1);
+		root.addChild(node);
 	}
 
 

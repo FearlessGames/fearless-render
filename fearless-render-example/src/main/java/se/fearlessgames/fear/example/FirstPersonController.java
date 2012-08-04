@@ -11,6 +11,7 @@ public class FirstPersonController {
 	private final MatrixBasedCamera camera;
 
 	private float distance = 0.01f;
+	public static final double MOUSE_ROTATE_SPEED = .0005;
 
 	public FirstPersonController(InputHandler inputHandler, MatrixBasedCamera camera) {
 		this.inputHandler = inputHandler;
@@ -51,7 +52,7 @@ public class FirstPersonController {
 				final MouseState mouse = inputState.getMouseState();
 				if (mouse.getDx() != 0 || mouse.getDy() != 0) {
 					if (!firstPing) {
-						rotateCamera(-mouse.getDx(), -mouse.getDy());
+						rotateCamera(mouse.getDx(), mouse.getDy());
 					} else {
 						firstPing = false;
 					}
@@ -63,10 +64,8 @@ public class FirstPersonController {
 
 	}
 
-	private void rotateCamera(int dx, int dy) {
-		double mouseRotateSpeed = .05;
-		Quaternion quaternion = Quaternion.fromAngleAxis(new Vector3(dx * mouseRotateSpeed, dy * mouseRotateSpeed, 0));
-		camera.setOrientation(quaternion);
+	private void rotateCamera(int mouseDeltaX, int mouseDeltaY) {
+		camera.setOrientation(camera.getOrientation().multiply(Quaternion.fromAngleAxis(new Vector3(mouseDeltaY * MOUSE_ROTATE_SPEED, -mouseDeltaX * MOUSE_ROTATE_SPEED, 0))));
 	}
 
 
@@ -75,11 +74,11 @@ public class FirstPersonController {
 		double z = 0;
 
 		if (keyboardState.isDown(Key.W)) {
-			z = -0.1;
+			z = +0.1;
 		}
 
 		if (keyboardState.isDown(Key.S)) {
-			z = +0.1;
+			z = -0.1;
 		}
 
 		if (keyboardState.isDown(Key.A)) {
@@ -92,15 +91,22 @@ public class FirstPersonController {
 
 
 		if (keyboardState.isDown(Key.UP)) {
-			z++;
-
+			rotateCamera(0, 10);
 		}
 
 		if (keyboardState.isDown(Key.DOWN)) {
-			z--;
+			rotateCamera(0, -10);
 		}
 
-		Vector3 move = camera.getOrientation().applyTo(new Vector3(x, 0, z));
+		if (keyboardState.isDown(Key.LEFT)) {
+			rotateCamera(-10, 0);
+		}
+
+		if (keyboardState.isDown(Key.RIGHT)) {
+			rotateCamera(10, 0);
+		}
+
+		Vector3 move = camera.getOrientation().invert().applyTo(new Vector3(x, 0, z));
 		camera.translate(move);
 	}
 }
