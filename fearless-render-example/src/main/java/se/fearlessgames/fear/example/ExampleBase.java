@@ -68,7 +68,7 @@ public abstract class ExampleBase {
 
 
 		textureManager = new FearlessTextureLoader(fearGl);
-		camera = new MatrixBasedCamera(new CameraPerspective(45.0f, ((float) width / (float) height), 0.1f, 10000.0f));
+		camera = new MatrixBasedCamera(new CameraPerspective(60.0f, ((float) width / (float) height), 0.1f, 10000.0f));
 		renderer = new ExampleRenderer(new MeshRenderer(fearGl, new ShaderPopulator()));
 		scene = createScene();
 
