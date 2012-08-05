@@ -44,7 +44,6 @@ public class ShaderProgram {
 
 		String code = getFileContent(filename);
 		shaderMap.put(type, code);
-
 	}
 
 	public void compile() {
@@ -67,22 +66,6 @@ public class ShaderProgram {
 
 		fearGl.glLinkProgram(shaderProgram);
 		fearGl.glValidateProgram(shaderProgram);
-
-		indexDefaultUniforms();
-		indexDefaultAttributes();
-
-	}
-
-	private void indexDefaultUniforms() {
-		for (ShaderUniform shaderUniform : ShaderUniform.values()) {
-			uniform(shaderUniform);
-		}
-	}
-
-	private void indexDefaultAttributes() {
-		for (ShaderAttribute shaderAttribute : ShaderAttribute.values()) {
-			attribute(shaderAttribute);
-		}
 	}
 
 	public Uniform uniform(ShaderUniform uniform) {
@@ -102,8 +85,7 @@ public class ShaderProgram {
 		return uniformPointerCache.get(name);
 	}
 
-	public Attribute attribute(ShaderAttribute attribute) {
-		String name = attribute.getName();
+	public Attribute attribute(String name) {
 		if (!attributePointerCache.containsKey(name)) {
 			int pointer = fearGl.glGetAttribLocation(shaderProgram, name);
 			if (pointer == -1) {
@@ -114,7 +96,6 @@ public class ShaderProgram {
 		}
 		return attributePointerCache.get(name);
 	}
-
 
 	private String getFileContent(String filename) {
 		String line;
@@ -148,7 +129,4 @@ public class ShaderProgram {
 		}
 		return out;
 	}
-
-
 }
-

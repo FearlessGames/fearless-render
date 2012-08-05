@@ -11,7 +11,7 @@ import java.nio.IntBuffer;
 public class VaoBuilder {
 	private final FearGl fearGl;
 	private final ShaderProgram shaderProgram;
-	private InterleavedBuffer interleavedBuffer;
+	private InterleavedMeshData interleavedMeshData;
 	private IntBuffer indices;
 	private VertexIndexMode vertexIndexMode = VertexIndexMode.TRIANGLES;
 
@@ -39,12 +39,12 @@ public class VaoBuilder {
 		return this;
 	}
 
-	private VaoBuilder interleavedBuffer(InterleavedBuffer interleavedBuffer) {
-		this.interleavedBuffer = interleavedBuffer;
+	private VaoBuilder interleavedBuffer(InterleavedMeshData interleavedMeshData) {
+		this.interleavedMeshData = interleavedMeshData;
 		return this;
 	}
 
 	public VertexArrayObject build() {
-		return new VertexArrayObject(fearGl, interleavedBuffer, indices, vertexIndexMode, shaderProgram);
+		return new VertexArrayObject(fearGl, interleavedMeshData, indices, vertexIndexMode, shaderProgram);
 	}
 }

@@ -4,10 +4,10 @@ import se.fearlessgames.fear.gl.BufferTarget;
 import se.fearlessgames.fear.gl.BufferUsage;
 import se.fearlessgames.fear.gl.FearGl;
 import se.fearlessgames.fear.gl.VertexIndexMode;
-import se.fearlessgames.fear.shader.ShaderAttribute;
 import se.fearlessgames.fear.shader.ShaderProgram;
 
 import java.nio.IntBuffer;
+import java.util.List;
 
 public class VertexArrayObject {
 	private final VertexIndexMode vertexIndexMode;
@@ -17,7 +17,7 @@ public class VertexArrayObject {
 	private final int indicesId;
 	private final int indicesCount;
 
-	public VertexArrayObject(FearGl fearGl, InterleavedBuffer interleavedBuffer, IntBuffer indices, VertexIndexMode vertexIndexMode, ShaderProgram shaderProgram) {
+	public VertexArrayObject(FearGl fearGl, InterleavedMeshData interleavedMeshData, IntBuffer indices, VertexIndexMode vertexIndexMode, ShaderProgram shaderProgram) {
 		this.vertexIndexMode = vertexIndexMode;
 		this.shaderProgram = shaderProgram;
 		indicesCount = indices.limit();
@@ -27,28 +27,14 @@ public class VertexArrayObject {
 
 		vboId = fearGl.glGenBuffers();
 		fearGl.glBindBuffer(BufferTarget.GL_ARRAY_BUFFER, vboId);
-		fearGl.glBufferData(BufferTarget.GL_ARRAY_BUFFER, interleavedBuffer.getBuffer(), BufferUsage.GL_STATIC_DRAW);
+		fearGl.glBufferData(BufferTarget.GL_ARRAY_BUFFER, interleavedMeshData.getFloatBuffer(), BufferUsage.GL_STATIC_DRAW);
 
 		//setup how to send the vertex data to the shader
-		int stride = interleavedBuffer.getStride();
-		int offset = 0;
+		int stride = interleavedMeshData.getStride();
 
-		shaderProgram.attribute(ShaderAttribute.VERTEX).setAttribute(3, stride, offset);
-
-		offset = 3 * 4;
-
-		if (interleavedBuffer.isNormals()) {
-			shaderProgram.attribute(ShaderAttribute.NORMAL).setAttribute(3, stride, offset);
-			offset += (3 * 4);
-		}
-
-		if (interleavedBuffer.isColors()) {
-			shaderProgram.attribute(ShaderAttribute.COLOR).setAttribute(4, stride, offset);
-			offset += (4 * 4);
-		}
-
-		if (interleavedBuffer.isTextureCords()) {
-			shaderProgram.attribute(ShaderAttribute.TEXTURE_COORD).setAttribute(2, stride, offset);
+		List<MeshBuffer> buffers = interleavedMeshData.getBuffers();
+		for (MeshBuffer buffer : buffers) {
+			shaderProgram.attribute(buffer.getName()).setAttribute(buffer.getCount(), stride, buffer.getOffset());
 		}
 
 		//create the indices id

@@ -2,7 +2,7 @@ package se.fearlessgames.fear.mesh;
 
 import se.fearlessgames.fear.BufferUtils;
 import se.fearlessgames.fear.gl.VertexIndexMode;
-import se.fearlessgames.fear.vbo.InterleavedBuffer;
+import se.fearlessgames.fear.vbo.InterleavedMeshData;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -53,7 +53,7 @@ public class MeshData {
 
 	}
 
-	public InterleavedBuffer createInterleavedBuffer() {
+	public InterleavedMeshData createInterleavedBuffer() {
 		int verticsSize = getSize(vertexBuffer);
 		int normalsSize = getSize(normalBuffer);
 		int colorsSize = getSize(colorBuffer);
@@ -100,7 +100,7 @@ public class MeshData {
 			buffer.flip();
 		}
 
-		return new InterleavedBuffer(buffer,
+		return new InterleavedMeshData(buffer,
 				normalsSize != 0,
 				colorsSize != 0,
 				texturesSize != 0);
