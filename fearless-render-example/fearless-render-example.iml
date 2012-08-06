@@ -10,7 +10,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="groovy-1.8.5" level="application" />
     <orderEntry type="module" module-name="fearless-render-core" />
     <orderEntry type="module" module-name="fearless-render-collada" />
     <orderEntry type="library" exported="" scope="RUNTIME" name="asm-util-3.2" level="project" />
@@ -20,7 +19,6 @@
     <orderEntry type="library" scope="TEST" name="cglib-nodep-2.2" level="project" />
     <orderEntry type="library" exported="" name="logback-core-1.0.1" level="project" />
     <orderEntry type="library" scope="TEST" name="objenesis-1.2" level="project" />
-    <orderEntry type="library" exported="" scope="RUNTIME" name="groovy-1.8.6" level="project" />
     <orderEntry type="library" scope="TEST" name="gentyref-1.1.0" level="project" />
     <orderEntry type="library" exported="" scope="RUNTIME" name="antlr-2.7.7" level="project" />
     <orderEntry type="library" scope="TEST" name="junit-4.10" level="project" />

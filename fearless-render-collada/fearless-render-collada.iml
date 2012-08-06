@@ -12,7 +12,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="fearless-render-core" />
-    <orderEntry type="library" name="groovy-1.8.5" level="application" />
     <orderEntry type="library" scope="TEST" name="asm-3.2" level="project" />
     <orderEntry type="library" scope="TEST" name="mockachino-0.6.0" level="project" />
     <orderEntry type="library" exported="" scope="RUNTIME" name="logback-classic-1.0.1" level="project" />
